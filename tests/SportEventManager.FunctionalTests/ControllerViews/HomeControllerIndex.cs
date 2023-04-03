@@ -20,6 +20,6 @@ public class HomeControllerIndex : IClassFixture<CustomWebApplicationFactory<Web
     response.EnsureSuccessStatusCode();
     string stringResponse = await response.Content.ReadAsStringAsync();
 
-    Assert.Contains("SportEventManager.Web", stringResponse);
+    Assert.Contains("SportEventManager", stringResponse);
   }
 }

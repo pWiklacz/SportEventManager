@@ -4,10 +4,11 @@ using SportEventManager.Core.ProjectAggregate;
 using SportEventManager.SharedKernel;
 using SportEventManager.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace SportEventManager.Infrastructure.Data;
 
-public class AppDbContext : DbContext
+public class AppDbContext : DbContext//, IdentityDbContext<User>
 {
   private readonly IDomainEventDispatcher? _dispatcher;
 

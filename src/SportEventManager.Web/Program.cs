@@ -5,8 +5,9 @@ using SportEventManager.Core;
 using SportEventManager.Infrastructure;
 using SportEventManager.Infrastructure.Data;
 using SportEventManager.Web;
-//using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
+using SportEventManager.Web.ViewModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,18 +21,15 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
   options.MinimumSameSitePolicy = SameSiteMode.None;
 });
 
-string? connectionString = builder.Configuration.GetConnectionString("SqliteConnection");  //Configuration.GetConnectionString("DefaultConnection");
+string? connectionString = builder.Configuration.GetConnectionString("SqliteConnection");
 
 builder.Services.AddDbContext(connectionString!);
 
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<AppDbContext>();
+
 builder.Services.AddControllersWithViews().AddNewtonsoftJson();
-//builder.Services.AddRazorPages();
-//builder.Services.AddSwaggerGen(c =>
-//{
-//  c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-//  c.EnableAnnotations();
-//  c.OperationFilter<FastEndpointsOperationFilter>();
-//});
+builder.Services.AddRazorPages();
 
 // add list services for diagnostic purposes - see https://github.com/ardalis/AspNetCoreStartupServices
 builder.Services.Configure<ServiceConfig>(config =>
@@ -64,20 +62,17 @@ else
   app.UseHsts();
 }
 app.UseRouting();
-//app.UseFastEndpoints();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseCookiePolicy();
 
-// Enable middleware to serve generated Swagger as a JSON endpoint.
-//app.UseSwagger();
-
-// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
-//app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"));
-
-app.MapDefaultControllerRoute();
-//app.MapRazorPages();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();
 
 // Seed Database
 using (var scope = app.Services.CreateScope())
