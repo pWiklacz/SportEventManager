@@ -1,13 +1,13 @@
 ﻿using System.Reflection;
 using Autofac;
 using SportEventManager.Core.Interfaces;
-using SportEventManager.Core.ProjectAggregate;
 using SportEventManager.Infrastructure.Data;
 using SportEventManager.SharedKernel;
 using SportEventManager.SharedKernel.Interfaces;
 using MediatR;
 using MediatR.Pipeline;
 using Module = Autofac.Module;
+using SportEventManager.Core.UserAggregate;
 
 namespace SportEventManager.Infrastructure;
 
@@ -20,7 +20,7 @@ public class DefaultInfrastructureModule : Module
   {
     _isDevelopment = isDevelopment;
     var coreAssembly =
-      Assembly.GetAssembly(typeof(Project)); // TODO: Replace "Project" with any type from your Core project
+      Assembly.GetAssembly(typeof(User));
     var infrastructureAssembly = Assembly.GetAssembly(typeof(StartupSetup));
     if (coreAssembly != null)
     {

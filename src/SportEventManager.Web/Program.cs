@@ -7,9 +7,6 @@ using SportEventManager.Infrastructure.Data;
 using SportEventManager.Web;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using SportEventManager.Web.ViewModels;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using SportEventManager.Core.UserAggregate;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,8 +29,8 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(appConnectionString!));
 
-//builder.Services.AddDefaultIdentity<UserViewModel>(options => options.SignIn.RequireConfirmedAccount = true)
-//                .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<UserDbContext>();
 
 builder.Services.AddControllersWithViews().AddNewtonsoftJson();
 builder.Services.AddRazorPages();
@@ -82,22 +79,22 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 // Seed Database
-using (var scope = app.Services.CreateScope())
-{
-  var services = scope.ServiceProvider;
-
-  try
-  {
-    var context = services.GetRequiredService<AppDbContext>();
-    //                    context.Database.Migrate();
-    context.Database.EnsureCreated();
-    SeedData.Initialize(services);
-  }
-  catch (Exception ex)
-  {
-    var logger = services.GetRequiredService<ILogger<Program>>();
-    logger.LogError(ex, "An error occurred seeding the DB. {exceptionMessage}", ex.Message);
-  }
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//  var services = scope.ServiceProvider;
+//
+//  try
+//  {
+//    var context = services.GetRequiredService<AppDbContext>();
+//    //                    context.Database.Migrate();
+//    context.Database.EnsureCreated();
+//    SeedData.Initialize(services);
+//  }
+//  catch (Exception ex)
+//  {
+//    var logger = services.GetRequiredService<ILogger<Program>>();
+//    logger.LogError(ex, "An error occurred seeding the DB. {exceptionMessage}", ex.Message);
+//  }
+//}
 
 app.Run();

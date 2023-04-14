@@ -1,16 +1,19 @@
 ﻿using System.Reflection;
-using SportEventManager.Core.ContributorAggregate;
-using SportEventManager.Core.ProjectAggregate;
 using SportEventManager.SharedKernel;
 using SportEventManager.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using SportEventManager.Core.UserAggregate;
 
 namespace SportEventManager.Infrastructure.Data;
 
-public class AppDbContext : DbContext//, IdentityDbContext<User>
+public class AppDbContext : DbContext
 {
   private readonly IDomainEventDispatcher? _dispatcher;
+
+  public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+  {
+  }
 
   public AppDbContext(DbContextOptions<AppDbContext> options,
     IDomainEventDispatcher? dispatcher)
@@ -19,14 +22,12 @@ public class AppDbContext : DbContext//, IdentityDbContext<User>
     _dispatcher = dispatcher;
   }
 
-  public DbSet<ToDoItem> ToDoItems => Set<ToDoItem>();
-  public DbSet<Project> Projects => Set<Project>();
-  public DbSet<Contributor> Contributors => Set<Contributor>(); 
-
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     base.OnModelCreating(modelBuilder);
     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    modelBuilder.Entity<User>()
+       .ToTable("AspNetUsers", t => t.ExcludeFromMigrations());
   }
 
   public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
