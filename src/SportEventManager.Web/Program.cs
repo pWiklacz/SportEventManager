@@ -21,12 +21,14 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
   options.MinimumSameSitePolicy = SameSiteMode.None;
 });
 
-string? connectionString = builder.Configuration.GetConnectionString("SqliteConnection");
+string? connectionString = builder.Configuration.GetConnectionString("AppDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AppDbContextConnection' not found."); ;
 
-builder.Services.AddDbContext(connectionString!);
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(connectionString!));
+//builder.Services.AddDbContext(connectionString!);
 
-builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<AppDbContext>();
+//builder.Services.AddDefaultIdentity<UserViewModel>(options => options.SignIn.RequireConfirmedAccount = true)
+//                .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddControllersWithViews().AddNewtonsoftJson();
 builder.Services.AddRazorPages();
