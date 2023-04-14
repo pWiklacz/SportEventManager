@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using SportEventManager.Web.ViewModels;
+using SportEventManager.Core.UserAggregate;
 using SportEventManager.Core.Interfaces;
 
 namespace SportEventManager.Web.Views.Authorization.Account;

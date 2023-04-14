@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using SportEventManager.Web.ViewModels;
+using SportEventManager.Core.UserAggregate;
 
 namespace SportEventManager.Web.Views.Authorization.Account;
 

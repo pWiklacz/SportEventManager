@@ -8,6 +8,9 @@ using SportEventManager.Web;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using SportEventManager.Web.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
+using SportEventManager.Core.UserAggregate;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,11 +24,13 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
   options.MinimumSameSitePolicy = SameSiteMode.None;
 });
 
-string? connectionString = builder.Configuration.GetConnectionString("AppDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AppDbContextConnection' not found."); ;
+string? userConnectionString = builder.Configuration.GetConnectionString("UserDbContextConnection") ?? throw new InvalidOperationException("Connection string 'UserDbContextConnection' not found.");
+string? appConnectionString = builder.Configuration.GetConnectionString("AppDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AppDbContextConnection' not found."); ;
 
+builder.Services.AddDbContext<UserDbContext>(options =>
+    options.UseSqlServer(userConnectionString));
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString!));
-//builder.Services.AddDbContext(connectionString!);
+    options.UseSqlServer(appConnectionString!));
 
 //builder.Services.AddDefaultIdentity<UserViewModel>(options => options.SignIn.RequireConfirmedAccount = true)
 //                .AddEntityFrameworkStores<AppDbContext>();
