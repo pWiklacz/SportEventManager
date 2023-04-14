@@ -7,7 +7,7 @@ using SportEventManager.Infrastructure.Data;
 using SportEventManager.Web;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using SportEventManager.Web.ViewModels;
+using SportEventManager.Core.UserAggregate;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,12 +21,16 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
   options.MinimumSameSitePolicy = SameSiteMode.None;
 });
 
-string? connectionString = builder.Configuration.GetConnectionString("SqliteConnection");
+string? userConnectionString = builder.Configuration.GetConnectionString("UserDbContextConnection") ?? throw new InvalidOperationException("Connection string 'UserDbContextConnection' not found.");
+string? appConnectionString = builder.Configuration.GetConnectionString("AppDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AppDbContextConnection' not found."); ;
 
-builder.Services.AddDbContext(connectionString!);
+builder.Services.AddDbContext<UserDbContext>(options =>
+    options.UseSqlServer(userConnectionString));
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(appConnectionString!));
 
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<AppDbContext>();
+                .AddEntityFrameworkStores<UserDbContext>();
 
 builder.Services.AddControllersWithViews().AddNewtonsoftJson();
 builder.Services.AddRazorPages();
@@ -75,22 +79,22 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 // Seed Database
-using (var scope = app.Services.CreateScope())
-{
-  var services = scope.ServiceProvider;
-
-  try
-  {
-    var context = services.GetRequiredService<AppDbContext>();
-    //                    context.Database.Migrate();
-    context.Database.EnsureCreated();
-    SeedData.Initialize(services);
-  }
-  catch (Exception ex)
-  {
-    var logger = services.GetRequiredService<ILogger<Program>>();
-    logger.LogError(ex, "An error occurred seeding the DB. {exceptionMessage}", ex.Message);
-  }
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//  var services = scope.ServiceProvider;
+//
+//  try
+//  {
+//    var context = services.GetRequiredService<AppDbContext>();
+//    //                    context.Database.Migrate();
+//    context.Database.EnsureCreated();
+//    SeedData.Initialize(services);
+//  }
+//  catch (Exception ex)
+//  {
+//    var logger = services.GetRequiredService<ILogger<Program>>();
+//    logger.LogError(ex, "An error occurred seeding the DB. {exceptionMessage}", ex.Message);
+//  }
+//}
 
 app.Run();
