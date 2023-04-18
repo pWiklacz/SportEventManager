@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create New Event</h1>
+
+<div class="container-fluid col-12 mx-auto pt-0 p-0">
+    <div class="card">
+        <div class="card-header bg-secondary text-white text-center p-1" style="height:35px;">
+            <h5>First Page</h5>
+            <form id="EventForm1" enctype="multipart/form-data" asp-action="Next">
+                <div class="container-fluid btn-group p-0 m-0">
+                    <div class="col-10">
+                        <div class="row">
+
+                            <div class="col-5">
+                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label class="control-label">Event Name</label>
+                                    <input class="form-control" />
+                                    <span  class="text-danger"></span>
+
+                                 </div>
+                            </div>
+                            <div class="col-5 mt-xl-4">
+                                <p>Write event name</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                        
+                            <div class="col-5">
+                                 <div class="form-group">
+                                     <label class="control-label">Stadium</label>
+                                     <input class="form-control" />
+                                     <span class="text-danger"></span>
+                                 </div>
+                            </div>
+                            <div class="col-5 mt-xl-4">
+                                <p>Write stadium where event will be play</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-5">
+                                 <div class="form-group">
+                                     <label class="control-label">Date</label>
+                                     <input id="NumberOfPlayers"  class="form-control" />
+                                     <span class="text-danger"></span>
+                                 </div>
+                             </div>
+                            <div class="col-5 mt-xl-4">
+                                <p>Write date to start event</p>
+                             </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-5">
+                                <div class="form-group">
+                                    <label class="control-label">Team</label>
+                                    <input type="number" id="NumberOfPlayers" class="form-control" />
+                                    <span class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-5 mt-xl-4">
+                                <p>Enter how many teams will participate in the event</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

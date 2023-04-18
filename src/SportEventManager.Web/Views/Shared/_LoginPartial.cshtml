@@ -11,6 +11,11 @@
         <a id="manage" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
     </li>
         <li class="nav-item">
+            <form id="eventManagerForm" class="form-inline" asp-area="" asp-controller="EventManager" asp-action="Index">
+                <button id="eventManagerBtn" type="submit" class="nav-link btn btn-link">Event Manager</button>
+            </form>
+        </li>
+        <li class="nav-item">
             <form id="teamsManageForm" class="form-inline" asp-area="" asp-controller="TeamManager" asp-action="Index">
                 <button id="teamManageBtn" type="submit" class="nav-link btn btn-link">Team Manage</button>
             </form>
