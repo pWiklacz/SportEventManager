@@ -1,35 +1,30 @@
-﻿using MessagePack;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using KeyAttribute = System.ComponentModel.DataAnnotations.KeyAttribute;
+﻿using System.ComponentModel.DataAnnotations;
+using SportEventManager.Core.TeamAggregate;
 
 
 namespace SportEventManager.Web.ViewModels;
 
-  public class PlayerViewModel
+public class PlayerViewModel
+{
+  public int Id { get; set; }
+  public String Name { get; set; } = String.Empty;
+
+  public String Surname { get; set; } = String.Empty;
+
+  [Range(1, 99)]
+  public int Number { get; set; }
+
+  public bool IsDeleted { get; private set; }
+
+  public static PlayerViewModel FromPlayer(Player player)
   {
-      public PlayerViewModel(){}
-
-      [Key]
-      public int Id { get; set; }
-
-      [ForeignKey("Team")]
-      public int TeamsId { get; set; }
-
-      [Required]
-      [MaxLength(100)]
-      public String? Name { get; set; }
-
-      [Required]
-      [MaxLength(100)]
-      public String? Surname { get; set; }
-
-      [Required]
-      [Range(1,50)]
-      public int Number { get; set; }
-
-      [Required]
-      public bool isDelete { get; set; } = false;
-
-      public virtual TeamViewModel? Teams { get; private set; }
+    return new PlayerViewModel()
+    {
+      Id = player.Id,
+      Name = player.Name,
+      Surname = player.Surname,
+      Number = player.Number,
+      IsDeleted = player.IsDeleted
+    };
   }
+}

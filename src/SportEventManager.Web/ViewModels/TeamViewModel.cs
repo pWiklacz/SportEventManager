@@ -1,22 +1,21 @@
-﻿using MessagePack;
-using System.ComponentModel.DataAnnotations;
-using KeyAttribute = System.ComponentModel.DataAnnotations.KeyAttribute;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SportEventManager.Web.ViewModels;
 
-  public class TeamViewModel
-  {
-      [Key]
-      public int Id { get; set; }
-      [Required]
-      [MaxLength(100)]
-      public String? Name { get; set; }
-      [Required]
-      [MaxLength(100)]
-      public String? City { get; set; }
-      [Required]
-      [Range(0, 50)]
-      public int NumberOfPlayers { get; set; }
+public class TeamViewModel
+{
+  public int Id { get; set; }
 
-      public virtual List<PlayerViewModel> Players { get; set; } = new List<PlayerViewModel>();
-  }
+  public String Name { get; set; } = String.Empty;
+
+  public String City { get; set; } = String.Empty;
+
+  [Range(1, 50)]
+  public int NumberOfPlayers { get; set; }
+
+  public string OwnerId { get; private set; } = String.Empty;
+
+  public bool IsDeleted { get; set; } = false;
+
+  public List<PlayerViewModel> Players { get; set; } = new List<PlayerViewModel>();
+}
