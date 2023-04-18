@@ -2,6 +2,7 @@
 using SportEventManager.Core.TeamAggregate.Specifications;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Web.ViewModels;
+using SportEventManager.Web.ViewModels.EventModel;
 
 namespace SportEventManager.Web.Controllers;
 
