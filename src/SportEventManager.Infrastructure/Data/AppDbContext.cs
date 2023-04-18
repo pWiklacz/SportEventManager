@@ -4,12 +4,17 @@ using SportEventManager.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using SportEventManager.Core.UserAggregate;
+using SportEventManager.Core.TeamAggregate;
 
 namespace SportEventManager.Infrastructure.Data;
 
 public class AppDbContext : DbContext
 {
   private readonly IDomainEventDispatcher? _dispatcher;
+
+  public DbSet<Team> Teams => Set<Team>();
+
+  public DbSet<Player> Players => Set<Player>();
 
   public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
   {
@@ -25,9 +30,10 @@ public class AppDbContext : DbContext
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     base.OnModelCreating(modelBuilder);
-    modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     modelBuilder.Entity<User>()
        .ToTable("AspNetUsers", t => t.ExcludeFromMigrations());
+
+    modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
   }
 
   public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

@@ -41,3 +41,19 @@ div.card-content {
 div.login-form-icon{
     text-align: center;
 }
+
+td.team-col-colors {
+    color: #073642;
+    background-color: #a9bdbd;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}

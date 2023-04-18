@@ -25,9 +25,9 @@ string? userConnectionString = builder.Configuration.GetConnectionString("UserDb
 string? appConnectionString = builder.Configuration.GetConnectionString("AppDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AppDbContextConnection' not found."); ;
 
 builder.Services.AddDbContext<UserDbContext>(options =>
-    options.UseSqlServer(userConnectionString));
+    options.UseSqlServer(userConnectionString!));
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(appConnectionString!));
+    options.UseSqlServer(appConnectionString!).EnableSensitiveDataLogging(true));
 
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<UserDbContext>();
