@@ -8,6 +8,7 @@ public class PlayerConfiguration : IEntityTypeConfiguration<Player>
   public void Configure(EntityTypeBuilder<Player> builder)
   {
     builder.Property(p => p.Id)
+      .UseIdentityColumn()
       .IsRequired();
 
     builder.Property(p => p.Name)

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SportEventManager.Core.TeamAggregate.Stats;
 using SportEventManager.SharedKernel;
 
 namespace SportEventManager.Core.TeamAggregate;
@@ -25,6 +26,8 @@ public class Player : EntityBase
   [Required]
   [ForeignKey("Team")]
   public int TeamId { get; private set; }
+
+  public FBPlayerStats? FbPlayerStats { get; set; }
 
   public Player(string name, string surname, int number, int teamId)
   {

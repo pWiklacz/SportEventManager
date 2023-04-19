@@ -2,9 +2,10 @@
 using SportEventManager.SharedKernel;
 using SportEventManager.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using SportEventManager.Core.UserAggregate;
 using SportEventManager.Core.TeamAggregate;
+using SportEventManager.Core.TeamAggregate.Stats;
+using SportEventManager.Core.EventAggregate;
 
 namespace SportEventManager.Infrastructure.Data;
 
@@ -15,6 +16,16 @@ public class AppDbContext : DbContext
   public DbSet<Team> Teams => Set<Team>();
 
   public DbSet<Player> Players => Set<Player>();
+
+  public DbSet<Stadium> Stadiums => Set<Stadium>();
+
+  public DbSet<Match> Matches => Set<Match>();
+
+  public DbSet<Event> Events => Set<Event>();
+
+  public DbSet<FBPlayerStats> PlayersStats => Set<FBPlayerStats>();
+
+  public DbSet<FBTeamStats> TeamsStats => Set<FBTeamStats>();
 
   public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
   {
@@ -32,6 +43,8 @@ public class AppDbContext : DbContext
     base.OnModelCreating(modelBuilder);
     modelBuilder.Entity<User>()
        .ToTable("AspNetUsers", t => t.ExcludeFromMigrations());
+    modelBuilder.Entity<FootballStats>()
+       .ToTable("FootballStats", t => t.ExcludeFromMigrations());
 
     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
   }

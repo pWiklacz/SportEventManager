@@ -2,8 +2,10 @@
 using Microsoft.IdentityModel.Tokens;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Core.TeamAggregate.Specifications;
+using SportEventManager.Core.TeamAggregate.Stats;
 using SportEventManager.SharedKernel.Interfaces;
-using SportEventManager.Web.ViewModels;
+using SportEventManager.Web.ViewModels.TeamModel;
+using SportEventManager.Web.ViewModels.TeamModel.Stats;
 
 namespace SportEventManager.Web.Controllers;
 
@@ -36,7 +38,8 @@ public class TeamManagerController : Controller
           Name = team.Name,
           City = team.City,
           IsDeleted = team.IsDeleted,
-          NumberOfPlayers = team.NumberOfPlayers
+          NumberOfPlayers = team.NumberOfPlayers,
+          FbTeamStats = FBTeamStatsViewModel.FromTeamStats(fBTeamStats: team.FbTeamStats)
         });
     }
 
@@ -163,7 +166,7 @@ public class TeamManagerController : Controller
       player.MarkAsDeleted(); ///why it's not working?
     team.MarkAsDeleted();
     await _teamRepository.UpdateAsync(team);
-
+    //TODO: delete also teamstats and playerstats
     return RedirectToAction("Index");
   }
 

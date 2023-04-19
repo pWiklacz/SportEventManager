@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
+using SportEventManager.Core.TeamAggregate.Stats;
 using SportEventManager.SharedKernel;
 using SportEventManager.SharedKernel.Interfaces;
 
@@ -9,7 +10,6 @@ namespace SportEventManager.Core.TeamAggregate;
 
 public class Team : EntityBase, IAggregateRoot
 {
-
   [Required]
   [MaxLength(100)]
   public String Name { get; set; } = string.Empty;
@@ -34,11 +34,14 @@ public class Team : EntityBase, IAggregateRoot
 
   public IEnumerable<Player> Players => _players.AsReadOnly();
 
+  public FBTeamStats? FbTeamStats { get; set; }
+
   public Team(string name, string city, int numberOfPlayers)
   {
     Name = Guard.Against.NullOrEmpty(name, nameof(name));
     City = Guard.Against.NullOrEmpty(city, nameof(city));
     NumberOfPlayers = Guard.Against.NegativeOrZero(numberOfPlayers, nameof(numberOfPlayers));
+    _players = new List<Player>(numberOfPlayers);
   }
 
   public Team(int id, string name, string city, int numberOfPlayers)
@@ -47,11 +50,7 @@ public class Team : EntityBase, IAggregateRoot
     Name = Guard.Against.NullOrEmpty(name, nameof(name));
     City = Guard.Against.NullOrEmpty(city, nameof(city));
     NumberOfPlayers = Guard.Against.NegativeOrZero(numberOfPlayers, nameof(numberOfPlayers));
-  }
-
-  public Team(int id)
-  {
-    Id = Guard.Against.NegativeOrZero(id, nameof(id));
+    _players = new List<Player>(numberOfPlayers);
   }
 
   public void AddPlayer(Player newPlayer)

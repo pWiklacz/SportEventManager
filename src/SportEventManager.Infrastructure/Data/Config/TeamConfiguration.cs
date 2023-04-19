@@ -9,6 +9,7 @@ public class TeamConfiguration : IEntityTypeConfiguration<Team>
   public void Configure(EntityTypeBuilder<Team> builder)
   {
     builder.Property(p => p.Id)
+      .UseIdentityColumn()
       .IsRequired();
 
     builder.Property(t => t.Name)
