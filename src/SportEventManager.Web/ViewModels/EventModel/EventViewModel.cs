@@ -1,4 +1,5 @@
 ﻿using SportEventManager.Core.TeamAggregate;
+using SportEventManager.Web.ViewModels.TeamModel;
 
 namespace SportEventManager.Web.ViewModels.EventModel;
 
@@ -10,9 +11,9 @@ public class EventViewModel
 
   public List<StadiumViewModel> Stadiums { get; set;} = new List<StadiumViewModel>();
 
-  public List<Team> Teams { get; set; } = new List<Team>();
+  public List<TeamViewModel> Teams { get; set; } = new List<TeamViewModel>();
 
   public List<MatchViewModel> Matches { get; set; } = new List<MatchViewModel>();
 
   public DateTime startTime { get; set; }
-}
+} 

@@ -15,9 +15,6 @@ public class Stadium : EntityBase
   [DefaultValue(false)]
   public bool IsDeleted { get; private set; } = false;
 
-  public List<Match> _matches = new List<Match>();
-
-  public IEnumerable<Match> Matches => _matches.AsReadOnly();
 
   public Stadium() { }
 
@@ -25,13 +22,6 @@ public class Stadium : EntityBase
   {
     City = Guard.Against.NullOrEmpty(city, nameof(city));
     IsDeleted = false;
-    _matches = new List<Match>();
-  }
-
-  public void AddMatch(Match newMatch)
-  {
-    Guard.Against.Null(newMatch, nameof(newMatch));
-    _matches.Add(newMatch);
   }
 
   public void MarkAsDeleted()

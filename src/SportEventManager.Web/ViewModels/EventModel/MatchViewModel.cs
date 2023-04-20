@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SportEventManager.Core.EventAggregate;
 
 namespace SportEventManager.Web.ViewModels.EventModel;
 
@@ -12,4 +13,13 @@ public class MatchViewModel
   public DateTime EndTime { get; set; }
 
   public StadiumViewModel? Stadium { get; set; }
+
+  public static MatchViewModel FromMatch(Match match) => new MatchViewModel()
+  {
+    Id = match.Id,
+    StartTime = match.StartTime,
+    EndTime = match.EndTime,
+    Stadium = StadiumViewModel.FromStadium(stadium : match.Stadium)
+  };
 }
+
