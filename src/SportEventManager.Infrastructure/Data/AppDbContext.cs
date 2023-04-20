@@ -43,8 +43,6 @@ public class AppDbContext : DbContext
     base.OnModelCreating(modelBuilder);
     modelBuilder.Entity<User>()
        .ToTable("AspNetUsers", t => t.ExcludeFromMigrations());
-    modelBuilder.Entity<FootballStats>()
-       .ToTable("FootballStats", t => t.ExcludeFromMigrations());
 
     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
   }
