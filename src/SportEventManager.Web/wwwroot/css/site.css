@@ -42,6 +42,130 @@ div.login-form-icon{
     text-align: center;
 }
 
+div.event-view-tab div.card-header {
+    padding: 0px 0px 12px 0px;
+    width: 1295px;      
+}
+div.event-view-tab div.card-content {
+    width: 1295px;
+}
+
+div.event-view-tab ul.nav-tabs {
+    margin: 0px 0px -12px 0px;
+}
+
+div.event-name {
+    text-align: center;
+    font-size: 30px;
+}
+
+div.event-view-tab li.nav-item {
+    width: 25%;
+}
+div.event-view-tab a.nav-link {
+    font-size: 20px;
+    text-align: center;
+}
+
+div.tournament-headers {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #ccc;
+}
+h3 {
+    width: 25%;   
+    margin: 0;
+    max-width: 135px;
+    font-size: 15px;
+}
+
+.round {
+    float: left;
+}
+
+    .round.r-of-4 {
+    }
+
+    .round.r-of-2 {
+        margin-top: 25px;
+    }
+
+.bracket-game {
+    max-width: 125px;
+    margin: 10px 0;
+}
+
+.player {
+    min-width: 100px;
+    border: 1px solid #AAA;
+    padding-left: 10px;
+}
+
+    .player.top {
+        border-radius: 3px 3px 0 0;
+    }
+
+    .player.bot {
+        border-radius: 0 0 3px 3px;
+    }
+
+    .player .score {
+        display: inline;
+        float: right;
+        border-left: 1px solid #AAA;
+        padding-left: 10px;
+        padding-right: 10px;
+        background: #EEE;
+    }
+
+    .player.win {
+        background-color: #B8F2B8;
+    }
+
+    .player.loss {
+        background-color: #F2B8B8;
+    }
+
+.connectors {
+    float: left;
+    min-width: 35px;
+}
+
+    .connectors.r-of-2 .top-line {
+        position: relative;
+        top: 30px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-2 .bottom-line {
+        position: relative;
+        top: 81px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-2 .vert-line {
+        position: relative;
+        top: 26px;
+        left: -16px;
+        height: 55px;
+        border-right: 2px solid #AAA;
+    }
+
+    .connectors.r-of-2 .next-line {
+        position: relative;
+        top: -4px;
+        left: 17px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+.clear {
+    clear: both;
+}
+
 td.team-col-colors {
     color: #073642;
     background-color: #a9bdbd;
