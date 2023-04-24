@@ -1,75 +1,91 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create New Event</h1>
+<h1>Create</h1>
+<div id="firstDisplay"><h2>New Event</h2></div>
+<div id="secondDisplay"><h2>Add Team To Event</h2></div>
 
-<div class="container-fluid col-12 mx-auto pt-0 p-0">
-    <div class="card">
-        <div class="card-header bg-secondary text-white text-center p-1" style="height:35px;">
-            <h5>First Page</h5>
-            <form id="EventForm1" enctype="multipart/form-data" asp-action="Next">
-                <div class="container-fluid btn-group p-0 m-0">
-                    <div class="col-10">
-                        <div class="row">
 
-                            <div class="col-5">
-                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                <div class="form-group">
-                                    <label class="control-label">Event Name</label>
-                                    <input class="form-control" />
-                                    <span  class="text-danger"></span>
+<div id="firstTable">
+    <table cellpadding="10" cellspacing="2" align="center" id="firtsTable">
+    <th class="row1">Event</th>
+    <tr>
+        <td class="col1">Event Name</td>
+        <td class="col2"><input type="text" name="event name" id="EName" placeholder="Event Name"></td>
+    </tr>
 
-                                 </div>
-                            </div>
-                            <div class="col-5 mt-xl-4">
-                                <p>Write event name</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                        
-                            <div class="col-5">
-                                 <div class="form-group">
-                                     <label class="control-label">Stadium</label>
-                                     <input class="form-control" />
-                                     <span class="text-danger"></span>
-                                 </div>
-                            </div>
-                            <div class="col-5 mt-xl-4">
-                                <p>Write stadium where event will be play</p>
-                            </div>
-                        </div>
+    <th class="row1">Event</th>
+    <tr>
+        <td class="col1">Stadium</td>
+        <td class="col2"><input type="text" name="stadium" id="EStadium" placeholder="Stadium"></td>
+    </tr>
 
-                        <div class="row">
-                            <div class="col-5">
-                                 <div class="form-group">
-                                     <label class="control-label">Date</label>
-                                     <input id="NumberOfPlayers"  class="form-control" />
-                                     <span class="text-danger"></span>
-                                 </div>
-                             </div>
-                            <div class="col-5 mt-xl-4">
-                                <p>Write date to start event</p>
-                             </div>
-                        </div>
+    <th class="row1">Start Date</th>
+    <tr>
+        <td class="col1">Start Date</td>
+        <td class="col2"><input type="date" name="Start Date" id="SDate" class="startDate"></td>
+    </tr>
 
-                        <div class="row">
-                            <div class="col-5">
-                                <div class="form-group">
-                                    <label class="control-label">Team</label>
-                                    <input type="number" id="NumberOfPlayers" class="form-control" />
-                                    <span class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-5 mt-xl-4">
-                                <p>Enter how many teams will participate in the event</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
+    <th class="row1">Number of Team</th>
+    <tr>
+        <td class="col1">Number of Player</td>
+        <td class="col2"><input type="number" name="Number of Player" id="NPlayer" class="numberOfPlayer"></td>
+    </tr>
+    
+    <tr colspan="2" align="center">
+        <td>
+            <button type="submit" class="btn btn-primary" onclick="toggleTable()">Next</button>
+        </td>
+        <td>
+            <button type="reset" class="reset1" onclick="resetDetails()">Clear</button>
+        </td>
+    </tr>
+    <tr colspan="1" align="center">
+        <td>
+            <button type="reset" class="reset2" onclick="resetDetails()">Clear</button>
+        </td>
+    </tr>
+  </table>
+</div>
+
+
+<div id="secondTable">
+    <div class="container col-10 me-1" >
+        <div class="col-md-10 p-0 m-0 bg-white"
+            <table id="TeamTable" class="table">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;">
+                            <h4><b>Team Name<b></h4>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < 7; i++)
+                    {
+                        <tr>
+                            <td>
+                                <input class="form-control" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div> 
+     </div>
+     <div class="mt-2">
+        <button type="button" class="btn btn-sm btn-danger visible" onclick="Back()">Back</button>
+        <button type="submit" class="btn btn-primary" value="Create" onclick="toggleTable()">Create</button>
     </div>
 </div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+

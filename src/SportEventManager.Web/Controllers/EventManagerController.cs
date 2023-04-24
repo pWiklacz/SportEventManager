@@ -1,9 +1,20 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SportEventManager.Core.EventAggregate;
+using SportEventManager.SharedKernel.Interfaces;
+using SportEventManager.Web.ViewModels;
+
 
 namespace SportEventManager.Web.Controllers;
 public class EventManagerController : Controller
 {
+  private readonly IRepository<Event>? _eventRepository;
+
+  public EventManagerController(IRepository<Event> eventRepository)
+  {
+    _eventRepository = eventRepository;
+  }
+
   // GET: EventSettings
   public ActionResult Index()
   {
@@ -17,15 +28,25 @@ public class EventManagerController : Controller
   }
 
   // GET: EventSettings/Create
-  public ActionResult Create()
+  [HttpGet]
+  public IActionResult Create()
   {
-    return View();
+    EventViewModel eventView= new EventViewModel();
+    return View(eventView);
   }
 
   // POST: EventSettings/Create
   [HttpPost]
-  [ValidateAntiForgeryToken]
-  public ActionResult Create(IFormCollection collection)
+  public ActionResult Create(EventViewModel viewModel)
+  {
+      
+      return View();
+    
+  }
+
+  // POST: EventSettings/Create
+  [HttpPost]
+  public ActionResult Next(IFormCollection collection)
   {
     try
     {
@@ -36,6 +57,7 @@ public class EventManagerController : Controller
       return View();
     }
   }
+
 
   // GET: EventSettings/Edit/5
   public ActionResult Edit(int id)

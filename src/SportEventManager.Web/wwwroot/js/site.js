@@ -18,4 +18,26 @@ function DeleteItem(btn) {
     $(btn).closest('tr').hide();
 }
 
+
+function toggleTable() {
+        document.getElementById('secondTable').style.display = "block"
+        document.getElementById('firstTable').style.display = "none"
+        document.getElementById('secondDisplay').style.display = "block"
+        document.getElementById('firstDisplay').style.display = "none"
+}
+
+function Back() {
+    document.getElementById('secondTable').style.display = "none"
+    document.getElementById('firstTable').style.display = "block"
+    document.getElementById('secondDisplay').style.display = "none"
+    document.getElementById('firstDisplay').style.display = "block"
+}
+
+function resetDetails() {
+    document.getElementById("EName").value = '';
+    document.getElementById("EStadium").value = '';
+    document.getElementById("SDate").value = '';
+    document.getElementById("NPlayer").value = '';
+}
+
 // Write your JavaScript code.
