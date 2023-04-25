@@ -18,7 +18,7 @@ function DeleteItem(btn) {
 
 function DeleteStadiumItem(btn) {
 
-    var table = document.getElementById('EventTable');
+    var table = document.getElementById('StadiumsTable');
     var rows = table.getElementsByTagName('tr');
     if (rows.length == 2) {
         alert("This row cannot be deleted!");
@@ -91,16 +91,16 @@ function AddTeam(btn) {
 }
 
 function AddStadiumItem(btn) {
-    var table = document.getElementById('EventTable');
+    var table = document.getElementById('StadiumsTable');
     var rows = table.getElementsByTagName('tr');
     if (rows.length > 10) {
         alert("Maximum players' quantity exceeded!");
         return;
     }
     var rowOutherHtml = rows[rows.length - 1].outerHTML;
-    var lastrowIdx = document.getElementById('hdnLastIndex').value;
+    var lastrowIdx = document.getElementById('hdnLastIndexStadium').value;
     var nextrowIdx = eval(lastrowIdx) + 1;
-    document.getElementById('hdnLastIndex').value = nextrowIdx;
+    document.getElementById('hdnLastIndexStadium').value = nextrowIdx;
     rowOutherHtml = rowOutherHtml.replaceAll('_' + lastrowIdx + '_', '_' + nextrowIdx + '_');
     rowOutherHtml = rowOutherHtml.replaceAll('[' + lastrowIdx + ']', '[' + nextrowIdx + ']');
     rowOutherHtml = rowOutherHtml.replaceAll('-' + lastrowIdx, nextrowIdx + '_');

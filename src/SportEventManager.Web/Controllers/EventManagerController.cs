@@ -98,9 +98,16 @@ public class EventManagerController : Controller
 
       if(team == null) { return NotFound(); }
 
+      eventNew.AddTeam(team);
       
     }
 
+    Dictionary<Team, Team> bracket = TournamentBracket.GenerateBracket_1stRound(eventNew.Teams.ToList());
+    foreach(var team in bracket)
+    {
+      Match newMatch = new();
+
+    }
 
     await _eventRepository.AddAsync(eventNew);
     await _eventRepository.SaveChangesAsync();
