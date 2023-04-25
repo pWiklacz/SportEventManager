@@ -26,6 +26,7 @@ public class Event : EntityBase, IAggregateRoot
 
   //You should make a constructor for usage maybe?? Not sure how complicated you need
 
+  [Required]
   public DateTime StartTime { get; set; }
 
   [Required]

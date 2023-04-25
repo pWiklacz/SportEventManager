@@ -27,6 +27,7 @@ public class PlayerConfiguration : IEntityTypeConfiguration<Player>
       .HasDefaultValue(false);
 
     builder.Property(p => p.TeamId)
-      .IsRequired();
+      .IsRequired()
+      .HasAnnotation("ForeignKey", "Team");
   }
 }

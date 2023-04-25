@@ -19,7 +19,7 @@ public class Team : EntityBase, IAggregateRoot
   public String City { get; set; } = string.Empty;
 
   [Required]
-  public int NumberOfPlayers { get; set; }
+  public int NumberOfPlayers { get; set; } = 0;
 
   [Required]
   [ForeignKey("User")]
@@ -35,7 +35,9 @@ public class Team : EntityBase, IAggregateRoot
 
   public IEnumerable<Player> Players => _players.AsReadOnly();
 
-  public FBTeamStats? FbTeamStats { get; set; }
+
+  [DefaultValue(null)]
+  public FBTeamStats? FbTeamWholeStats { get; set; }
 
   public Team(string name, string city, int numberOfPlayers)
   {
@@ -54,6 +56,7 @@ public class Team : EntityBase, IAggregateRoot
     _players = new List<Player>(numberOfPlayers);
   }
 
+  public Team() { }
 
   public void AddPlayer(Player newPlayer)
   {

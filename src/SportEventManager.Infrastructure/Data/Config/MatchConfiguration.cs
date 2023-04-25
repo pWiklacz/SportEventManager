@@ -16,11 +16,24 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
       .HasDefaultValue(false);
 
     builder.Property(m => m.StartTime)
-      .IsRequired()
-      .IsRowVersion();
+      .IsRequired();
 
     builder.Property(m => m.EndTime)
+      .IsRequired();
+
+    builder.Property(m => m.IsEnded)
       .IsRequired()
-      .IsRowVersion();
+      .HasDefaultValue(false);
+
+    builder.Property(m => m.FirstTeamId)
+      .IsRequired()
+      .HasAnnotation("ForeignKey", "Team");
+
+    builder.Property(m => m.SecondTeamId)
+      .IsRequired()
+      .HasAnnotation("ForeignKey", "Team");
+
+    builder.Property(m => m.WinnerName)
+      .HasMaxLength(100);
   }
 }

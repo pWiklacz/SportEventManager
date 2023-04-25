@@ -1,46 +1,48 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
 namespace SportEventManager.Core.TeamAggregate.Stats;
 public class FBTeamStats : FootballStats
 {
   [DefaultValue(0)]
-  public int Wins { get; set; }
+  public int Wins { get; set; } = 0;
 
   [DefaultValue(0)]
-  public int Losses { get; set; }
+  public int Losses { get; set; } = 0;
 
   [DefaultValue(0)]
-  public int Drawes { get; set; }
+  public int Drawes { get; set; } = 0;
 
   [DefaultValue(0)]
-  public int Shoots { get; set; }
+  public int Shoots { get; set; } = 0;
+
+  [DefaultValue(0)] 
+  public int ShootsOnTarget { get; set; } = 0;
+
+  [DefaultValue(0)] 
+  public int Fouls { get; set; } = 0;
 
   [DefaultValue(0)]
-  public int ShootsOnTarget { get; set; }
+  public int Passes { get; set; } = 0;
 
-  [DefaultValue(0)]
-  public int Fouls { get; set; }
-
-  [DefaultValue(0)]
-  public int Passes { get; set; }
-
-  [Required]
   [ForeignKey("Team")]
-  public int TeamId { get; private set; }
+  [DefaultValue(null)]
+  public int? TeamId { get; private set; } = null;
 
-  public FBTeamStats(int teamId) : base()
+  [ForeignKey("Match")]
+  [DefaultValue(null)]
+  public int? MatchId { get; private set; } = null;
+
+  public FBTeamStats(int id, bool isFromOneMatch = false) : base()
   {
-    Wins = 0;
-    Losses = 0;
-    Drawes = 0;
-    Shoots = 0;
-    ShootsOnTarget = 0;
-    Fouls = 0;
-    Passes = 0;
-    TeamId = teamId;
+    if(!isFromOneMatch) 
+    { 
+      TeamId = id;
+    } else
+    {
+      MatchId = id;
+    }
   }
 
-  
+  public FBTeamStats() : base() { }
 }
