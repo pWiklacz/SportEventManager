@@ -27,7 +27,7 @@
             <br style="margin-top: 20px;" />
             <div class="form-group">
                 <label class="control-label">Number of Team</label>
-            <input type="number" class="form-control" style="width: 40%;" id="EName" placeholder="Number of team" />
+                <input type="number" class="form-control" style="width: 40%;" id="NumberOfTeam" placeholder="Number of team" />
                 <span class="text-danger"></span>
             </div>
 
@@ -122,6 +122,7 @@
                 </div>
                 <input type="hidden" id="hdnLastIndexTeam" value="0" />
             </div>
+            <input type="hidden" id="teamsCount" value="@Model.selectTeamsName.Count" />
         </div>
     </div>
 
@@ -137,7 +138,7 @@
     <br style="margin-top: 40px;" />
     <button type="submit" class="btn2" id="btnReset" onclick="resetDetails()">Reset</button>
     <button type="submit" class="btn1" id="btnNext1" onclick="showNextPage1()">Next</button>
-    <button type="submit" class="btn1" id="btnNext2" style="display: none;" onclick="return validateForm();">Next</button>
+    <button type="submit" class="btn1" id="btnNext2" style="display: none;" onclick="showNextPage2();">Next</button>
     <button type="submit" class="btn2" id="btnBack" style="display: none;" onclick="backPage()">Back</button>
 </div>
 

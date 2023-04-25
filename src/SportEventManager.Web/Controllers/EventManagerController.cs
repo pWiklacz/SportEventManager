@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SportEventManager.Core.EventAggregate;
+using SportEventManager.Core.EventAggregate.Specifications;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Core.TeamAggregate.Specifications;
 using SportEventManager.SharedKernel.Interfaces;
@@ -38,7 +39,8 @@ public class EventManagerController : Controller
         {
           Id = @event.Id,
           Name = @event.Name,
-          startTime = @event.StartTime
+          startTime = @event.StartTime,
+          IsDeleted = @event.IsDeleted,
         });
     }
 
@@ -68,6 +70,8 @@ public class EventManagerController : Controller
     {
       return View(eventView);
     }
+
+    //tutaj stadiony też będą pobierane z bazy danych aby uniknąć tworzenia duplikatów
 
     foreach(Team team in teams)
     {
@@ -102,12 +106,12 @@ public class EventManagerController : Controller
       
     }
 
-    Dictionary<Team, Team> bracket = TournamentBracket.GenerateBracket_1stRound(eventNew.Teams.ToList());
-    foreach(var team in bracket)
-    {
-      Match newMatch = new();
+    //Dictionary<Team, Team> bracket = TournamentBracket.GenerateBracket_1stRound(eventNew.Teams.ToList());
+    //foreach(var team in bracket)
+    //{
+    //  Match newMatch = new();
 
-    }
+    //}
 
     await _eventRepository.AddAsync(eventNew);
     await _eventRepository.SaveChangesAsync();
@@ -115,46 +119,39 @@ public class EventManagerController : Controller
     
   }
 
-
-  // GET: EventSettings/Edit/5
-  public ActionResult Edit(int id)
+  [HttpGet]
+  public async Task<IActionResult> Delete(int id)
   {
-    return View();
+    EventByIdSpec spec = new EventByIdSpec(id);
+    Event? actuallEvent = await _eventRepository.FirstOrDefaultAsync(spec);
+    if(actuallEvent == null)
+    {
+      return NotFound();
+    }
+
+    var dto = new EventViewModel
+    {
+      Id = actuallEvent.Id,
+      Name = actuallEvent.Name,
+      startTime = actuallEvent.StartTime
+    };
+
+    return View(dto);
   }
 
-  // POST: EventSettings/Edit/5
   [HttpPost]
-  [ValidateAntiForgeryToken]
-  public ActionResult Edit(int id, IFormCollection collection)
+  public async Task<IActionResult> Delete(EventViewModel viewModel)
   {
-    try
-    {
-      return RedirectToAction(nameof(Index));
-    }
-    catch
-    {
-      return View();
-    }
-  }
+    EventByIdSpec spec = new EventByIdSpec(viewModel.Id);
+    Event? actuallEvent = await _eventRepository.FirstOrDefaultAsync(spec);
 
-  // GET: EventSettings/Delete/5
-  public ActionResult Delete(int id)
-  {
-    return View();
-  }
+    if (actuallEvent == null)
+    {
+      return NotFound();
+    }
 
-  // POST: EventSettings/Delete/5
-  [HttpPost]
-  [ValidateAntiForgeryToken]
-  public ActionResult Delete(int id, IFormCollection collection)
-  {
-    try
-    {
-      return RedirectToAction(nameof(Index));
-    }
-    catch
-    {
-      return View();
-    }
+    actuallEvent.MarkAsDeleted();
+    await _eventRepository.UpdateAsync(actuallEvent);
+    return RedirectToAction("Index");
   }
 }

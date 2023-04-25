@@ -67,7 +67,7 @@ function AddItem(btn) {
 function AddTeam(btn) {
     var table = document.getElementById('TeamTable');
     var rows = table.getElementsByTagName('tr');
-    if (rows.length > 10) {
+    if (rows.length > document.getElementById('NumberOfTeam').value) {
         alert("Maximum team' quantity exceeded!");
         return;
     }
@@ -94,7 +94,7 @@ function AddStadiumItem(btn) {
     var table = document.getElementById('StadiumsTable');
     var rows = table.getElementsByTagName('tr');
     if (rows.length > 10) {
-        alert("Maximum players' quantity exceeded!");
+        alert("Maximum stadium' quantity exceeded!");
         return;
     }
     var rowOutherHtml = rows[rows.length - 1].outerHTML;
@@ -116,32 +116,61 @@ function AddStadiumItem(btn) {
     delbtn.classList.add("invisible");
 }
 
+
+function checkParity() {
+    var numberOfTeam = document.getElementById('NumberOfTeam').value;
+    if (numberOfTeam % 2 != 0 && numberOfTeam != 0) {
+        return false
+    }
+    else
+    {
+        return true;
+    }
+}
+
 function showNextPage1() {
-    document.getElementById("page-1").style.display = "none";
-    document.getElementById("page-2").style.display = "block";
-    document.getElementById("btnBack").style.display = "block";
-    document.getElementById("btnReset").style.display = "none";
-    document.getElementById("btnNext1").style.display = "none";
-    document.getElementById("btnNext2").style.display = "block";
+
+    if (checkParity() === true) {
+        document.getElementById("page-1").style.display = "none";
+        document.getElementById("page-2").style.display = "block";
+        document.getElementById("btnBack").style.display = "block";
+        document.getElementById("btnReset").style.display = "none";
+        document.getElementById("btnNext1").style.display = "none";
+        document.getElementById("btnNext2").style.display = "block";
+    }
+    else {
+        alert("Number from Team must be even and grater than 0!");
+    }
 
 }
 
 function showNextPage2() {
-    document.getElementById("page-1").style.display = "none";
-    document.getElementById("page-2").style.display = "none";
-    document.getElementById("btnBack").style.display = "none";
-    document.getElementById("btnReset").style.display = "none";
-    document.getElementById("btnNext1").style.display = "none";
-    document.getElementById("page-3").style.display = "block";
-    document.getElementById("btnNext2").style.display = "none";
+
+    
+    var enterNumber = document.getElementById('NumberOfTeam').value;
+
+    if (teamsCount < enterNumber) {
+        alert("Invalid number of selsected teams");
+    }
+    else
+    {
+        document.getElementById("page-1").style.display = "none";
+        document.getElementById("page-2").style.display = "none";
+        document.getElementById("btnBack").style.display = "none";
+        document.getElementById("page-3").style.display = "block";
+        document.getElementById("btnNext2").style.display = "none";
+    }
 }
+
+
 
 function backPage() {
     document.getElementById("page-2").style.display = "none";
     document.getElementById("page-1").style.display = "block"
     document.getElementById("btnBack").style.display = "none";
     document.getElementById("btnReset").style.display = "block";
-    document.getElementById("btnNext").style.display = "block";
+    document.getElementById("btnNext1").style.display = "block";
+    document.getElementById("btnNext2").style.display = "none";
 }
 
 function resetDetails() {
@@ -151,23 +180,5 @@ function resetDetails() {
     document.getElementById("NPlayer").value = '';
 }
 
-
-function validateForm() {
-    var teams = document.getElementsByClassName("team-input");
-    var values = [];
-
-    for (var i = 0; i < teams.length; i++) {
-        if (values.includes(teams[i].value)) {
-            alert("Duplicate team name found.");
-            return false;
-        } else {
-            values.push(teams[i].value);
-        }
-    }
-
-    showNextPage2();
-
-    return true;
-}
 
 // Write your JavaScript code.
