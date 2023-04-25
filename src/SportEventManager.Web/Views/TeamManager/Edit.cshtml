@@ -1,40 +1,112 @@
-﻿@model SportEventManager.Web.ViewModels.TeamViewModel
+﻿@using SportEventManager.Web.ViewModels.TeamModel;
+@model TeamViewModel
 
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
-
-<h4>Teams</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<h1>Edit your team</h1>
+<div class="container-fluid col-12 mx-auto pt-0 p-0">
+    <div class="card">
+        <div class="card-header bg-secondary text-white text-center p-1" style="height:35px;">
+            <h5>Edit Team</h5>
+        </div>
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
+            <div class="container-fluid btn-group p-0 m-0">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-group">
+                                <label asp-for="City" class="control-label"></label>
+                                <input asp-for="City" class="form-control" />
+                                <span asp-validation-for="City" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-group">
+                                <label asp-for="NumberOfPlayers" class="control-label"></label>
+                                <input asp-for="NumberOfPlayers" class="form-control" />
+                                <span asp-validation-for="NumberOfPlayers" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="p-1 mt-4" style="height:50px;">
+                <h4>Edit team members</h4>
             </div>
-            <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NumberOfPlayers" class="control-label"></label>
-                <input asp-for="NumberOfPlayers" class="form-control" />
-                <span asp-validation-for="NumberOfPlayers" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="container col-12">
+                <div class="col-md-12 p-0 m-0 bg-white">
+                    <table id="PlayersTable" class="table table-sm CodesTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Surname
+                                </th>
+                                <th>
+                                    Number
+                                </th>
+                                <th style="width:75px;">
+                                    <button id="btnAddPlayer"
+                                            type="button"
+                                            class="btn btn-sm btn-secondary visible"
+                                            onclick="AddItem(this)">
+                                        Add
+                                    </button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Players.Count; i++) @*Why cannot use foreach here??*@
+                            {
+                                @if (!Model.Players[i].IsDeleted)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input asp-for="@Model.Players[i].Name" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input asp-for="@Model.Players[i].Surname" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input asp-for="@Model.Players[i].Number" class="form-control" />
+                                        </td>
+                                        <td style="width:60px;">
+                                            <input type="hidden" asp-for="@Model.Players[i].IsDeleted" />
+                                            <button id="btnremove-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteItem(this)">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <input type="hidden" id="hdnLastIndex" value="0" />
+                <div class="col-12 btn-group p-10 m-0 text-center">
+                    <div class="col form-group text-right p-0 pr-2 mb-2">
+                        <a asp-action="Index" class="btn btn-secondary">&nbsp;Back&nbsp;</a>
+                    </div>
+                    <div class="col form-group text-left p-0 mb-2">
+                        <input type="submit" value="Edit" class="btn btn-primary" />
+                    </div>
+                </div>
             </div>
         </form>
     </div>
@@ -44,3 +116,8 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

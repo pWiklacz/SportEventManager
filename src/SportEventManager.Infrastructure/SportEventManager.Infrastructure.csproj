@@ -22,6 +22,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="Data\Config\" />
+    <Folder Include="Migrations\AppDb\" />
   </ItemGroup>
 </Project>

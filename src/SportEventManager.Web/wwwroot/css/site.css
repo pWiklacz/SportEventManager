@@ -272,3 +272,87 @@ div#secondTable{
 div#secondDisplay{
     display:none;
 }
+
+div#button-row {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.btn1{
+    border: 1px solid #3498db;
+    background: none;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 10px;
+    color: #3498db;
+    transition: 0.8s;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn1:hover{
+    color: #fff;
+
+}
+
+.btn1::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background: #3498db;
+    z-index: -1;
+    transition: 0.8s;
+    bottom: 0;
+    border-radius: 50% 50% 0 0;
+}
+
+.btn1:hover::before{
+    height: 100%
+}
+
+.btn2 {
+    border: 1px solid #3c8664;
+    background: none;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 10px;
+    color: white;
+    transition: 0.8s;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn2:hover {
+    color: #3c8664;
+}
+
+.btn2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background: #3c8664;
+    z-index: -1;
+    transition: 0.8s;
+    top: 0;
+    border-radius: 0 0 50% 50%;
+    height: 180%
+}
+
+.btn2:hover::before {
+    height: 0%
+}
+
+.event-card {
+    background: #073642;
+    padding: 40px;
+    position: sticky;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}

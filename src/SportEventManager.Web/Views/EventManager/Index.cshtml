@@ -1,4 +1,6 @@
-﻿@{
+﻿@using SportEventManager.Web.ViewModels.EventModel;
+@model IEnumerable<EventViewModel>
+@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -8,4 +10,38 @@
 <p>
     <a asp-action="Create">Create New Event</a>
 </p>
+
+<table class="table mx-auto" style="width: 75%;">
+<thead >
+    <tr style="display: flex;">
+        <th style="flex: 1; text-align: center;">
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th style="flex: 1; text-align: center;">
+            @Html.DisplayNameFor(model => model.startTime)
+        </th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        @if (!item.IsDeleted)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.startTime)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    }
+</tbody>
+</table>
 
