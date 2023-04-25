@@ -19,6 +19,7 @@ public class TeamViewModel
 
   public bool IsDeleted { get; set; } = false;
 
+
   public List<PlayerViewModel> Players { get; set; } = new List<PlayerViewModel>();
 
   public FBTeamStatsViewModel? FbTeamStats { get; set; }

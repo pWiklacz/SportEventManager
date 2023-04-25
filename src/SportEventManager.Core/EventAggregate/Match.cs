@@ -26,6 +26,10 @@ public class Match : EntityBase
   [DefaultValue(false)]
   public bool IsDeleted { get; private set; } = false;
 
+  [Required]
+  [DefaultValue(false)]
+  public bool IsEnd { get; set; } = false;
+
   public Match() { }
 
   public Match(DateTime startTime, DateTime endTime, Stadium stadium, int stadiumId)

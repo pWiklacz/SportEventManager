@@ -12,6 +12,8 @@ public class MatchViewModel
 
   public DateTime EndTime { get; set; }
 
+  public bool IsEnd { get; set; }
+
   public StadiumViewModel? Stadium { get; set; }
 
   public static MatchViewModel FromMatch(Match match) => new MatchViewModel()

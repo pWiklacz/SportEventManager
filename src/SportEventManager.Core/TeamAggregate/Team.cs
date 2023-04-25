@@ -30,6 +30,7 @@ public class Team : EntityBase, IAggregateRoot
   [DefaultValue(false)]
   public bool IsDeleted { get; private set; } = false;
 
+
   private List<Player> _players = new List<Player>();
 
   public IEnumerable<Player> Players => _players.AsReadOnly();
@@ -52,6 +53,7 @@ public class Team : EntityBase, IAggregateRoot
     NumberOfPlayers = Guard.Against.NegativeOrZero(numberOfPlayers, nameof(numberOfPlayers));
     _players = new List<Player>(numberOfPlayers);
   }
+
 
   public void AddPlayer(Player newPlayer)
   {

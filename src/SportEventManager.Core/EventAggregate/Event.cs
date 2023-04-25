@@ -25,15 +25,26 @@ public class Event : EntityBase, IAggregateRoot
   public IEnumerable<Match> Matches => _matches.AsReadOnly();
 
   //You should make a constructor for usage maybe?? Not sure how complicated you need
-  
-  [Required]
-  [Timestamp]
+
   public DateTime StartTime { get; set; }
 
   [Required]
   [DefaultValue(false)]
   public bool IsDeleted { get; private set; } = false;
 
+  public Event(string name, DateTime startTime) { 
+    Name = Guard.Against.NullOrEmpty(name, nameof(name));
+    StartTime = startTime;
+    //_stadiums = new List<Stadium>(numOfStadium);
+    //_teams = new List<Team>(numOfTeam);
+  }
+  public Event(int id, string name, DateTime startTime)
+  {
+    Name = Guard.Against.NullOrEmpty(name, nameof(name));
+    StartTime = startTime;
+    //_stadiums = new List<Stadium>(numOfStadium);
+    //_teams = new List<Team>(numOfTeam);
+  }
   public void AddStadium(Stadium newStadium)
   {
     Guard.Against.Null(newStadium, nameof(newStadium));

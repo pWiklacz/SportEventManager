@@ -22,8 +22,7 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
       .IsRequired();
 
     builder.Property(m => m.StartTime)
-      .IsRequired()
-      .IsRowVersion();
+      .IsRequired();
 
     builder.Property(p => p.IsDeleted)
       .IsRequired()
