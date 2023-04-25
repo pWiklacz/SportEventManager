@@ -1,0 +1,149 @@
+﻿@using SportEventManager.Web.ViewModels.EventModel;
+@model EventViewModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create Event Form</h1>
+<form id="EventForm" asp-action="Create">
+    <div class="form-page" id="page-1">
+      <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+      <div class="event-card">
+          <h2>First Part</h2>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input type="text" class="form-control" style="width: 40%;" asp-for="Name" id="EName" placeholder="Event Name" size="20"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <br style="margin-top: 20px;" />
+            <div class="form-group">
+                <label asp-for="startTime" class="control-label">Start Date</label>
+                <input class="form-control" style="width: 40%;" asp-for="startTime" id="EStartTime" placeholder="Start Time" />
+                <span asp-validation-for="startTime" class="text-danger"></span>
+            </div>
+
+            <br style="margin-top: 20px;" />
+            <div class="form-group">
+                <label class="control-label">Number of Team</label>
+            <input type="number" class="form-control" style="width: 40%;" id="EName" placeholder="Number of team" />
+                <span class="text-danger"></span>
+            </div>
+
+            <br style="margin-top: 20px;" />
+            <div class="form-group" >
+            <h3 style="max-width: 200px;">Add Stadiums To Event</h3>
+                <div class="col-md-8 p-0 m-0 bg-white">
+                    <table id="EventTable" class="table table-sm CodesTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Stadiums 
+                                </th>
+                                <th style="width:75px;">
+                                    <button id="btnAddStadium"
+                                            type="button"
+                                            class="btn btn-sm btn-secondary visible"
+                                            onclick="AddStadiumItem(this)">
+                                        Add
+                                    </button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Stadiums.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <input asp-for="@Model.Stadiums[i].City" class="form-control" />
+                                    </td>
+                                    <td style="width:60px;">
+                                        <input type="hidden" asp-for="@Model.Stadiums[i]" />
+                                        <button id="btnremove-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteStadiumItem(this)">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+      </div>
+    </div>
+
+    <div class="form-page" id="page-2" style="display: none;">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="event-card">
+            <h2>Second Part</h2>
+        <br style="margin-top: 20px;" />
+            <div class="container col-8 me-1">
+                <div class="col-md-8 p-0 m-0 bg-white">
+                    <table id="TeamTable" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center;">
+                                    <h2><b>Team Name</b></h2>
+                                </th>
+                                <th style="width:75px;">
+                                    <button id="btnAddTeam"
+                                            type="button"
+                                            class="btn btn-sm btn-secondary visible"
+                                            onclick="AddTeam(this)">
+                                        Add
+                                    </button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.selectTeamsName.Count; i++)
+                            {
+                              <tr>
+                                <td>
+                                   <select asp-for="@Model.selectTeamsName[i]" class="form-control">
+                                        @foreach (var team in Model.teamsName)
+                                        {
+                                        <option value="@team">@team</option>
+                                        }
+                                   </select>
+                                </td>
+                                <td style="width:60px;">
+                                    <input type="hidden" asp-for="@Model.selectTeamsName[i]" />
+                                    <button id="btnremove-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteTeam(this)">
+                                        Delete
+                                  </button>
+                                </td>
+                              </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <input type="hidden" id="hdnLastIndexTeam" value="0" />
+            </div>
+        </div>
+    </div>
+
+    <div class="form-page" id="page-3" style="display: none;">
+        <div class="button-row">
+            <br style="margin-top: 40px;" />
+            <button type="submit" class="btn1" value="Create">Create</button>
+        </div>
+    </div>
+</form>
+
+<div class="button-row">
+    <br style="margin-top: 40px;" />
+    <button type="submit" class="btn2" id="btnReset" onclick="resetDetails()">Reset</button>
+    <button type="submit" class="btn1" id="btnNext1" onclick="showNextPage1()">Next</button>
+    <button type="submit" class="btn1" id="btnNext2" style="display: none;" onclick="return validateForm();">Next</button>
+    <button type="submit" class="btn2" id="btnBack" style="display: none;" onclick="backPage()">Back</button>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+

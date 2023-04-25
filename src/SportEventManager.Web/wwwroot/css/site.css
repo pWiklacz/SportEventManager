@@ -41,3 +41,318 @@ div.card-content {
 div.login-form-icon{
     text-align: center;
 }
+
+div.event-view-tab div.card-header {
+    padding: 0px 0px 12px 0px;
+    width: 1295px;      
+}
+div.event-view-tab div.card-content {
+    width: 1295px;
+}
+
+div.card-header1 {
+    padding: 0px 0px 12px 0px;
+    width: 1000px;
+}
+
+div.card-content1 {
+    width: 1000px;
+}
+
+div.event-view-tab ul.nav-tabs {
+    margin: 0px 0px -12px 0px;
+}
+
+div.event-name {
+    text-align: center;
+    font-size: 30px;
+}
+
+div.event-view-tab li.nav-item {
+    width: 25%;
+}
+div.event-view-tab a.nav-link {
+    font-size: 20px;
+    text-align: center;
+}
+
+div.tournament-headers {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #ccc;
+}
+h3 {
+    width: 25%;   
+    margin: 0;
+    max-width: 135px;
+    font-size: 15px;
+}
+
+.round {
+    float: left;
+}
+
+    .round.r-of-4 {
+    }
+
+    .round.r-of-2 {
+        margin-top: 25px;
+    }
+
+.bracket-game {
+    max-width: 125px;
+    margin: 10px 0;
+}
+
+.player {
+    min-width: 100px;
+    border: 1px solid #AAA;
+    padding-left: 10px;
+}
+
+    .player.top {
+        border-radius: 3px 3px 0 0;
+    }
+
+    .player.bot {
+        border-radius: 0 0 3px 3px;
+    }
+
+    .player .score {
+        display: inline;
+        float: right;
+        border-left: 1px solid #AAA;
+        padding-left: 10px;
+        padding-right: 10px;
+        background: #EEE;
+    }
+
+    .player.win {
+        background-color: #B8F2B8;
+    }
+
+    .player.loss {
+        background-color: #F2B8B8;
+    }
+
+.connectors {
+    float: left;
+    min-width: 35px;
+}
+
+    .connectors.r-of-2 .top-line {
+        position: relative;
+        top: 30px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-2 .bottom-line {
+        position: relative;
+        top: 81px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-2 .vert-line {
+        position: relative;
+        top: 26px;
+        left: -16px;
+        height: 55px;
+        border-right: 2px solid #AAA;
+    }
+
+    .connectors.r-of-2 .next-line {
+        position: relative;
+        top: -4px;
+        left: 17px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+.clear {
+    clear: both;
+}
+
+td.team-col-colors {
+    color: #073642;
+    background-color: #a9bdbd;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.table {
+    background-color: azure;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 4px;
+}
+
+.table2 {
+    background-color: darkgray;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 4px;
+    justify-content: center;
+}
+
+input[type=text] {
+    box-sizing: border-box;
+    width: 80%;
+    padding: 10px 5px;
+    margin-right: 15px;
+}
+
+input[type=date] {
+    box-sizing: border-box;
+    margin: 8px 0;
+    padding: 8px 5px;
+}
+
+select {
+    box-sizing: border-box;
+    width: 80%;
+    margin: 8px 0;
+    padding: 10px 5px;
+    border-radius: 5px;
+}
+
+textarea {
+    padding: 2px;
+    line-height: 1;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.reset1 {
+    width: 30%;
+    background-color: #547ef3;
+    color: white;
+    padding: 12px 8px;
+    margin-right: 50px;
+    margin-left: -50px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: auto;
+}
+
+.reset2:hover {
+    background-color: #584ca0;
+}
+
+
+.row1 {
+    visibility: hidden;
+    display: none;
+}
+
+.reset2 {
+    visibility: hidden;
+    display: none;
+}
+
+div#secondTable{
+    display: none;
+}
+
+div#secondDisplay{
+    display:none;
+}
+
+div#button-row {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.btn1{
+    border: 1px solid #3498db;
+    background: none;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 10px;
+    color: #3498db;
+    transition: 0.8s;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn1:hover{
+    color: #fff;
+
+}
+
+.btn1::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background: #3498db;
+    z-index: -1;
+    transition: 0.8s;
+    bottom: 0;
+    border-radius: 50% 50% 0 0;
+}
+
+.btn1:hover::before{
+    height: 100%
+}
+
+.btn2 {
+    border: 1px solid #3c8664;
+    background: none;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 10px;
+    color: white;
+    transition: 0.8s;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn2:hover {
+    color: #3c8664;
+}
+
+.btn2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background: #3c8664;
+    z-index: -1;
+    transition: 0.8s;
+    top: 0;
+    border-radius: 0 0 50% 50%;
+    height: 180%
+}
+
+.btn2:hover::before {
+    height: 0%
+}
+
+.event-card {
+    background: #073642;
+    padding: 40px;
+    position: sticky;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
