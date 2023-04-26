@@ -6,4 +6,554 @@
     Layout = "~/Views/EventView/_EventViewLayout.cshtml";
 }
 
-<p>Matches</p>
+@{
+    int matchesNumb = 16;
+}
+
+<style>
+    .row > .column {
+        padding: 0 8px;
+        margin-bottom: 20px;
+    }
+
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* Create four equal columns that floats next to eachother */
+    .column {
+        float: left;
+        width: 25%;
+    }
+
+    /* The Modal (background) */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        padding-top: 100px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Modal Content */
+    .modal-content {
+        position: relative;
+        background-color: #002b36;
+        margin: auto;
+        padding: 0;
+        width: 90%;
+        max-width: 1200px;
+    }
+
+    /* Modal Header */
+    .modal-header {
+        padding: 2px 16px;
+        background-color: rgba(7, 54, 66);
+        color: white;
+    }
+
+    /* Modal Body */
+    .modal-body {
+        padding: 2px 16px;
+    }
+
+    /* Modal Footer */
+    .modal-footer {
+        padding: 2px 16px;
+        background-color: rgba(7, 54, 66);
+        color: white;
+    }
+
+    /* The Close Button */
+    .close {
+        color: white;
+        position: absolute;
+        top: 10px;
+        right: 25px;
+        font-size: 35px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: #999;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    .match {
+        transition: 0.3s;
+        border: 1px solid #AAA;
+        border-radius: 15px 15px 15px 15px;
+    }
+
+    .round {
+        min-width: 300px;
+        padding-left: 10px;
+    }
+
+        .round .date {
+            display: inline;
+            float: right;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+    .match:hover {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        background-color: rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+    }
+
+    .team {
+        min-width: 100px;
+        padding-left: 10px;
+    }
+
+        .team.top {
+            border-radius: 15px 15px 0 0;
+            font-size: 30px;
+        }
+
+        .team.bot {
+            border-radius: 0 0 15px 15px;
+            font-size: 30px;
+        }
+
+        .team .score {
+            display: inline;
+            float: right;
+            padding-left: 10px;
+            padding-right: 10px;
+            font-size: 30px;
+        }
+
+
+    .inTeam1 {
+        display: inline;
+        float: left;
+        margin-left: 100px;
+        font-size: 30px;
+    }
+
+    .inTeam2 {
+        display: inline;
+        float: right;
+        margin-right: 100px;
+        font-size: 30px;
+    }
+
+    .inTeam1 .score {
+        display: inline;
+        float: right;
+        margin-left: 182px;
+    }
+
+    .inTeam2 .score {
+        display: inline;
+        float: left;
+        margin-right: 182px;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .modal-body .row {
+    }
+
+    .modal-body .column {
+        width: 33.33333333%;
+        padding: 5px;
+    }
+
+
+    .stat1 {
+        text-align: center;
+        margin-left: 372px;
+        font-size: 20px;
+    }
+
+    .statName {
+        text-align: center;
+    }
+
+    .stat2 {
+        text-align: center;
+        margin-right: 372px;
+        font-size: 20px;
+    }
+
+</style>
+
+
+@for(int i = 1; i < matchesNumb/4; i++)
+{
+    <div class="row">
+        <div class="column">
+            <div onclick="openModal();currentSlide(1)" class="match">
+                <div class="round">
+                    Round of 16
+                    <div class="date">
+                        11.11.1111
+                    </div>
+                </div>
+                <div class="team top">
+                    Team2
+                    <div class="score">
+                        0
+                    </div>
+                </div>
+                <div class="team bot">
+                    Team1
+                    <div class="score">
+                        0
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div onclick="openModal();currentSlide(2)" class="match">
+                <div class="round">
+                    Round of 16
+                    <div class="date">
+                        11.11.1111
+                    </div>
+                </div>
+                <div class="team top">
+                    Team2
+                    <div class="score">
+                        0
+                    </div>
+                </div>
+                <div class="team bot">
+                    Team1
+                    <div class="score">
+                        0
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div onclick="openModal();currentSlide(3)" class="match">
+                <div class="round">
+                    Round of 16
+                    <div class="date">
+                        11.11.1111
+                    </div>
+                </div>
+                <div class="team top">
+                    Team2
+                    <div class="score">
+                        0
+                    </div>
+                </div>
+                <div class="team bot">
+                    Team1
+                    <div class="score">
+                        0
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div onclick="openModal();currentSlide(4)" class="match">
+                <div class="round">
+                    Round of 16
+                    <div class="date">
+                        11.11.1111
+                    </div>
+                </div>
+                <div class="team top">
+                    Team2
+                    <div class="score">
+                        0
+                    </div>
+                </div>
+                <div class="team bot">
+                    Team1
+                    <div class="score">
+                        0
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="column">
+        <div onclick="openModal();currentSlide(1)" class="match">
+            <div class="round">
+                Round of 16
+                <div class="date">
+                    11.11.1111
+                </div>
+            </div>
+            <div class="team top">
+                Team2
+                <div class="score">
+                    0
+                </div>
+            </div>
+            <div class="team bot">
+                Team1
+                <div class="score">
+                    0
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div onclick="openModal();currentSlide(2)" class="match">
+            <div class="round">
+                Round of 16
+                <div class="date">
+                    11.11.1111
+                </div>
+            </div>
+            <div class="team top">
+                Team2
+                <div class="score">
+                    0
+                </div>
+            </div>
+            <div class="team bot">
+                Team1
+                <div class="score">
+                    0
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div onclick="openModal();currentSlide(3)" class="match">
+            <div class="round">
+                Round of 16
+                <div class="date">
+                    11.11.1111
+                </div>
+            </div>
+            <div class="team top">
+                Team2
+                <div class="score">
+                    0
+                </div>
+            </div>
+            <div class="team bot">
+                Team1
+                <div class="score">
+                    0
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div onclick="openModal();currentSlide(4)" class="match">
+            <div class="round">
+                Round of 16
+                <div class="date">
+                    11.11.1111
+                </div>
+            </div>
+            <div class="team top">
+                Team2
+                <div class="score">
+                    0
+                </div>
+            </div>
+            <div class="team bot">
+                Team1
+                <div class="score">
+                    0
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal/Lightbox -->
+<div id="myModal" class="modal">
+    <span class="close cursor" onclick="closeModal()">&times;</span>
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="inTeam1">
+                Team1
+                <div class="score">
+                    0
+                </div>
+            </div>
+            VS
+            <div class="inTeam2">
+                Team2
+                <div class="score">
+                    0
+                </div>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="column">
+                    <div class="stat1">
+                        0
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="statName">
+                        GOALS
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="stat2">
+                        0
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div class="stat1">
+                        0
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="statName">
+                        ASSIST
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="stat2">
+                        0
+                    </div>
+                </div>
+            </div>
+                <div class="row">
+                    <div class="column">
+                        <div class="stat1">
+                            0
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            SHOOTS
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="stat2">
+                            0
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <div class="stat1">
+                            0
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            SHOOTS ON TARGET
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="stat2">
+                            0
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <div class="stat1">
+                            0
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            PASSES
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="stat2">
+                            0
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <div class="stat1">
+                            0
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            FOULS
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="stat2">
+                            0
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                <div class="column">
+                    <div class="stat1">
+                        0
+                    </div>
+                </div>
+                    <div class="column">
+                        <div class="statName">
+                            YELLOW CARDS
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="stat2">
+                            0
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <div class="stat1">
+                            0
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            RED CARDS
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="stat2">
+                            0
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <h3>Modal Footer</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Open the Modal
+        function openModal() {
+            document.getElementById("myModal").style.display = "block";
+        }
+
+        // Close the Modal
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+
+    </script>
+
+
+
