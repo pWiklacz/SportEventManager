@@ -26,6 +26,26 @@ public class EventViewController : Controller
     return View(dto);
   }
 
+  //public async Task<IActionResult> MatchesAsync(int id)
+  //{
+  //  var spec = new EventByIdWithItemsSpec(id);
+  //  Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
+
+  //  if (ev == null) { return NotFound(); }
+
+  //  var dto = new EventViewModel
+  //  {
+  //    Id = ev.Id,
+  //    Name = ev.Name,
+  //    Stadiums = ev.stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
+  //    Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
+  //    Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
+  //    startTime = ev.StartTime
+  //  };
+
+  //  return View(dto);
+  //}
+
   //public async Task<IActionResult> BracketAsync(int id)
   //{
   //  var spec = new EventByIdWithItemsSpec(id);

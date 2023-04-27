@@ -7,7 +7,7 @@
 }
 
 @{
-    int matchesNumb = 16;
+    //int matchesNumb = Model.Matches.Count;
 }
 
 <style>
@@ -68,7 +68,7 @@
     .modal-footer {
         padding: 2px 16px;
         background-color: rgba(7, 54, 66);
-        color: white;
+       float: inherit;
     }
 
     /* The Close Button */
@@ -191,194 +191,71 @@
         font-size: 20px;
     }
 
+    .addstat1 {
+        text-align: center;
+        font-size: 20px;
+    }
+
+     .addstat2 {
+        text-align: center;
+        
+        font-size: 20px;
+    }
+
+    .modal-footer .btn {
+        border: 2px solid black;
+        border-radius: 5px;
+        background-color: white;
+        color: black;
+        padding: 14px 28px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .default {
+        border-color: #e7e7e7;
+        color: black;
+    }
+
+        .default:hover {
+            background: #e7e7e7;
+        }
+
 </style>
 
 
-@for(int i = 1; i < matchesNumb/4; i++)
+@for (int i = 0; i < 16 @*Model.Matches.Count*@ ; i++)
 {
-    <div class="row">
         <div class="column">
-            <div onclick="openModal();currentSlide(1)" class="match">
+            <div onclick="openModal()" class="match">
                 <div class="round">
                     Round of 16
                     <div class="date">
-                        11.11.1111
+                       @* @Model.Matches[i].StartTime*@
+                       11.11.111
                     </div>
                 </div>
                 <div class="team top">
-                    Team2
+              @*  @Model.Matches[i].FirstTeamId*@
+              AAA
                     <div class="score">
+                       @* @Model.Matches[i].FbTeamStats[1].Goals*@
                         0
                     </div>
                 </div>
                 <div class="team bot">
-                    Team1
+               @* @Model.Matches[i].SecondTeamId*@
+               BBB
                     <div class="score">
+                   @* @Model.Matches[i].FbTeamStats[2].Goals*@
                         0
                     </div>
                 </div>
             </div>
         </div>
-        <div class="column">
-            <div onclick="openModal();currentSlide(2)" class="match">
-                <div class="round">
-                    Round of 16
-                    <div class="date">
-                        11.11.1111
-                    </div>
-                </div>
-                <div class="team top">
-                    Team2
-                    <div class="score">
-                        0
-                    </div>
-                </div>
-                <div class="team bot">
-                    Team1
-                    <div class="score">
-                        0
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="column">
-            <div onclick="openModal();currentSlide(3)" class="match">
-                <div class="round">
-                    Round of 16
-                    <div class="date">
-                        11.11.1111
-                    </div>
-                </div>
-                <div class="team top">
-                    Team2
-                    <div class="score">
-                        0
-                    </div>
-                </div>
-                <div class="team bot">
-                    Team1
-                    <div class="score">
-                        0
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="column">
-            <div onclick="openModal();currentSlide(4)" class="match">
-                <div class="round">
-                    Round of 16
-                    <div class="date">
-                        11.11.1111
-                    </div>
-                </div>
-                <div class="team top">
-                    Team2
-                    <div class="score">
-                        0
-                    </div>
-                </div>
-                <div class="team bot">
-                    Team1
-                    <div class="score">
-                        0
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 }
-<div class="row">
-    <div class="column">
-        <div onclick="openModal();currentSlide(1)" class="match">
-            <div class="round">
-                Round of 16
-                <div class="date">
-                    11.11.1111
-                </div>
-            </div>
-            <div class="team top">
-                Team2
-                <div class="score">
-                    0
-                </div>
-            </div>
-            <div class="team bot">
-                Team1
-                <div class="score">
-                    0
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="column">
-        <div onclick="openModal();currentSlide(2)" class="match">
-            <div class="round">
-                Round of 16
-                <div class="date">
-                    11.11.1111
-                </div>
-            </div>
-            <div class="team top">
-                Team2
-                <div class="score">
-                    0
-                </div>
-            </div>
-            <div class="team bot">
-                Team1
-                <div class="score">
-                    0
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="column">
-        <div onclick="openModal();currentSlide(3)" class="match">
-            <div class="round">
-                Round of 16
-                <div class="date">
-                    11.11.1111
-                </div>
-            </div>
-            <div class="team top">
-                Team2
-                <div class="score">
-                    0
-                </div>
-            </div>
-            <div class="team bot">
-                Team1
-                <div class="score">
-                    0
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="column">
-        <div onclick="openModal();currentSlide(4)" class="match">
-            <div class="round">
-                Round of 16
-                <div class="date">
-                    11.11.1111
-                </div>
-            </div>
-            <div class="team top">
-                Team2
-                <div class="score">
-                    0
-                </div>
-            </div>
-            <div class="team bot">
-                Team1
-                <div class="score">
-                    0
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- The Modal/Lightbox -->
+
 <div id="myModal" class="modal">
     <span class="close cursor" onclick="closeModal()">&times;</span>
     <div class="modal-content">
@@ -535,14 +412,169 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <h3>Modal Footer</h3>
+                    <button class="btn default" onclick="openModal2()">Match Ended</button>
                 </div>
             </div>
         </div>
     </div>
 
+<div id="myModal2" class="modal">
+    <span class="close cursor" onclick="closeModal2()">&times;</span>
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="inTeam1">
+                Team1             
+            </div>
+            VS
+            <div class="inTeam2">
+                Team2
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="column">
+                    <div class="addstat1">
+                        <input type="number" id="goals1" name="goals1" min="0" value="0">
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="statName">
+                        GOALS
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="addstat2">
+                        <input type="number" id="goals2" name="goals2" min="0" value="0">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div class="addstat1">
+                        <input type="number" id="assist1" name="assist1" min="0" value="0">
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="statName">
+                        ASSIST
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="addstat2">
+                        <input type="number" id="assist2" name="assist2" min="0" value="0">
+                    </div>
+                </div>
+            </div>
+                <div class="row">
+                    <div class="column">
+                        <div class="addstat1">
+                        <input type="number" id="shoots1" name="shoots1" min="0" value="0"> 
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            SHOOTS
+                        </div>
+                    </div>
+                    <div class="column">
+                    <div class="addstat2">
+                        <input type="number" id="shoots2" name="shoots2" min="0" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <div class="addstat1">
+                        <input type="number" id="shootsontarget1" name="shootsontarget1" min="0" value="0">
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            SHOOTS ON TARGET
+                        </div>
+                    </div>
+                    <div class="column">
+                    <div class="addstat2">
+                        <input type="number" id="shootsontarget2" name="shootsontarget2" min="0" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <div class="addstat1">
+                        <input type="number" id="passes1" name="passes1" min="0" value="0">
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            PASSES
+                        </div>
+                    </div>
+                    <div class="column">
+                    <div class="addstat2">
+                        <input type="number" id="passes2" name="passes2" min="0" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <div class="addstat1">
+                        <input type="number" id="fouls1" name="fouls1" min="0" value="0">
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            FOULS
+                        </div>
+                    </div>
+                    <div class="column">
+                    <div class="addstat2">
+                        <input type="number" id="fouls2" name="fouls2" min="0" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                <div class="column">
+                    <div class="addstat1">
+                        <input type="number" id="ycards1" name="ycards1" min="0" value="0">
+                    </div>
+                </div>
+                    <div class="column">
+                        <div class="statName">
+                            YELLOW CARDS
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="addstat2">
+                        <input type="number" id="ycards2" name="ycards2" min="0" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                    <div class="addstat1">
+                        <input type="number" id="rcards1" name="rcards1" min="0" value="0">
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            RED CARDS
+                        </div>
+                    </div>
+                    <div class="column">
+                    <div class="addstat2">
+                        <input type="number" id="rcards2" name="rcards2" min="0" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn default">Save Stats</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <script>
+<script>
         // Open the Modal
         function openModal() {
             document.getElementById("myModal").style.display = "block";
@@ -553,6 +585,17 @@
             document.getElementById("myModal").style.display = "none";
         }
 
+          // Open the Modal
+        function openModal2() {
+            document.getElementById("myModal2").style.display = "block";
+        document.getElementById("myModal").style.display = "none";
+        }
+
+        // Close the Modal
+        function closeModal2() {
+            document.getElementById("myModal2").style.display = "none";
+        }
+     
     </script>
 
 
