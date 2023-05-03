@@ -31,6 +31,12 @@ function DeleteTeam(btn) {
 
     var table = document.getElementById('TeamTable');
     var rows = table.getElementsByTagName('tr');
+    var test = document.getElementById('NumberOfTeam').value;
+    var numTest = parseInt(test);
+    var count = rows.length;
+    if (count > numTest || count < numTest) {
+        document.getElementById("btnNext2").style.display = "none";
+    }
     if (rows.length == 2) {
         alert("This row cannot be deleted!");
         return;
@@ -67,6 +73,13 @@ function AddItem(btn) {
 function AddTeam(btn) {
     var table = document.getElementById('TeamTable');
     var rows = table.getElementsByTagName('tr');
+    var test = document.getElementById('NumberOfTeam').value;
+    var numTest = parseInt(test);
+    var count = rows.length;
+    if (count === numTest) {
+        document.getElementById("btnNext2").style.display = "block";
+    }
+    
     if (rows.length > document.getElementById('NumberOfTeam').value) {
         alert("Maximum team' quantity exceeded!");
         return;
@@ -136,7 +149,7 @@ function showNextPage1() {
         document.getElementById("btnBack").style.display = "block";
         document.getElementById("btnReset").style.display = "none";
         document.getElementById("btnNext1").style.display = "none";
-        document.getElementById("btnNext2").style.display = "block";
+        document.getElementById("btnNext2").style.display = "none";
     }
     else {
         alert("Number from Team must be even and grater than 0!");

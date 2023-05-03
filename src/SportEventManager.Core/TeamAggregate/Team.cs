@@ -30,6 +30,7 @@ public class Team : EntityBase, IAggregateRoot
   [DefaultValue(false)]
   public bool IsDeleted { get; private set; } = false;
 
+  //public int EventId { get; set; }
 
   private List<Player> _players = new List<Player>();
 

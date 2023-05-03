@@ -48,10 +48,27 @@ public class EventManagerController : Controller
 
   }
 
-  // GET: EventSettings/Details/5
-  public ActionResult Details(int id)
+  [HttpGet]
+  public async Task<IActionResult> Details(int id)
   {
-    return View();
+    EventByIdWithTeamSpec spec = new EventByIdWithTeamSpec(id);
+    Event? selectEvent = await _eventRepository.FirstOrDefaultAsync(spec);
+
+    if (selectEvent == null)
+    {
+      return NotFound();
+    }
+
+    var dto = new EventViewModel
+    {
+      Id = selectEvent.Id,
+      Name = selectEvent.Name,
+      startTime = selectEvent.StartTime,
+      Teams = selectEvent.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
+      Stadiums = selectEvent.stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList()
+    };
+
+    return View(dto);
   }
 
   // GET: EventSettings/Create
@@ -75,7 +92,11 @@ public class EventManagerController : Controller
 
     foreach(Team team in teams)
     {
-      eventView.teamsName.Add(team.Name);
+      //if(team.EventId == 0)
+      //{
+        eventView.teamsName.Add(team.Name);
+      //}
+      
     }
   
 
