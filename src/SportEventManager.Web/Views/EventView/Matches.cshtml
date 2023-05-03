@@ -92,6 +92,7 @@
         transition: 0.3s;
         border: 1px solid #AAA;
         border-radius: 15px 15px 15px 15px;
+        margin-right: 15px;
     }
 
     .round {
@@ -237,13 +238,15 @@
                 <div class="team top">
                 @Html.DisplayFor(item => Model.Matches[i].FirstTeamId)
                     <div class="score">
-                        @Html.DisplayFor(item => Model.Matches[i].FbTeamStats[0].Goals)
+                        @*@Html.DisplayFor(item => Model.Matches[i].FbTeamStats[0].Goals)*@
+                        0
                     </div>
                 </div>
                 <div class="team bot">
                 @Html.DisplayFor(item => Model.Matches[i].SecondTeamId)
                     <div class="score">
-                    @Html.DisplayFor(item => Model.Matches[i].FbTeamStats[1].Goals)
+                    @*@Html.DisplayFor(item => Model.Matches[i].FbTeamStats[1].Goals)*@
+                    0
                     </div>
                 </div>
             </div>

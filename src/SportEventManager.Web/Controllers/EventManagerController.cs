@@ -103,9 +103,10 @@ public class EventManagerController : Controller
 
     foreach(Team team in teams)
     {
-      if (!eventsTeamName.Contains(team.Name)) { eventView.teamsName.Add(team.Name); }
+      if (!eventsTeamName.Contains(team.Name) && !team.IsDeleted) { 
+        eventView.teamsName.Add(team.Name);
+      }
     }
-  
 
     return View(eventView);
   }
@@ -183,8 +184,31 @@ public class EventManagerController : Controller
     return RedirectToAction("Index");
   }
 
-  public ActionResult Generate()
+  //public ActionResult Generate()
+  //{
+  //  return View();
+  //}
+
+  public async Task<ActionResult> Generate(int id)
   {
-    return View();
+    EventByIdWithTeamSpec spec = new EventByIdWithTeamSpec(id);
+    Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
+    if(ev == null)
+    {
+      return NotFound();
+    }
+
+    Dictionary<Team, Team> bracket = TournamentBracket.GenerateBracket_1stRound(ev.Teams.ToList());
+    foreach(var pair in bracket)
+    {
+      Match match = new Match(ev.StartTime, DateTime.MaxValue, ev.stadiums.ElementAt<Stadium>(0),
+        pair.Key.Id, pair.Value.Id);
+      ev.AddMatch(match);
+    }
+
+    await _eventRepository.UpdateAsync(ev);
+    await _eventRepository.SaveChangesAsync();
+
+    return RedirectToAction("Index");
   }
 }
