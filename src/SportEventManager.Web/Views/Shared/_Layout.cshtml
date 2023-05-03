@@ -35,15 +35,18 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            @RenderBody()
+            <partial name="../Home/Index" />
+            @{
+                RenderBody();
+            }
         </main>
     </div>
 
-    <footer class="footer text-muted bg-dark">
+    @*<footer class="footer text-muted bg-dark">
         <div class="container">
             &copy; 2023 - SportEventManager - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer>*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
