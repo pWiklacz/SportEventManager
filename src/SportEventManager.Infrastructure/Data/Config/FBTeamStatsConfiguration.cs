@@ -12,44 +12,47 @@ public class FBTeamStatsConfiguration : IEntityTypeConfiguration<FBTeamStats>
 {
   public void Configure(EntityTypeBuilder<FBTeamStats> builder)
   {
-    builder.Property(ps => ps.Id)
+    builder.Property(ts => ts.Id)
       .UseIdentityColumn()
       .IsRequired();
 
-    builder.Property(ps => ps.Goals)
+    builder.Property(ts => ts.Goals)
       .HasDefaultValue(0);
 
-    builder.Property(ps => ps.Assists)
+    builder.Property(ts => ts.Assists)
       .HasDefaultValue(0);
 
-    builder.Property(ps => ps.RedCards)
+    builder.Property(ts => ts.RedCards)
       .HasDefaultValue(0);
 
-    builder.Property(ps => ps.YellowCards)
+    builder.Property(ts => ts.YellowCards)
       .HasDefaultValue(0);
 
-    builder.Property(ps => ps.Wins)
+    builder.Property(ts => ts.Wins)
       .HasDefaultValue(0);
 
-    builder.Property(ps => ps.Losses)
+    builder.Property(ts => ts.Losses)
       .HasDefaultValue(0);
 
-    builder.Property(ps => ps.Drawes)
+    builder.Property(ts => ts.Drawes)
       .HasDefaultValue(0);
 
-    builder.Property(ps => ps.Shoots)
+    builder.Property(ts => ts.Shoots)
       .HasDefaultValue(0);
 
-    builder.Property(ps => ps.ShootsOnTarget)
+    builder.Property(ts => ts.ShootsOnTarget)
       .HasDefaultValue(0);
 
-    builder.Property(ps => ps.Fouls)
+    builder.Property(ts => ts.Fouls)
       .HasDefaultValue(0);
 
-    builder.Property(ps => ps.Passes)
+    builder.Property(ts => ts.Passes)
       .HasDefaultValue(0);
 
-    builder.Property(ps => ps.TeamId)
-      .IsRequired();
+    builder.Property(ts => ts.TeamId)
+      .HasDefaultValue(null);
+
+    builder.Property(ts => ts.MatchId)
+      .HasDefaultValue(null);
   }
 }

@@ -15,7 +15,7 @@ public class StadiumConfiguration : IEntityTypeConfiguration<Stadium>
       .HasMaxLength(50)
       .IsRequired();
 
-    builder.Property(p => p.IsDeleted)
+    builder.Property(s => s.IsDeleted)
       .IsRequired()
       .HasDefaultValue(false);
   }
