@@ -116,13 +116,22 @@
                                   </button>
                                 </td>
                               </tr>
+
                             }
                         </tbody>
                     </table>
                 </div>
                 <input type="hidden" id="hdnLastIndexTeam" value="0" />
             </div>
-            <input type="hidden" id="teamsCount" value="@Model.selectTeamsName.Count" />
+            @{
+                List<String> teamName = new();
+                foreach(string name in Model.selectTeamsName)
+                {
+                    teamName.Add(name);
+                }
+                string serializedTeamName = Newtonsoft.Json.JsonConvert.SerializeObject(teamName);
+            }
+            <input type="hidden" id="teamsCount" value="@serializedTeamName" />
         </div>
     </div>
 

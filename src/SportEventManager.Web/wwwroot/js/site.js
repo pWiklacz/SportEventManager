@@ -159,7 +159,9 @@ function showNextPage1() {
 
 function showNextPage2() {
 
-    
+    var teamsCount = document.getElementById('teamsCount').value;
+    var teams = JSON.parse(teamsCount);
+
     var enterNumber = document.getElementById('NumberOfTeam').value;
 
     if (teamsCount < enterNumber) {
@@ -167,11 +169,24 @@ function showNextPage2() {
     }
     else
     {
-        document.getElementById("page-1").style.display = "none";
-        document.getElementById("page-2").style.display = "none";
-        document.getElementById("btnBack").style.display = "none";
-        document.getElementById("page-3").style.display = "block";
-        document.getElementById("btnNext2").style.display = "none";
+        var uniqueTeams = [];
+
+        for (var i = 0; i < teams.length; i++) {
+            if (uniqueTeams.indexOf(teams[i]) === -1) {
+                uniqueTeams.push(teams[i]);
+            }
+        }
+
+        if (uniqueTeams === 0) {
+            alert("Wartości są takie same");
+        }
+        else {
+            document.getElementById("page-1").style.display = "none";
+            document.getElementById("page-2").style.display = "none";
+            document.getElementById("btnBack").style.display = "none";
+            document.getElementById("page-3").style.display = "block";
+            document.getElementById("btnNext2").style.display = "none";
+        }
     }
 }
 

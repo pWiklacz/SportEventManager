@@ -80,23 +80,30 @@ public class EventManagerController : Controller
     eventView.Matches.Add(new MatchViewModel() { Id= 1 });
     eventView.selectTeamsName.Add("defoult");
 
+    EventWithTeam spec = new EventWithTeam();
+    List<Event> existEvents = await _eventRepository.ListAsync(spec);
 
-    TeamsByOwnerIdSpec spec = new TeamsByOwnerIdSpec();
+    List<String> eventsTeamName = new();
+
+    foreach(Event eventToFilter in existEvents)
+    {
+        foreach(Team team in eventToFilter.Teams)
+      {
+        eventsTeamName.Add(team.Name);
+      }
+
+    }
+
     var teams = await _teamRepository.ListAsync();  
     if (teams == null)
     {
       return View(eventView);
     }
 
-    //tutaj stadiony też będą pobierane z bazy danych aby uniknąć tworzenia duplikatów
 
     foreach(Team team in teams)
     {
-      //if(team.EventId == 0)
-      //{
-        eventView.teamsName.Add(team.Name);
-      //}
-      
+      if (!eventsTeamName.Contains(team.Name)) { eventView.teamsName.Add(team.Name); }
     }
   
 
@@ -174,5 +181,10 @@ public class EventManagerController : Controller
     actuallEvent.MarkAsDeleted();
     await _eventRepository.UpdateAsync(actuallEvent);
     return RedirectToAction("Index");
+  }
+
+  public ActionResult Generate()
+  {
+    return View();
   }
 }
