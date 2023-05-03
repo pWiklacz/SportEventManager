@@ -224,31 +224,26 @@
 </style>
 
 
-@for (int i = 0; i < 16 @*Model.Matches.Count*@ ; i++)
+@for (int i = 0; i < Model.Matches.Count ; i++)
 {
         <div class="column">
             <div onclick="openModal()" class="match">
                 <div class="round">
-                    Round of 16
+                    Round of @Html.DisplayFor(item => Model.Matches.Count)
                     <div class="date">
-                       @* @Model.Matches[i].StartTime*@
-                       11.11.111
+                        @Html.DisplayFor(item => Model.Matches[i].StartTime)
                     </div>
                 </div>
                 <div class="team top">
-              @*  @Model.Matches[i].FirstTeamId*@
-              AAA
+                @Html.DisplayFor(item => Model.Matches[i].FirstTeamId)
                     <div class="score">
-                       @* @Model.Matches[i].FbTeamStats[1].Goals*@
-                        0
+                        @Html.DisplayFor(item => Model.Matches[i].FbTeamStats[0].Goals)
                     </div>
                 </div>
                 <div class="team bot">
-               @* @Model.Matches[i].SecondTeamId*@
-               BBB
+                @Html.DisplayFor(item => Model.Matches[i].SecondTeamId)
                     <div class="score">
-                   @* @Model.Matches[i].FbTeamStats[2].Goals*@
-                        0
+                    @Html.DisplayFor(item => Model.Matches[i].FbTeamStats[1].Goals)
                     </div>
                 </div>
             </div>
