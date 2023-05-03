@@ -27,7 +27,7 @@ public class TeamConfiguration : IEntityTypeConfiguration<Team>
       .HasMaxLength(450)
       .IsRequired();
 
-    builder.Property(p => p.IsDeleted)
+    builder.Property(t => t.IsDeleted)
       .IsRequired()
       .HasDefaultValue(false);
   }

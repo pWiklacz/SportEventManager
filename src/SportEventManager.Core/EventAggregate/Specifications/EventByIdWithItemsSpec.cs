@@ -9,9 +9,13 @@ using SportEventManager.Core.TeamAggregate;
 namespace SportEventManager.Core.EventAggregate.Specification;
 public class EventByIdWithItemsSpec : Specification<Event>, ISingleResultSpecification
 {
-  public EventByIdWithItemsSpec(int teamId)
+  public EventByIdWithItemsSpec(int eventId)
   {
     Query
-       .Where(team => team.Id == teamId);
+       .Where(selectEvent=> selectEvent.Id == eventId)
+       .Where(selectEvent => selectEvent.IsDeleted == false)
+       .Include(selectEven => selectEven.Teams)
+       .Include(selectEven => selectEven.stadiums) 
+       .Include(selectEven => selectEven.Matches);
   }
 }

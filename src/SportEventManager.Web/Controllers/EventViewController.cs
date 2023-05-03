@@ -19,14 +19,9 @@ public class EventViewController : Controller
   {
     _eventRepository = eventRepository;
   }
-  public IActionResult Matches()
-  {
-    var dto = new EventViewModel();
 
-    return View(dto);
-  }
-
-  public async Task<IActionResult> BracketAsync(int id)
+  [HttpGet]
+  public async Task<IActionResult> Matches(int id)
   {
     var spec = new EventByIdWithItemsSpec(id);
     Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
@@ -36,7 +31,7 @@ public class EventViewController : Controller
     var dto = new EventViewModel
     {
       Id = ev.Id,
-      Name= ev.Name,
+      Name = ev.Name,
       Stadiums = ev.stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
       Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
       Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
@@ -46,18 +41,93 @@ public class EventViewController : Controller
     return View(dto);
   }
 
-  public IActionResult Standings()
+  [HttpPost]
+  public IActionResult Matches(EventViewModel viewModel)
   {
-    var dto = new EventViewModel();
+    return RedirectToAction("Matches", viewModel.Id);
+  }
+
+  [HttpGet]
+  public async Task<IActionResult> Bracket(int id)
+  {
+    var spec = new EventByIdWithItemsSpec(id);
+    Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
+
+    if (ev == null) { return NotFound(); }
+
+    var dto = new EventViewModel
+    {
+      Id = ev.Id,
+      Name = ev.Name,
+      Stadiums = ev.stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
+      Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
+      Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
+      startTime = ev.StartTime
+    };
 
     return View(dto);
   }
 
-  public IActionResult Stats()
+  [HttpPost]
+  public IActionResult Bracket(EventViewModel viewModel)
   {
-    var dto = new EventViewModel();
+    return RedirectToAction("Bracket", viewModel.Id);
+  }
+
+  //do something with those values
+  [HttpGet]
+  public async Task<IActionResult> Standings(int id)
+  {
+    var spec = new EventByIdWithItemsSpec(id);
+    Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
+
+    if (ev == null) { return NotFound(); }
+
+    var dto = new EventViewModel
+    {
+      Id = ev.Id,
+      Name = ev.Name,
+      Stadiums = ev.stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
+      Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
+      Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
+      startTime = ev.StartTime
+    };
 
     return View(dto);
+  }
+
+  [HttpPost]
+  public IActionResult Standings(EventViewModel viewModel)
+  {
+    return RedirectToAction("Standings", viewModel.Id);
+  }
+
+  //Do something with those values
+  [HttpGet]
+  public async Task<IActionResult> Stats(int id)
+  {
+    var spec = new EventByIdWithItemsSpec(id);
+    Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
+
+    if (ev == null) { return NotFound(); }
+
+    var dto = new EventViewModel
+    {
+      Id = ev.Id,
+      Name = ev.Name,
+      Stadiums = ev.stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
+      Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
+      Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
+      startTime = ev.StartTime
+    };
+
+    return View(dto);
+  }
+
+  [HttpPost]
+  public IActionResult Stats(EventViewModel viewModel)
+  {
+    return RedirectToAction("Stats", viewModel.Id);
   }
 }
 

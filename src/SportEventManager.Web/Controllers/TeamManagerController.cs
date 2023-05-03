@@ -39,7 +39,7 @@ public class TeamManagerController : Controller
           City = team.City,
           IsDeleted = team.IsDeleted,
           NumberOfPlayers = team.NumberOfPlayers,
-          FbTeamStats = FBTeamStatsViewModel.FromTeamStats(fBTeamStats: team.FbTeamStats)
+          FbTeamStats = FBTeamStatsViewModel.FromTeamStats(fBTeamStats: team.FbTeamWholeStats)
         });
     }
 

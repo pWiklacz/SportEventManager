@@ -26,8 +26,8 @@
 
             <br style="margin-top: 20px;" />
             <div class="form-group">
-                <label class="control-label">Number of Team</label>
-            <input type="number" class="form-control" style="width: 40%;" id="EName" placeholder="Number of team" />
+                <label class="control-label">Number of Teams</label>
+				<input type="number" onkeydown="return false" min="0" class="form-control" style="width: 40%;" id="NumberOfTeam" placeholder="Number of teams" />
                 <span class="text-danger"></span>
             </div>
 
@@ -35,7 +35,7 @@
             <div class="form-group" >
             <h3 style="max-width: 200px;">Add Stadiums To Event</h3>
                 <div class="col-md-8 p-0 m-0 bg-white">
-                    <table id="EventTable" class="table table-sm CodesTable">
+                    <table id="StadiumsTable" class="table table-sm CodesTable">
                         <thead>
                             <tr>
                                 <th>
@@ -69,6 +69,7 @@
                         </tbody>
                     </table>
                 </div>
+                <input type="hidden" id="hdnLastIndexStadium" value="0" />
             </div>
       </div>
     </div>
@@ -115,12 +116,22 @@
                                   </button>
                                 </td>
                               </tr>
+
                             }
                         </tbody>
                     </table>
                 </div>
                 <input type="hidden" id="hdnLastIndexTeam" value="0" />
             </div>
+            @{
+                List<String> teamName = new();
+                foreach(string name in Model.selectTeamsName)
+                {
+                    teamName.Add(name);
+                }
+                string serializedTeamName = Newtonsoft.Json.JsonConvert.SerializeObject(teamName);
+            }
+            <input type="hidden" id="teamsCount" value="@serializedTeamName" />
         </div>
     </div>
 
@@ -136,7 +147,7 @@
     <br style="margin-top: 40px;" />
     <button type="submit" class="btn2" id="btnReset" onclick="resetDetails()">Reset</button>
     <button type="submit" class="btn1" id="btnNext1" onclick="showNextPage1()">Next</button>
-    <button type="submit" class="btn1" id="btnNext2" style="display: none;" onclick="return validateForm();">Next</button>
+    <button type="submit" class="btn1" id="btnNext2" style="display: none;" onclick="showNextPage2();">Next</button>
     <button type="submit" class="btn2" id="btnBack" style="display: none;" onclick="backPage()">Back</button>
 </div>
 

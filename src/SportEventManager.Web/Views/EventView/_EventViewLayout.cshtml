@@ -1,5 +1,10 @@
-﻿@{
+﻿@using SportEventManager.Web.ViewModels.EventModel;
+@model EventViewModel
+@{
     Layout = "/Views/Shared/_Layout.cshtml";
+}
+@{
+    int currentId = Model.Id;
 }
 
 <div class="row">
@@ -11,16 +16,16 @@
 			<div class="card-header">
 				<ul class="nav nav-tabs card-header-tabs">
 					<li class="nav-item">
-						<a class="nav-link" href='/EventView/Matches'>MATCHES</a>
+                        <a class="nav-link" asp-controller="EventView" asp-action="Matches" asp-route-id="@currentId">MATCHES</a>
 					</li>
 					<li class="nav-item">
-                        <a class="nav-link" href='/EventView/Bracket'>BRACKET</a>
+                        <a class="nav-link" asp-controller="EventView" asp-action="Bracket" asp-route-id="@currentId">BRACKET</a>
 					</li>
                     <li class="nav-item">
-                        <a class="nav-link" href='/EventView/Stats'>STATS</a>
+                        <a class="nav-link" asp-controller="EventView" asp-action="Stats" asp-route-id="@currentId">STATS</a>
                     </li>                  
                     <li class="nav-item">
-                        <a class="nav-link" href='/EventView/Standings'>STANDINGS</a>
+                        <a class="nav-link" asp-controller="EventView" asp-action="Standings" asp-route-id="@currentId">STANDINGS</a>
                     </li>
 				</ul>
 			</div>

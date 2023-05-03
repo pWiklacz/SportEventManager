@@ -7,10 +7,10 @@ public class TournamentBracket
   private List<Team> _teams;
   public TournamentBracket(List<Team> teams) => _teams = teams;
 
-  public Dictionary<Team, Team> GenerateBracket_1stRound(List<Team> teams)
+  public static Dictionary<Team, Team> GenerateBracket_1stRound(List<Team> teams)
   {
     Dictionary<Team, Team> bracket = new Dictionary<Team, Team>();
-    List<int> rng = this.getRandomList(teams.Count);
+    List<int> rng = TournamentBracket.getRandomList(teams.Count);
     int i;
     for (i = 0; i < teams.Count; i += 2)
     {
@@ -19,7 +19,7 @@ public class TournamentBracket
     return bracket;
   }
 
-  public Dictionary<Team, Team> GenerateBracket_nextRound(List<Team> teams)
+  public static Dictionary<Team, Team> GenerateBracket_nextRound(List<Team> teams)
   {
     Dictionary<Team, Team> bracket = new Dictionary<Team, Team>();
     int i;
@@ -30,7 +30,7 @@ public class TournamentBracket
     return bracket;
   }
 
-  private List<int> getRandomList(int count)
+  private static List<int> getRandomList(int count)
   {
     var list = new List<int>();
     int i;
