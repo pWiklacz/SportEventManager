@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Web.ViewModels.TeamModel;
 
 namespace SportEventManager.Web.ViewModels.EventModel;

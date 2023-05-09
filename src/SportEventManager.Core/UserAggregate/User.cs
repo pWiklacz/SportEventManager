@@ -1,4 +1,6 @@
-﻿using Ardalis.GuardClauses;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Identity;
 using SportEventManager.SharedKernel.Interfaces;
 
@@ -10,4 +12,15 @@ public class User : IdentityUser, IAggregateRoot
 
   [PersonalData]
   public string? LastName { get; set; }
+
+  public UserRoleEnum? AccountType { get; private set; }
+
+  [Required]
+  [DefaultValue(false)]
+  public bool IsArchived { get; private set; } = false;
+
+  public void Archive()
+  {
+    this.IsArchived = true;
+  }
 }

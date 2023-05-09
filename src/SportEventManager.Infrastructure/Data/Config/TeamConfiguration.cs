@@ -23,11 +23,7 @@ public class TeamConfiguration : IEntityTypeConfiguration<Team>
     builder.Property(t => t.NumberOfPlayers)
         .IsRequired();
 
-    builder.Property(t => t.OwnerId)
-      .HasMaxLength(450)
-      .IsRequired();
-
-    builder.Property(t => t.IsDeleted)
+    builder.Property(t => t.IsArchived)
       .IsRequired()
       .HasDefaultValue(false);
   }

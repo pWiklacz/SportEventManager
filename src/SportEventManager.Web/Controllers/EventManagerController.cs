@@ -40,7 +40,7 @@ public class EventManagerController : Controller
           Id = @event.Id,
           Name = @event.Name,
           startTime = @event.StartTime,
-          IsDeleted = @event.IsDeleted,
+          IsDeleted = @event.IsArchived,
         });
     }
 
@@ -65,7 +65,7 @@ public class EventManagerController : Controller
       Name = selectEvent.Name,
       startTime = selectEvent.StartTime,
       Teams = selectEvent.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
-      Stadiums = selectEvent.stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList()
+      Stadiums = selectEvent.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList()
     };
 
     return View(dto);
@@ -103,7 +103,7 @@ public class EventManagerController : Controller
 
     foreach(Team team in teams)
     {
-      if (!eventsTeamName.Contains(team.Name) && !team.IsDeleted) { 
+      if (!eventsTeamName.Contains(team.Name) && !team.IsArchived) { 
         eventView.teamsName.Add(team.Name);
       }
     }
@@ -119,9 +119,10 @@ public class EventManagerController : Controller
     Event eventNew = new Event(viewModel.Name, viewModel.startTime);
     foreach(StadiumViewModel newStadium in viewModel.Stadiums)
     {
+      //TODO: Make a normal name in front-end
       eventNew.AddStadium(
-        new Stadium(newStadium.City)
-        );
+        new Stadium("name", newStadium.City)
+      );
     };
 
     foreach(string teamName in viewModel.selectTeamsName)
@@ -179,7 +180,7 @@ public class EventManagerController : Controller
       return NotFound();
     }
 
-    actuallEvent.MarkAsDeleted();
+    actuallEvent.Archive();
     await _eventRepository.UpdateAsync(actuallEvent);
     return RedirectToAction("Index");
   }
@@ -201,8 +202,10 @@ public class EventManagerController : Controller
     Dictionary<Team, Team> bracket = TournamentBracket.GenerateBracket_1stRound(ev.Teams.ToList());
     foreach(var pair in bracket)
     {
-      Match match = new Match(ev.StartTime, DateTime.MaxValue, ev.stadiums.ElementAt<Stadium>(0),
-        pair.Key.Id, pair.Value.Id);
+      Match match = new Match(ev.StartTime, DateTime.MaxValue, ev.Stadiums.ElementAt<Stadium>(0),
+        ev.Stadiums.ElementAt<Stadium>(0).Id,
+        pair.Key.Id, pair.Value.Id
+      );
       ev.AddMatch(match);
     }
 

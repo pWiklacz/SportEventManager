@@ -19,15 +19,8 @@ public class PlayerConfiguration : IEntityTypeConfiguration<Player>
         .HasMaxLength(100)
         .IsRequired();
 
-    builder.Property(p => p.Number)
-        .IsRequired();
-
-    builder.Property(p => p.IsDeleted)
+    builder.Property(p => p.IsArchived)
       .IsRequired()
       .HasDefaultValue(false);
-
-    builder.Property(p => p.TeamId)
-      .IsRequired()
-      .HasAnnotation("ForeignKey", "Team");
   }
 }

@@ -20,8 +20,12 @@ public class Match : EntityBase
   public Stadium Stadium { get; set; } = new Stadium();
 
   [Required]
+  [ForeignKey("Stadium")]
+  public int StadiumId { get; set; }
+
+  [Required]
   [DefaultValue(false)]
-  public bool IsDeleted { get; private set; } = false;
+  public bool IsArchived { get; private set; } = false;
 
   [Required]
   [DefaultValue(false)]
@@ -35,12 +39,15 @@ public class Match : EntityBase
   [ForeignKey("Team")]
   public int SecondTeamId { get; private set; }
 
-  private List<FBTeamStats> _fbTeamStats = new List<FBTeamStats>(2);
+  [Required]
+  [ForeignKey("Event")]
+  public int EventId { get; set; }
+
+  public String WinnerName { get; set; } = string.Empty;
+
+  private List<FBTeamStats> _fbTeamStats = new List<FBTeamStats>(2); //TODO: Make it TeamMatchStats
 
   public IEnumerable<FBTeamStats> FbTeamStats => _fbTeamStats.AsReadOnly();
-
-  [MaxLength(100)]
-  public string WinnerName { get; set; } = string.Empty;
 
   public Match() { }
 
@@ -48,6 +55,7 @@ public class Match : EntityBase
     DateTime startTime, 
     DateTime endTime, 
     Stadium stadium,
+    int stadiumId,
     int firstTeamId,
     int secondTeamId,
     bool isEnded = false,
@@ -57,24 +65,22 @@ public class Match : EntityBase
     StartTime = startTime;
     EndTime = endTime;
     Stadium = stadium;
+    StadiumId = stadiumId;
     FirstTeamId = firstTeamId;
     SecondTeamId = secondTeamId;
-    IsDeleted = false;
+    IsArchived = false;
     IsEnded = isEnded;
     WinnerName = winnerName;
   }
 
-  public void MarkAsDeleted()
+  public void Archive()
   {
-    this.IsDeleted = true;
+    this.IsArchived = true;
   }
 
   public void AddStats(FBTeamStats newStats)
   {
     Guard.Against.Null(newStats, nameof(newStats));
     _fbTeamStats.Add(newStats);
-
-    //var newPlayerAddedEvent = new NewPlayerAddedEvent(this, newPlayer);
-    //base.RegisterDomainEvent(newPlayerAddedEvent);
   }
 }

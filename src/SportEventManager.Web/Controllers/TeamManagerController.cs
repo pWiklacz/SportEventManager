@@ -37,7 +37,7 @@ public class TeamManagerController : Controller
           Id = team.Id,
           Name = team.Name,
           City = team.City,
-          IsDeleted = team.IsDeleted,
+          IsDeleted = team.IsArchived,
           NumberOfPlayers = team.NumberOfPlayers,
           FbTeamStats = FBTeamStatsViewModel.FromTeamStats(fBTeamStats: team.FbTeamWholeStats)
         });
@@ -56,12 +56,16 @@ public class TeamManagerController : Controller
 
   [HttpPost]
   public async Task<IActionResult> Create(TeamViewModel viewModel)
-  {//TODO: add owner
+  {
+    //TODO: add owner which is use also User repository and use AddOwner method similar to AddPlayer
+    //Or if it doesn't work because the User already exists then refactor it to have only id of an existing user
     Team team = new Team(viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
     foreach(PlayerViewModel newPlayer in viewModel.Players)
     {
+      //TODO: make sure the player instantiates ok with player2Team also
       team.AddPlayer(
-          new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Number, team.Id)
+          new Player(newPlayer.Name, newPlayer.Surname),
+          newPlayer.Number
         );
     }
     await _teamRepository.AddAsync(team);
@@ -97,8 +101,10 @@ public class TeamManagerController : Controller
 
   [HttpPost]
   public async Task<IActionResult> Edit(TeamViewModel viewModel)
-  {//TODO: add owner and make deleting work properly
-    //Deleting old players from a team
+  {
+    //TODO: add owner which is use also User repository and use AddOwner method similar to AddPlayer
+    //Or if it doesn't work because the User already exists then refactor it to have only id of an existing user
+    //Make deleting old players from a team work
     TeamByIdWithPlayersSpec spec = new TeamByIdWithPlayersSpec(viewModel.Id);
     Team? team = await _teamRepository.FirstOrDefaultAsync(spec);
     if (team == null || team.Players.IsNullOrEmpty())
@@ -119,8 +125,10 @@ public class TeamManagerController : Controller
 
     foreach (PlayerViewModel newPlayer in viewModel.Players)
     {
+      //TODO: make sure the player instantiates ok with player2Team also
       team.AddPlayer(
-          new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Number, team.Id)
+          new Player(newPlayer.Name, newPlayer.Surname),
+          newPlayer.Number
         );
     }
     await _teamRepository.UpdateAsync(team);
@@ -163,8 +171,8 @@ public class TeamManagerController : Controller
     }
 
     foreach(Player player in team.Players)
-      player.MarkAsDeleted(); ///why it's not working?
-    team.MarkAsDeleted();
+      player.Archive(); ///why it's not working?
+    team.Archive();
     await _teamRepository.UpdateAsync(team);
     //TODO: delete also teamstats and playerstats
     return RedirectToAction("Index");

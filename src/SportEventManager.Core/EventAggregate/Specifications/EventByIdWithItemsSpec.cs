@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ardalis.Specification;
-using SportEventManager.Core.TeamAggregate;
+﻿using Ardalis.Specification;
 
 namespace SportEventManager.Core.EventAggregate.Specification;
 public class EventByIdWithItemsSpec : Specification<Event>, ISingleResultSpecification
@@ -13,9 +7,9 @@ public class EventByIdWithItemsSpec : Specification<Event>, ISingleResultSpecifi
   {
     Query
        .Where(selectEvent=> selectEvent.Id == eventId)
-       .Where(selectEvent => selectEvent.IsDeleted == false)
+       .Where(selectEvent => selectEvent.IsArchived == false)
        .Include(selectEven => selectEven.Teams)
-       .Include(selectEven => selectEven.stadiums) 
+       .Include(selectEven => selectEven.Stadiums) 
        .Include(selectEven => selectEven.Matches);
   }
 }

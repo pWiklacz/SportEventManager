@@ -11,7 +11,7 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
       .UseIdentityColumn()
       .IsRequired();
 
-    builder.Property(m => m.IsDeleted)
+    builder.Property(m => m.IsArchived)
       .IsRequired()
       .HasDefaultValue(false);
 
@@ -20,6 +20,10 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
 
     builder.Property(m => m.EndTime)
       .IsRequired();
+
+    builder.Property(m => m.StadiumId)
+      .IsRequired()
+      .HasAnnotation("ForeignKey", "Stadium");
 
     builder.Property(m => m.IsEnded)
       .IsRequired()
@@ -35,5 +39,9 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
 
     builder.Property(m => m.WinnerName)
       .HasMaxLength(100);
+
+    builder.Property(m => m.EventId)
+      .IsRequired()
+      .HasAnnotation("ForeignKey", "Event");
   }
 }

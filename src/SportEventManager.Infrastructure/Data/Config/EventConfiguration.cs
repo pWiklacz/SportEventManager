@@ -1,30 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SportEventManager.Core.EventAggregate;
-using SportEventManager.Core.TeamAggregate.Stats;
 
 namespace SportEventManager.Infrastructure.Data.Config;
 public class EventConfiguration : IEntityTypeConfiguration<Event>
 {
   public void Configure(EntityTypeBuilder<Event> builder)
   {
-    builder.Property(s => s.Id)
+    builder.Property(e => e.Id)
       .UseIdentityColumn()
       .IsRequired();
 
-    builder.Property(s => s.Name)
+    builder.Property(e => e.Name)
       .HasMaxLength(100)
       .IsRequired();
 
-    builder.Property(m => m.StartTime)
+    builder.Property(e => e.StartTime)
       .IsRequired();
 
-    builder.Property(p => p.IsDeleted)
+    builder.Property(e => e.EndTime)
+      .IsRequired();
+
+    builder.Property(e => e.IsArchived)
+      .IsRequired()
+      .HasDefaultValue(false);
+
+    builder.Property(e => e.IsInprogress)
       .IsRequired()
       .HasDefaultValue(false);
   }

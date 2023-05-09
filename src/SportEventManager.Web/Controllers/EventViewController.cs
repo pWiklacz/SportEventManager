@@ -32,7 +32,7 @@ public class EventViewController : Controller
     {
       Id = ev.Id,
       Name = ev.Name,
-      Stadiums = ev.stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
+      Stadiums = ev.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
       Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
       Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
       startTime = ev.StartTime
@@ -59,7 +59,7 @@ public class EventViewController : Controller
     {
       Id = ev.Id,
       Name = ev.Name,
-      Stadiums = ev.stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
+      Stadiums = ev.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
       Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
       Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
       startTime = ev.StartTime
@@ -87,7 +87,7 @@ public class EventViewController : Controller
     {
       Id = ev.Id,
       Name = ev.Name,
-      Stadiums = ev.stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
+      Stadiums = ev.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
       Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
       Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
       startTime = ev.StartTime
@@ -115,7 +115,7 @@ public class EventViewController : Controller
     {
       Id = ev.Id,
       Name = ev.Name,
-      Stadiums = ev.stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
+      Stadiums = ev.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
       Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
       Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
       startTime = ev.StartTime

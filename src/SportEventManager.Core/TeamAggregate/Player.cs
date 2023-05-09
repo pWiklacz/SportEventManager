@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using SportEventManager.Core.TeamAggregate.Stats;
 using SportEventManager.SharedKernel;
 
@@ -17,29 +16,20 @@ public class Player : EntityBase
   public String Surname { get; set; } = String.Empty;
 
   [Required]
-  public int Number { get; set; }
-
-  [Required]
   [DefaultValue(false)]
-  public bool IsDeleted { get; private set; } = false;
-
-  [Required]
-  [ForeignKey("Team")]
-  public int TeamId { get; private set; }
+  public bool IsArchived { get; private set; } = false;
 
   public FBPlayerStats? FbPlayerStats { get; set; }
 
-  public Player(string name, string surname, int number, int teamId)
+  public Player(string name, string surname)
   {
     Name = name;
     Surname = surname;
-    Number = number;
-    IsDeleted = false;
-    TeamId = teamId;
+    IsArchived = false;
   }
 
-  public void MarkAsDeleted()
+  public void Archive()
   {
-    this.IsDeleted = true;
+    this.IsArchived = true;
   }
 }
