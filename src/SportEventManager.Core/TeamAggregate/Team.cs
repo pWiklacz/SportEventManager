@@ -57,7 +57,7 @@ public class Team : EntityBase, IAggregateRoot
 
   public Team() { }
 
-  public void AddPlayer(Player newPlayer, int number)
+  public void AddPlayer(Player newPlayer, int number = 1)
   {
     Guard.Against.Null(newPlayer, nameof(newPlayer));
     _players.Add(newPlayer);

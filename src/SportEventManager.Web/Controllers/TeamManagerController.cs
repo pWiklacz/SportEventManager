@@ -64,8 +64,8 @@ public class TeamManagerController : Controller
     {
       //TODO: make sure the player instantiates ok with player2Team also
       team.AddPlayer(
-          new Player(newPlayer.Name, newPlayer.Surname),
-          newPlayer.Number
+          new Player(newPlayer.Name, newPlayer.Surname)
+          //newPlayer.Number
         );
     }
     await _teamRepository.AddAsync(team);
@@ -127,8 +127,8 @@ public class TeamManagerController : Controller
     {
       //TODO: make sure the player instantiates ok with player2Team also
       team.AddPlayer(
-          new Player(newPlayer.Name, newPlayer.Surname),
-          newPlayer.Number
+          new Player(newPlayer.Name, newPlayer.Surname)
+         // newPlayer.Number
         );
     }
     await _teamRepository.UpdateAsync(team);

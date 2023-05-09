@@ -25,7 +25,7 @@ public class Player : EntityBase
   public Player(string name, string surname)
   {
     Name = Guard.Against.NullOrEmpty(name, nameof(name));
-    Surname = Guard.Against.NullOrEmpty(surname, nameof(surname))
+    Surname = Guard.Against.NullOrEmpty(surname, nameof(surname));
     IsArchived = false;
   }
 
