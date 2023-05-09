@@ -1,20 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel;
+﻿using Ardalis.GuardClauses;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Ardalis.GuardClauses;
+using System.ComponentModel;
 
 namespace SportEventManager.Core.TeamAggregate.Stats;
-public class FbTeamStats : FootballStats
+
+public class FbTeamMatchStats : FootballStats
 {
-  [DefaultValue(0)]
-  public int Wins { get; set; } = 0;
-
-  [DefaultValue(0)]
-  public int Losses { get; set; } = 0;
-
-  [DefaultValue(0)]
-  public int Draws { get; set; } = 0;
-
   [DefaultValue(0)]
   public int Shoots { get; set; } = 0;
 
@@ -31,11 +23,10 @@ public class FbTeamStats : FootballStats
   [ForeignKey("Team")]
   public int TeamId { get; private set; }
 
-  public FbTeamStats(int teamId) : base()
+  public FbTeamMatchStats(int teamId) : base()
   {
-
     TeamId = Guard.Against.NegativeOrZero(teamId, nameof(teamId));
   }
 
-  public FbTeamStats() : base() { }
+  public FbTeamMatchStats() : base() { }
 }

@@ -20,7 +20,7 @@ public class MatchViewModel
 
   public int SecondTeamId { get; private set; }
 
-  public List<FBTeamStatsViewModel> FbTeamStats { get; private set; } = new List<FBTeamStatsViewModel>(2);
+  public List<FbTeamMatchStatsViewModel> FbTeamMatchStats { get; private set; } = new List<FbTeamMatchStatsViewModel>(2);
 
   public StadiumViewModel? Stadium { get; set; }
 
@@ -33,7 +33,7 @@ public class MatchViewModel
     IsEnded = match.IsEnded,
     FirstTeamId = match.FirstTeamId,
     SecondTeamId = match.SecondTeamId,
-    FbTeamStats = match.FbTeamStats.Select(fbStats => FBTeamStatsViewModel.FromTeamStats(fbStats)).ToList()
+    FbTeamMatchStats = match.FbTeamMatchStats.Select(FbTeamMatchStatsViewModel.FromTeamMatchStats).ToList()
   };
 }
 

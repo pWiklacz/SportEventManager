@@ -4,9 +4,9 @@ using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Core.TeamAggregate.Stats;
 
 namespace SportEventManager.Infrastructure.Data.Config;
-public class FBPlayerStatsConfiguration : IEntityTypeConfiguration<FBPlayerStats>
+public class FbPlayerStatsConfiguration : IEntityTypeConfiguration<FbPlayerStats>
 {
-  public void Configure(EntityTypeBuilder<FBPlayerStats> builder)
+  public void Configure(EntityTypeBuilder<FbPlayerStats> builder)
   {
     builder.Property(ps => ps.Id)
       .UseIdentityColumn()
@@ -25,6 +25,7 @@ public class FBPlayerStatsConfiguration : IEntityTypeConfiguration<FBPlayerStats
       .HasDefaultValue(0);
 
     builder.Property(ps => ps.PlayerId)
-      .IsRequired();
+      .IsRequired()
+      .HasAnnotation("ForeignKey", "Player");
   }
 }

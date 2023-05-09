@@ -22,7 +22,7 @@ public class TeamViewModel
 
   public List<PlayerViewModel> Players { get; set; } = new List<PlayerViewModel>();
 
-  public FBTeamStatsViewModel? FbTeamStats { get; set; }
+  public FbTeamStatsViewModel? FbTeamStats { get; set; }
 
   public static TeamViewModel FromTeam(Team team) => new()
   {
@@ -33,6 +33,6 @@ public class TeamViewModel
     //OwnerId = team.OwnerId,
     IsDeleted= team.IsArchived,
     Players = team.Players.Select(p => PlayerViewModel.FromPlayer(p)).ToList(),
-    FbTeamStats = FBTeamStatsViewModel.FromTeamStats(team.FbTeamWholeStats)
+    FbTeamStats = FbTeamStatsViewModel.FromTeamStats(team.FbTeamWholeStats)
   };
 }

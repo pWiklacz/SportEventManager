@@ -11,12 +11,12 @@ public class PlayerViewModel
 
   public string Surname { get; set; } = string.Empty;
 
-  [Range(1, 99)]
-  public int Number { get; set; }
+  //[Range(1, 99)]
+  //public int Number { get; set; }
 
   public bool IsDeleted { get; private set; }
 
-  public FBPlayerStatsViewModel? FbPlayerStats { get; set; }
+  public FbPlayerStatsViewModel? FbPlayerStats { get; set; }
 
   public static PlayerViewModel FromPlayer(Player player)
   {
@@ -27,7 +27,7 @@ public class PlayerViewModel
       Surname = player.Surname,
       //Number = player.Number,
       IsDeleted = player.IsArchived,
-      FbPlayerStats = FBPlayerStatsViewModel.FromPlayerStats(fBPlayerStats: player.FbPlayerStats)
+      FbPlayerStats = FbPlayerStatsViewModel.FromPlayerStats(fBPlayerStats: player.FbPlayerStats)
     };
   }
 }

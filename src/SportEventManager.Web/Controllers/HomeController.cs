@@ -42,8 +42,8 @@ public class HomeController : Controller
         {
           Id = @event.Id,
           Name = @event.Name,
-          startTime = @event.StartTime,
-          IsDeleted = @event.IsArchived,
+          StartTime = @event.StartTime,
+          IsArchived = @event.IsArchived,
           Stadiums = @event.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
           Teams = @event.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
           Matches = @event.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList()

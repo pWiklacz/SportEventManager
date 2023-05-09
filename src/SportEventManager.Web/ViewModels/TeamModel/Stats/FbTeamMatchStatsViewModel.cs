@@ -1,37 +1,26 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
-using SportEventManager.Core.TeamAggregate.Stats;
+﻿using SportEventManager.Core.TeamAggregate.Stats;
 
 namespace SportEventManager.Web.ViewModels.TeamModel.Stats;
-public class FbTeamStatsViewModel : FootballStatsViewModel
+
+public class FbTeamMatchStatsViewModel : FootballStatsViewModel
 {
-  public int Wins { get; set; } = 0;
-
-  public int Losses { get; set; } = 0;
-
-  public int Draws { get; set; } = 0;
-
   public int Shoots { get; set; } = 0;
 
   public int ShootsOnTarget { get; set; } = 0;
 
   public int Fouls { get; set; } = 0;
 
-  public int Passes { get; set; } = 0;
+  public int Passes { get; set; } = 0; 
 
   public int TeamId { get; set; }
 
-  public static FbTeamStatsViewModel FromTeamStats(FbTeamStats? fBTeamStats)
+  public static FbTeamMatchStatsViewModel FromTeamMatchStats(FbTeamMatchStats? fBTeamStats)
   {
     if (fBTeamStats != null)
     {
-      return new FbTeamStatsViewModel()
+      return new FbTeamMatchStatsViewModel()
       {
         Id = fBTeamStats.Id,
-        Wins = fBTeamStats.Wins,
-        Losses = fBTeamStats.Losses,
-        Draws = fBTeamStats.Draws,
         Shoots = fBTeamStats.Shoots,
         ShootsOnTarget = fBTeamStats.ShootsOnTarget,
         Fouls = fBTeamStats.Fouls,
@@ -45,7 +34,7 @@ public class FbTeamStatsViewModel : FootballStatsViewModel
     }
     else
     {
-      return new FbTeamStatsViewModel();
+      return new FbTeamMatchStatsViewModel();
     }
   }
 }

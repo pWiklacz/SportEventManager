@@ -18,21 +18,21 @@
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th style="flex: 1; text-align: center;">
-            @Html.DisplayNameFor(model => model.startTime)
+            @Html.DisplayNameFor(model => model.StartTime)
         </th>
     </tr>
 </thead>
 <tbody>
     @foreach (var item in Model)
     {
-        @if (!item.IsDeleted)
+        @if (!item.IsArchived)
         {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.startTime)
+                    @Html.DisplayFor(modelItem => item.StartTime)
                 </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

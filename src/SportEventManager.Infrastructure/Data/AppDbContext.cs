@@ -23,9 +23,9 @@ public class AppDbContext : DbContext
 
   public DbSet<Event> Events => Set<Event>();
 
-  public DbSet<FBPlayerStats> PlayersStats => Set<FBPlayerStats>();
+  public DbSet<FbPlayerStats> PlayersStats => Set<FbPlayerStats>();
 
-  public DbSet<FBTeamStats> TeamsStats => Set<FBTeamStats>();
+  public DbSet<FbTeamStats> TeamsStats => Set<FbTeamStats>();
 
   public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
   {

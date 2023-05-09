@@ -1,15 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Ardalis.GuardClauses;
 
 namespace SportEventManager.Core.TeamAggregate.Stats;
-public class FBPlayerStats : FootballStats
+public class FbPlayerStats : FootballStats
 {
   [Required]
   [ForeignKey("Player")]
   public int PlayerId { get; private set; }
 
-  public FBPlayerStats(int playerId) : base()
+  public FbPlayerStats(int playerId) : base()
   {
-    PlayerId = playerId;
+    PlayerId = Guard.Against.NegativeOrZero(playerId, nameof(playerId));
+  }
+
+  public override void Archive()
+  {
+    base.Archive();
   }
 }

@@ -15,6 +15,10 @@ public class StadiumConfiguration : IEntityTypeConfiguration<Stadium>
       .HasMaxLength(50)
       .IsRequired();
 
+    builder.Property(s => s.Name)
+      .HasMaxLength(50)
+      .IsRequired();
+
     builder.Property(s => s.IsArchived)
       .IsRequired()
       .HasDefaultValue(false);

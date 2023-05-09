@@ -39,8 +39,8 @@ public class EventManagerController : Controller
         {
           Id = @event.Id,
           Name = @event.Name,
-          startTime = @event.StartTime,
-          IsDeleted = @event.IsArchived,
+          StartTime = @event.StartTime,
+          IsArchived = @event.IsArchived,
         });
     }
 
@@ -63,7 +63,7 @@ public class EventManagerController : Controller
     {
       Id = selectEvent.Id,
       Name = selectEvent.Name,
-      startTime = selectEvent.StartTime,
+      StartTime = selectEvent.StartTime,
       Teams = selectEvent.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
       Stadiums = selectEvent.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList()
     };
@@ -78,7 +78,7 @@ public class EventManagerController : Controller
     EventViewModel eventView= new EventViewModel();
     eventView.Stadiums.Add(new StadiumViewModel() { Id = 1 });
     eventView.Matches.Add(new MatchViewModel() { Id= 1 });
-    eventView.selectTeamsName.Add("defoult");
+    eventView.SelectTeamsName.Add("defoult");
 
     EventWithTeam spec = new EventWithTeam();
     List<Event> existEvents = await _eventRepository.ListAsync(spec);
@@ -104,7 +104,7 @@ public class EventManagerController : Controller
     foreach(Team team in teams)
     {
       if (!eventsTeamName.Contains(team.Name) && !team.IsArchived) { 
-        eventView.teamsName.Add(team.Name);
+        eventView.TeamsName.Add(team.Name);
       }
     }
 
@@ -116,7 +116,7 @@ public class EventManagerController : Controller
   public async Task<IActionResult> Create(EventViewModel viewModel)
   {
 
-    Event eventNew = new Event(viewModel.Name, viewModel.startTime);
+    Event eventNew = new Event(viewModel.Name, viewModel.StartTime);
     foreach(StadiumViewModel newStadium in viewModel.Stadiums)
     {
       //TODO: Make a normal name in front-end
@@ -125,7 +125,7 @@ public class EventManagerController : Controller
       );
     };
 
-    foreach(string teamName in viewModel.selectTeamsName)
+    foreach(string teamName in viewModel.SelectTeamsName)
     {
       var spec = new TeamByNameSpec(teamName);
       Team? team = await _teamRepository.FirstOrDefaultAsync(spec);
@@ -163,7 +163,7 @@ public class EventManagerController : Controller
     {
       Id = actuallEvent.Id,
       Name = actuallEvent.Name,
-      startTime = actuallEvent.StartTime
+      StartTime = actuallEvent.StartTime
     };
 
     return View(dto);

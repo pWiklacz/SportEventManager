@@ -18,7 +18,6 @@ public class Stadium : EntityBase
   [DefaultValue(false)]
   public bool IsArchived { get; private set; } = false;
 
-
   public Stadium() { }
 
   public Stadium(string name, string city)

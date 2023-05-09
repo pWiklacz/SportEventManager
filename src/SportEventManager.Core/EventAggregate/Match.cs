@@ -45,9 +45,9 @@ public class Match : EntityBase
 
   public String WinnerName { get; set; } = string.Empty;
 
-  private List<FBTeamStats> _fbTeamStats = new List<FBTeamStats>(2); //TODO: Make it TeamMatchStats
+  private List<FbTeamMatchStats> _fbTeamMatchStats = new List<FbTeamMatchStats>(2);
 
-  public IEnumerable<FBTeamStats> FbTeamStats => _fbTeamStats.AsReadOnly();
+  public IEnumerable<FbTeamMatchStats> FbTeamMatchStats => _fbTeamMatchStats.AsReadOnly();
 
   public Match() { }
 
@@ -62,15 +62,15 @@ public class Match : EntityBase
     string winnerName = ""
     )
   {
-    StartTime = startTime;
-    EndTime = endTime;
-    Stadium = stadium;
-    StadiumId = stadiumId;
-    FirstTeamId = firstTeamId;
-    SecondTeamId = secondTeamId;
+    StartTime = Guard.Against.Null(startTime, nameof(startTime));
+    EndTime = Guard.Against.Null(endTime, nameof(endTime));
+    Stadium = Guard.Against.Null(stadium, nameof(stadium));
+    StadiumId = Guard.Against.NegativeOrZero(stadiumId, nameof(stadiumId));
+    FirstTeamId = Guard.Against.NegativeOrZero(firstTeamId, nameof(firstTeamId));
+    SecondTeamId = Guard.Against.NegativeOrZero(secondTeamId, nameof(secondTeamId));
     IsArchived = false;
     IsEnded = isEnded;
-    WinnerName = winnerName;
+    WinnerName = Guard.Against.NullOrEmpty(winnerName, nameof(winnerName));
   }
 
   public void Archive()
@@ -78,9 +78,9 @@ public class Match : EntityBase
     this.IsArchived = true;
   }
 
-  public void AddStats(FBTeamStats newStats)
+  public void AddStats(FbTeamMatchStats newStats)
   {
     Guard.Against.Null(newStats, nameof(newStats));
-    _fbTeamStats.Add(newStats);
+    _fbTeamMatchStats.Add(newStats);
   }
 }

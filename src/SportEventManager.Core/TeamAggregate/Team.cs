@@ -44,7 +44,7 @@ public class Team : EntityBase, IAggregateRoot
   public IEnumerable<Team2User> TeamsToUsers => _teamsToUsers.AsReadOnly();
 
   [DefaultValue(null)]
-  public FBTeamStats? FbTeamWholeStats { get; set; }
+  public FbTeamStats? FbTeamWholeStats { get; set; }
 
   public Team(string name, string city, int numberOfPlayers)
   {
