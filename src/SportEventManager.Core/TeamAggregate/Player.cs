@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
 using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.SharedKernel;
@@ -20,6 +21,8 @@ public class Player : EntityBase
   [DefaultValue(false)]
   public bool IsArchived { get; private set; } = false;
 
+  [DefaultValue(null)]
+  [NotMapped]
   public Statistics? FbPlayerStats { get; set; }
 
   public Player(string name, string surname)

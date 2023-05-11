@@ -46,7 +46,8 @@ public class AppDbContext : DbContext
     modelBuilder.Entity<User>()
        .ToTable("AspNetUsers", t => t.ExcludeFromMigrations());
 
-    modelBuilder.Ignore<Statistics>();
+    modelBuilder.Entity<Statistics>().ToView("Statistics").HasNoKey();
+    modelBuilder.Entity<FootballStatsBase>().ToView("FootballStats").HasNoKey();
 
     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
   }

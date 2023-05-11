@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
 using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.Core.UserAggregate;
@@ -38,6 +39,7 @@ public class Team : EntityBase, IAggregateRoot
   public IEnumerable<Team2User> TeamsToUsers => _teamsToUsers.AsReadOnly();
 
   [DefaultValue(null)]
+  [NotMapped]
   public Statistics? FbTeamWholeStats { get; set; }
 
   public Team(string name, string city, int numberOfPlayers)

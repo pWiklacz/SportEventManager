@@ -47,6 +47,7 @@ public class Match : EntityBase
 
   private List<Statistics> _fbTeamMatchStats = new List<Statistics>(2);
 
+  [NotMapped]
   public IEnumerable<Statistics> FbTeamMatchStats => _fbTeamMatchStats.AsReadOnly();
 
   public Match() { }
