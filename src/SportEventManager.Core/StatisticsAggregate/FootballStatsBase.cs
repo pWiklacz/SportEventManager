@@ -2,8 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using SportEventManager.SharedKernel;
 
-namespace SportEventManager.Core.TeamAggregate.Stats;
-public abstract class FootballStats : EntityBase
+namespace SportEventManager.Core.StatisticsAggregate;
+public abstract class FootballStatsBase : EntityBase
 {
   [DefaultValue(0)]
   public int Goals { get; set; }
@@ -23,10 +23,10 @@ public abstract class FootballStats : EntityBase
 
   public virtual void Archive()
   {
-    this.IsArchived = true;
+    IsArchived = true;
   }
 
-  public FootballStats() : base()
+  public FootballStatsBase()
   {
     Goals = 0;
     Assists = 0;

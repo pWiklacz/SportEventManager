@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SportEventManager.Core.UserAggregate;
 
-namespace SportEventManager.Infrastructure.Data.Config;
+namespace SportEventManager.Infrastructure.Data.Config.UserAggregate;
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
   public void Configure(EntityTypeBuilder<User> builder)

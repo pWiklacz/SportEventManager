@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SportEventManager.Core.TeamAggregate.Stats;
+using SportEventManager.Core.StatisticsAggregate;
 
-namespace SportEventManager.Infrastructure.Data.Config;
-
-public class FbTeamMatchStatsConfiguration : IEntityTypeConfiguration<FbTeamMatchStats>
+namespace SportEventManager.Infrastructure.Data.Config.StatisticsAggregate;
+public class FbTeamStatsConfiguration : IEntityTypeConfiguration<FbTeamStats>
 {
-  public void Configure(EntityTypeBuilder<FbTeamMatchStats> builder)
+  public void Configure(EntityTypeBuilder<FbTeamStats> builder)
   {
     builder.Property(ts => ts.Id)
       .UseIdentityColumn()
@@ -22,6 +21,19 @@ public class FbTeamMatchStatsConfiguration : IEntityTypeConfiguration<FbTeamMatc
       .HasDefaultValue(0);
 
     builder.Property(ts => ts.YellowCards)
+      .HasDefaultValue(0);
+
+    builder.Property(ts => ts.IsArchived)
+      .IsRequired()
+      .HasDefaultValue(false);
+
+    builder.Property(ts => ts.Wins)
+      .HasDefaultValue(0);
+
+    builder.Property(ts => ts.Losses)
+      .HasDefaultValue(0);
+
+    builder.Property(ts => ts.Draws)
       .HasDefaultValue(0);
 
     builder.Property(ts => ts.Shoots)

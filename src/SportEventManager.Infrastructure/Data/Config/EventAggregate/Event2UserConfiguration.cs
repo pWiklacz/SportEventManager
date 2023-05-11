@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SportEventManager.Core.EventAggregate;
 
-namespace SportEventManager.Infrastructure.Data.Config;
+namespace SportEventManager.Infrastructure.Data.Config.EventAggregate;
 public class Event2UserConfiguration : IEntityTypeConfiguration<Event2User>
 {
   public void Configure(EntityTypeBuilder<Event2User> builder)

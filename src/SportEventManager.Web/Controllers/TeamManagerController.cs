@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Core.TeamAggregate.Specifications;
-using SportEventManager.Core.TeamAggregate.Stats;
 using SportEventManager.SharedKernel.Interfaces;
 using SportEventManager.Web.ViewModels.TeamModel;
 using SportEventManager.Web.ViewModels.TeamModel.Stats;
@@ -39,7 +39,7 @@ public class TeamManagerController : Controller
           City = team.City,
           IsDeleted = team.IsArchived,
           NumberOfPlayers = team.NumberOfPlayers,
-          FbTeamStats = FbTeamStatsViewModel.FromTeamStats(fBTeamStats: team.FbTeamWholeStats)
+          FbTeamStats = FbTeamStatsViewModel.FromTeamStats(fBTeamStats: (FbTeamStats?)team.FbTeamWholeStats?.FootballStats)
         });
     }
 

@@ -2,8 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
+using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.Core.TeamAggregate;
-using SportEventManager.Core.TeamAggregate.Stats;
 using SportEventManager.SharedKernel;
 
 namespace SportEventManager.Core.EventAggregate;
@@ -45,9 +45,9 @@ public class Match : EntityBase
 
   public String WinnerName { get; set; } = string.Empty;
 
-  private List<FbTeamMatchStats> _fbTeamMatchStats = new List<FbTeamMatchStats>(2);
+  private List<Statistics> _fbTeamMatchStats = new List<Statistics>(2);
 
-  public IEnumerable<FbTeamMatchStats> FbTeamMatchStats => _fbTeamMatchStats.AsReadOnly();
+  public IEnumerable<Statistics> FbTeamMatchStats => _fbTeamMatchStats.AsReadOnly();
 
   public Match() { }
 
@@ -78,7 +78,7 @@ public class Match : EntityBase
     this.IsArchived = true;
   }
 
-  public void AddStats(FbTeamMatchStats newStats)
+  public void AddStats(Statistics newStats)
   {
     Guard.Against.Null(newStats, nameof(newStats));
     _fbTeamMatchStats.Add(newStats);

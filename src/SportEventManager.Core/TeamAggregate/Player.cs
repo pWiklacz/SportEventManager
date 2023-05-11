@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Ardalis.GuardClauses;
-using SportEventManager.Core.TeamAggregate.Stats;
+using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.SharedKernel;
 
 namespace SportEventManager.Core.TeamAggregate;
@@ -20,7 +20,7 @@ public class Player : EntityBase
   [DefaultValue(false)]
   public bool IsArchived { get; private set; } = false;
 
-  public FbPlayerStats? FbPlayerStats { get; set; }
+  public Statistics? FbPlayerStats { get; set; }
 
   public Player(string name, string surname)
   {

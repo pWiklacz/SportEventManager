@@ -1,4 +1,4 @@
-﻿using SportEventManager.Core.TeamAggregate.Stats;
+﻿using SportEventManager.Core.StatisticsAggregate;
 
 namespace SportEventManager.Web.ViewModels.TeamModel.Stats;
 

@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
-using SportEventManager.Core.EventAggregate;
-using SportEventManager.Core.TeamAggregate.Stats;
+using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.Core.UserAggregate;
 using SportEventManager.SharedKernel;
 using SportEventManager.SharedKernel.Interfaces;
@@ -35,16 +33,12 @@ public class Team : EntityBase, IAggregateRoot
 
   public IEnumerable<Player2Team> PlayersToTeams => _playersToTeams.AsReadOnly();
 
-  public List<User> _owners = new List<User>();
-
-  public IEnumerable<User> Owners => _owners.AsReadOnly();
-
   public List<Team2User> _teamsToUsers = new List<Team2User>();
 
   public IEnumerable<Team2User> TeamsToUsers => _teamsToUsers.AsReadOnly();
 
   [DefaultValue(null)]
-  public FbTeamStats? FbTeamWholeStats { get; set; }
+  public Statistics? FbTeamWholeStats { get; set; }
 
   public Team(string name, string city, int numberOfPlayers)
   {
@@ -71,8 +65,8 @@ public class Team : EntityBase, IAggregateRoot
   {
     //NOTE: Not sure if we should actually have these Owners table since User which become the owner already exists
     //So maybe we only need to create a team2user and pass the id as an argument not the whole user object
-    Guard.Against.Null(newUser, nameof(newUser));
-    _owners.Add(newUser);
+    //Guard.Against.Null(newUser, nameof(newUser));
+    //_owners.Add(newUser);
 
     Team2User team2User = new Team2User(newUser.Id, this.Id);
     Guard.Against.Null(team2User, nameof(team2User));

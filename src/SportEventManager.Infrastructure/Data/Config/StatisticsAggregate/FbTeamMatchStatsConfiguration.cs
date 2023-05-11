@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SportEventManager.Core.TeamAggregate.Stats;
+using SportEventManager.Core.StatisticsAggregate;
 
-namespace SportEventManager.Infrastructure.Data.Config;
-public class FbTeamStatsConfiguration : IEntityTypeConfiguration<FbTeamStats>
+namespace SportEventManager.Infrastructure.Data.Config.StatisticsAggregate;
+
+public class FbTeamMatchStatsConfiguration : IEntityTypeConfiguration<FbTeamMatchStats>
 {
-  public void Configure(EntityTypeBuilder<FbTeamStats> builder)
+  public void Configure(EntityTypeBuilder<FbTeamMatchStats> builder)
   {
     builder.Property(ts => ts.Id)
       .UseIdentityColumn()
@@ -28,14 +24,9 @@ public class FbTeamStatsConfiguration : IEntityTypeConfiguration<FbTeamStats>
     builder.Property(ts => ts.YellowCards)
       .HasDefaultValue(0);
 
-    builder.Property(ts => ts.Wins)
-      .HasDefaultValue(0);
-
-    builder.Property(ts => ts.Losses)
-      .HasDefaultValue(0);
-
-    builder.Property(ts => ts.Draws)
-      .HasDefaultValue(0);
+    builder.Property(ts => ts.IsArchived)
+      .IsRequired()
+      .HasDefaultValue(false);
 
     builder.Property(ts => ts.Shoots)
       .HasDefaultValue(0);
@@ -52,5 +43,9 @@ public class FbTeamStatsConfiguration : IEntityTypeConfiguration<FbTeamStats>
     builder.Property(ts => ts.TeamId)
       .IsRequired()
       .HasAnnotation("ForeignKey", "Team");
+
+    builder.Property(ts => ts.MatchId)
+      .IsRequired()
+      .HasAnnotation("ForeignKey", "Match");
   }
 }

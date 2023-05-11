@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using SportEventManager.Core.TeamAggregate.Stats;
+using SportEventManager.Core.StatisticsAggregate;
 
 namespace SportEventManager.Web.ViewModels.TeamModel.Stats;
 public class FbTeamStatsViewModel : FootballStatsViewModel

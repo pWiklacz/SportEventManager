@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using SportEventManager.Core.TeamAggregate;
+using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.Web.ViewModels.TeamModel.Stats;
 
 namespace SportEventManager.Web.ViewModels.TeamModel;
@@ -33,6 +34,6 @@ public class TeamViewModel
     //OwnerId = team.OwnerId,
     IsDeleted= team.IsArchived,
     Players = team.Players.Select(p => PlayerViewModel.FromPlayer(p)).ToList(),
-    FbTeamStats = FbTeamStatsViewModel.FromTeamStats(team.FbTeamWholeStats)
+    FbTeamStats = FbTeamStatsViewModel.FromTeamStats((FbTeamStats?)team.FbTeamWholeStats?.FootballStats)
   };
 }

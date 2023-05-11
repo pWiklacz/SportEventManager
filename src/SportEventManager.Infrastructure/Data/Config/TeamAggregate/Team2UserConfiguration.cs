@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SportEventManager.Core.TeamAggregate;
 
-namespace SportEventManager.Infrastructure.Data.Config;
+namespace SportEventManager.Infrastructure.Data.Config.TeamAggregate;
 public class Team2UserConfiguration : IEntityTypeConfiguration<Team2User>
 {
   public void Configure(EntityTypeBuilder<Team2User> builder)

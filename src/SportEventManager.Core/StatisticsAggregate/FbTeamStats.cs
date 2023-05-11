@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Ardalis.GuardClauses;
 
-namespace SportEventManager.Core.TeamAggregate.Stats;
-public class FbTeamStats : FootballStats
+namespace SportEventManager.Core.StatisticsAggregate;
+public class FbTeamStats : FootballStatsBase
 {
   [DefaultValue(0)]
   public int Wins { get; set; } = 0;
@@ -33,7 +33,6 @@ public class FbTeamStats : FootballStats
 
   public FbTeamStats(int teamId) : base()
   {
-
     TeamId = Guard.Against.NegativeOrZero(teamId, nameof(teamId));
   }
 

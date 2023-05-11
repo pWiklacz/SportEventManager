@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SportEventManager.Core.TeamAggregate;
-using SportEventManager.Core.TeamAggregate.Stats;
+using SportEventManager.Core.StatisticsAggregate;
 
-namespace SportEventManager.Infrastructure.Data.Config;
+namespace SportEventManager.Infrastructure.Data.Config.StatisticsAggregate;
 public class FbPlayerStatsConfiguration : IEntityTypeConfiguration<FbPlayerStats>
 {
   public void Configure(EntityTypeBuilder<FbPlayerStats> builder)
@@ -23,6 +22,10 @@ public class FbPlayerStatsConfiguration : IEntityTypeConfiguration<FbPlayerStats
 
     builder.Property(ps => ps.YellowCards)
       .HasDefaultValue(0);
+
+    builder.Property(ps => ps.IsArchived)
+      .IsRequired()
+      .HasDefaultValue(false);
 
     builder.Property(ps => ps.PlayerId)
       .IsRequired()
