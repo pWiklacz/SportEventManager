@@ -3,19 +3,20 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SportEventManager.Core.EventAggregate;
 
 namespace SportEventManager.Infrastructure.Data.Config.EventAggregate;
-public class Stadium2EventConfiguration : IEntityTypeConfiguration<Stadium2Event>
+
+public class Event2TeamConfiguration : IEntityTypeConfiguration<Event2Team>
 {
-  public void Configure(EntityTypeBuilder<Stadium2Event> builder)
+  public void Configure(EntityTypeBuilder<Event2Team> builder)
   {
-    builder.Property(s2e => s2e.Id)
+    builder.Property(e2T => e2T.Id)
       .UseIdentityColumn()
       .IsRequired();
 
-    builder.Property(s2e => s2e.StadiumId)
+    builder.Property(e2S => e2S.TeamId)
       .IsRequired()
-      .HasAnnotation("ForeignKey", "Stadium");
+      .HasAnnotation("ForeignKey", "Team");
 
-    builder.Property(s2e => s2e.EventId)
+    builder.Property(e2S => e2S.EventId)
       .IsRequired()
       .HasAnnotation("ForeignKey", "Event");
   }

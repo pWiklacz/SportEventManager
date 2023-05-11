@@ -12,15 +12,15 @@ public class Team2UserConfiguration : IEntityTypeConfiguration<Team2User>
 {
   public void Configure(EntityTypeBuilder<Team2User> builder)
   {
-    builder.Property(t2u => t2u.Id)
+    builder.Property(t2U => t2U.Id)
       .UseIdentityColumn()
       .IsRequired();
 
-    builder.Property(t2u => t2u.TeamId)
+    builder.Property(t2U => t2U.TeamId)
       .IsRequired()
       .HasAnnotation("ForeignKey", "Team");
 
-    builder.Property(t2u => t2u.OwnerId)
+    builder.Property(t2U => t2U.OwnerId)
       .IsRequired()
       .HasAnnotation("ForeignKey", "User")
       .HasMaxLength(450);

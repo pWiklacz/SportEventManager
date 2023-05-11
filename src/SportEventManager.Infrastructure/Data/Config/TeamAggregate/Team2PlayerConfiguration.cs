@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SportEventManager.Core.TeamAggregate;
 
 namespace SportEventManager.Infrastructure.Data.Config.TeamAggregate;
-public class Player2TeamConfiguration : IEntityTypeConfiguration<Player2Team>
+public class Team2PlayerConfiguration : IEntityTypeConfiguration<Team2Player>
 {
-  public void Configure(EntityTypeBuilder<Player2Team> builder)
+  public void Configure(EntityTypeBuilder<Team2Player> builder)
   {
     builder.Property(p2t => p2t.Id)
       .UseIdentityColumn()

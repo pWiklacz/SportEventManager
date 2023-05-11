@@ -18,7 +18,12 @@ public class Stadium : EntityBase
   [DefaultValue(false)]
   public bool IsArchived { get; private set; } = false;
 
-  public Stadium() { }
+  public List<Event2Stadium> _events2Stadiums = new List<Event2Stadium>();
+  public IEnumerable<Event2Stadium> Events2Stadiums => _events2Stadiums.AsReadOnly();
+
+  public Stadium()
+  {
+  }
 
   public Stadium(string name, string city)
   {

@@ -25,6 +25,9 @@ public class Player : EntityBase
   [NotMapped]
   public Statistics? FbPlayerStats { get; set; }
 
+  private List<Team2Player> _teams2Players = new List<Team2Player>();
+  public IEnumerable<Team2Player> Teams2Players => _teams2Players.AsReadOnly();
+
   public Player(string name, string surname)
   {
     Name = Guard.Against.NullOrEmpty(name, nameof(name));

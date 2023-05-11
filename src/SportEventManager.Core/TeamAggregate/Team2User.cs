@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using SportEventManager.Core.UserAggregate;
 using SportEventManager.SharedKernel;
 
 namespace SportEventManager.Core.TeamAggregate;
@@ -14,11 +15,16 @@ public class Team2User : EntityBase
   [ForeignKey("Team")]
   public int TeamId { get; private set; }
 
-  public Team2User(string userId, int teamId)
+  public User? User { get; private set; }
+
+  public Team? Team { get; private set; }
+
+  public Team2User(string userId, int teamId, User user, Team team)
   {
     OwnerId = userId;
     TeamId = teamId;
+    User = user;
+    Team = team;
   }
-
   public Team2User() { }
 }

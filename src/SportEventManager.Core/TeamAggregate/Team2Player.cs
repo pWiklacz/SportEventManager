@@ -4,7 +4,7 @@ using SportEventManager.SharedKernel;
 using Ardalis.GuardClauses;
 
 namespace SportEventManager.Core.TeamAggregate;
-public class Player2Team : EntityBase
+public class Team2Player : EntityBase
 {
   [Required]
   [ForeignKey("Team")]
@@ -17,13 +17,19 @@ public class Player2Team : EntityBase
   [Required]
   public int Number { get; private set; }
 
-  public Player2Team(int teamId, int playerId, int number)
+  public Team? Team { get; private set; }
+
+  public Player? Player { get; private set; }
+
+  public Team2Player(int teamId, int playerId, int number, Team team, Player player)
   {
     TeamId = teamId;
     PlayerId = playerId;
     Guard.Against.NegativeOrZero(number, nameof(number));
     Number = number;
+    Team = team;
+    Player = player;
   }
 
-  public Player2Team() { }
+  public Team2Player() { }
 }

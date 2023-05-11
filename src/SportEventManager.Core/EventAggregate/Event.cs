@@ -5,25 +5,19 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using Ardalis.GuardClauses;
 using SportEventManager.Core.UserAggregate;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SportEventManager.Core.EventAggregate;
 public class Event : EntityBase, IAggregateRoot
 {
   [Required]
+  [ForeignKey("User")]
+  [MaxLength(450)]
+  public string OwnerId { get; private set; } = string.Empty;
+
+  [Required]
   [MaxLength(100)]
   public String Name { get; set; } = string.Empty;
-  public List<Stadium> _stadiums = new List<Stadium>();
-  public List<Stadium2Event> _stadiums2Events = new List<Stadium2Event>();
-  public List<Team> _teams = new List<Team>();
-  public List<Match> _matches = new List<Match>();
-  public List<User> _owners = new List<User>();
-  public List<Event2User> _events2Users = new List<Event2User>();
-  public IEnumerable<Stadium> Stadiums => _stadiums.AsReadOnly();
-  public IEnumerable<Stadium2Event> Stadiums2Events => _stadiums2Events.AsReadOnly();
-  public IEnumerable<Team> Teams => _teams.AsReadOnly();
-  public IEnumerable<Match> Matches => _matches.AsReadOnly();
-  public IEnumerable<User> Owners => _owners.AsReadOnly();
-  public IEnumerable<Event2User> Events2Users => _events2Users.AsReadOnly();
 
   [Required]
   public DateTime StartTime { get; set; }
@@ -38,6 +32,23 @@ public class Event : EntityBase, IAggregateRoot
   [Required]
   [DefaultValue(false)]
   public bool IsInprogress { get; private set; } = false;
+
+  private List<Stadium> _stadiums = new List<Stadium>();
+  private List<Event2Stadium> _stadiums2Events = new List<Event2Stadium>();
+  private List<Team> _teams = new List<Team>();
+  private List<Match> _matches = new List<Match>();
+  //private List<Event2User> _events2Users = new List<Event2User>();
+  private List<Event2Team> _events2Teams = new List<Event2Team>();
+
+  public IEnumerable<Event2Stadium> Events2Stadiums => _stadiums2Events.AsReadOnly();
+  //public IEnumerable<Event2User> Events2Users => _events2Users.AsReadOnly();
+  public IEnumerable<Match> Matches => _matches.AsReadOnly();
+  public IEnumerable<Event2Team> Events2Teams => _events2Teams.AsReadOnly();
+  [NotMapped]
+  public IEnumerable<Team> Teams => _teams.AsReadOnly();
+
+  [NotMapped]
+  public IEnumerable<Stadium> Stadiums => _stadiums.AsReadOnly();
 
   public Event(string name, DateTime startTime)
   {
@@ -54,9 +65,9 @@ public class Event : EntityBase, IAggregateRoot
     Guard.Against.Null(newStadium, nameof(newStadium));
     _stadiums.Add(newStadium);
 
-    Stadium2Event stadium2Event = new Stadium2Event(this.Id, newStadium.Id);
-    Guard.Against.Null(stadium2Event, nameof(stadium2Event));
-    _stadiums2Events.Add(stadium2Event);
+    Event2Stadium event2Stadium = new Event2Stadium(this.Id, newStadium.Id, this, newStadium);
+    Guard.Against.Null(event2Stadium, nameof(event2Stadium));
+    _stadiums2Events.Add(event2Stadium);
   }
 
   public void AddTeam(Team newTeam)
@@ -70,19 +81,17 @@ public class Event : EntityBase, IAggregateRoot
     Guard.Against.Null(newMatch, nameof(newMatch));
     _matches.Add(newMatch);
   }
+  //public void AddOwner(User newUser)
+  //{
+  //  //NOTE: Not sure if we should actually have these Owners table since User which become the owner already exists
+  //  //So maybe we only need to create a team2user and pass the id as an argument not the whole user object
+  //  Guard.Against.Null(newUser, nameof(newUser));
+  //  _owners.Add(newUser);
 
-  public void AddOwner(User newUser)
-  {
-    //NOTE: Not sure if we should actually have these Owners table since User which become the owner already exists
-    //So maybe we only need to create a team2user and pass the id as an argument not the whole user object
-    Guard.Against.Null(newUser, nameof(newUser));
-    _owners.Add(newUser);
-
-    Event2User event2User = new Event2User(newUser.Id, this.Id);
-    Guard.Against.Null(event2User, nameof(event2User));
-    _events2Users.Add(event2User);
-  }
-
+  //  Event2User event2User = new Event2User(newUser.Id, this.Id);
+  //  Guard.Against.Null(event2User, nameof(event2User));
+  //  _events2Users.Add(event2User);
+  //}
   public void Archive()
   {
     this.IsArchived = true;
