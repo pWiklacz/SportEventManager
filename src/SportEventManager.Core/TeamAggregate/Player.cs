@@ -21,12 +21,14 @@ public class Player : EntityBase
   [DefaultValue(false)]
   public bool IsArchived { get; private set; } = false;
 
-  [DefaultValue(null)]
-  [NotMapped]
-  public Statistics? FbPlayerStats { get; set; }
+  //navigation properties
 
-  private List<Team2Player> _teams2Players = new List<Team2Player>();
-  public IEnumerable<Team2Player> Teams2Players => _teams2Players.AsReadOnly();
+  public FbPlayerStats? FbPlayerStats { get; set; }
+
+  private List<Team> _teams = new();
+  private List<TeamPlayer> _teamPlayers = new();
+  public ICollection<Team> Teams => _teams.AsReadOnly();
+  public ICollection<TeamPlayer> TeamPlayers => _teamPlayers.AsReadOnly();
 
   public Player(string name, string surname)
   {

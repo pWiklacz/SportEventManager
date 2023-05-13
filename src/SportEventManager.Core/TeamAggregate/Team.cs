@@ -27,28 +27,28 @@ public class Team : EntityBase, IAggregateRoot
   [DefaultValue(false)]
   public bool IsArchived { get; private set; } = false;
 
+  //navigation properties
+
   [DefaultValue(null)]
   [NotMapped]
   public Statistics? FbTeamWholeStats { get; set; }
 
-  private List<Player> _players = new List<Player>();
-  private List<Team2Player> _teams2Players = new List<Team2Player>();
-  private List<Team2User> _teams2Users = new List<Team2User>();
-  private List<Event2Team> _events2Teams = new List<Event2Team>();
-  private List<User> _owners = new List<User>();
+  private List<Player> _players = new();
+  private List<User> _owners = new();
+  private List<Event> _events = new();
+  private List<Match> _homeMatches = new();
+  private List<Match> _awayMatches = new();
+  private List<TeamPlayer> _teamPlayers = new();
 
-  public IEnumerable<Team2Player> Teams2Players => _teams2Players.AsReadOnly();
+  [InverseProperty(nameof(Match.HomeTeam))] 
+  public ICollection<Match> HomeMatches => _homeMatches.AsReadOnly();
 
-  public IEnumerable<Team2User> Teams2Users => _teams2Users.AsReadOnly();
-
-  public IEnumerable<Event2Team> Events2Teams => _events2Teams.AsReadOnly();
-
-  [NotMapped]
-  public IEnumerable<User> Owners => _owners.AsReadOnly();
-
-  [NotMapped]
-  public IEnumerable<Player> Players => _players.AsReadOnly();
-
+  [InverseProperty(nameof(Match.GuestTeam))]
+  public ICollection<Match> AwayMatches => _awayMatches.AsReadOnly();
+  public ICollection<Event> Events => _events.AsReadOnly();
+  public ICollection<User> Owners => _owners.AsReadOnly();
+  public ICollection<Player> Players => _players.AsReadOnly();
+  public ICollection<TeamPlayer> TeamPlayers => _teamPlayers.AsReadOnly();
 
   public Team(string name, string city, int numberOfPlayers)
   {
@@ -65,10 +65,6 @@ public class Team : EntityBase, IAggregateRoot
   {
     Guard.Against.Null(newPlayer, nameof(newPlayer));
     _players.Add(newPlayer);
-
-    Team2Player player2Team = new Team2Player(this.Id, newPlayer.Id, number, this, newPlayer);
-    Guard.Against.Null(player2Team, nameof(player2Team));
-    _teams2Players.Add(player2Team);
   }
 
   public void AddOwner(User newUser)
@@ -77,10 +73,6 @@ public class Team : EntityBase, IAggregateRoot
     //So maybe we only need to create a team2user and pass the id as an argument not the whole user object
     //Guard.Against.Null(newUser, nameof(newUser));
     //_owners.Add(newUser);
-
-    Team2User team2User = new Team2User(newUser.Id, this.Id, newUser, this);
-    Guard.Against.Null(team2User, nameof(team2User));
-    _teams2Users.Add(team2User);
   }
 
   public void Archive()

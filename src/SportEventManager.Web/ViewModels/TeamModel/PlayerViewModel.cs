@@ -28,7 +28,7 @@ public class PlayerViewModel
       Surname = player.Surname,
       //Number = player.Number,
       IsDeleted = player.IsArchived,
-      FbPlayerStats = FbPlayerStatsViewModel.FromPlayerStats(fBPlayerStats: (FbPlayerStats?) player.FbPlayerStats?.FootballStats)
+      FbPlayerStats = FbPlayerStatsViewModel.FromPlayerStats(fBPlayerStats: (FbPlayerStats?) player.FbPlayerStats)
     };
   }
 }

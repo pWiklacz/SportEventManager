@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Ardalis.GuardClauses;
+using SportEventManager.Core.TeamAggregate;
 
 namespace SportEventManager.Core.StatisticsAggregate;
 public class FbTeamStats : FootballStatsBase
@@ -30,6 +31,9 @@ public class FbTeamStats : FootballStatsBase
   [Required]
   [ForeignKey("Team")]
   public int TeamId { get; private set; }
+
+  [Required]
+  public Team Team { get; private set; } = null!;
 
   public FbTeamStats(int teamId) : base()
   {

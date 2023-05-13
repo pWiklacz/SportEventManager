@@ -29,14 +29,6 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
       .IsRequired()
       .HasDefaultValue(false);
 
-    builder.Property(m => m.FirstTeamId)
-      .IsRequired()
-      .HasAnnotation("ForeignKey", "Team");
-
-    builder.Property(m => m.SecondTeamId)
-      .IsRequired()
-      .HasAnnotation("ForeignKey", "Team");
-
     builder.Property(m => m.WinnerName)
       .HasMaxLength(100);
 

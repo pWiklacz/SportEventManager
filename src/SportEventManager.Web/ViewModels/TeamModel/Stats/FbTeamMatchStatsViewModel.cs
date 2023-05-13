@@ -29,7 +29,6 @@ public class FbTeamMatchStatsViewModel : FootballStatsViewModel
         Assists = fBTeamStats.Assists,
         RedCards = fBTeamStats.RedCards,
         YellowCards = fBTeamStats.YellowCards,
-        TeamId = fBTeamStats.TeamId,
       };
     }
     else

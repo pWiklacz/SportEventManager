@@ -21,9 +21,10 @@ public class User : IdentityUser, IAggregateRoot
   [DefaultValue(false)]
   public bool IsArchived { get; private set; } = false;
 
-  private List<Team2User> _teams2Users = new List<Team2User>();
-  private List<Event> _events = new List<Event>(); 
-  public IEnumerable<Team2User> Teams2Users => _teams2Users.AsReadOnly();
+  private List<Team> _teams = new();
+
+  private List<Event> _events = new(); 
+  public IEnumerable<Team> Teams2Users => _teams.AsReadOnly();
   public IEnumerable<Event> Events => _events.AsReadOnly();
   public void Archive()
   {

@@ -39,13 +39,5 @@ public class FbTeamMatchStatsConfiguration : IEntityTypeConfiguration<FbTeamMatc
 
     builder.Property(ts => ts.Passes)
       .HasDefaultValue(0);
-
-    builder.Property(ts => ts.TeamId)
-      .IsRequired()
-      .HasAnnotation("ForeignKey", "Team");
-
-    builder.Property(ts => ts.MatchId)
-      .IsRequired()
-      .HasAnnotation("ForeignKey", "Match");
   }
 }

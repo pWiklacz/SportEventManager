@@ -18,8 +18,13 @@ public class Stadium : EntityBase
   [DefaultValue(false)]
   public bool IsArchived { get; private set; } = false;
 
-  public List<Event2Stadium> _events2Stadiums = new List<Event2Stadium>();
-  public IEnumerable<Event2Stadium> Events2Stadiums => _events2Stadiums.AsReadOnly();
+  //navigation properties
+
+  private List<Event> _events = new();
+  private List<Match> _matches = new();
+  public ICollection<Event> Events => _events.AsReadOnly();
+
+  public ICollection<Match> Matches => _matches.AsReadOnly();
 
   public Stadium()
   {

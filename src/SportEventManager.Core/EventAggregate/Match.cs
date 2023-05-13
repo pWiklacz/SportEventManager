@@ -16,12 +16,7 @@ public class Match : EntityBase
   [Required]
   public DateTime EndTime { get; set; }
 
-  [Required]
-  public Stadium Stadium { get; set; } = new Stadium();
-
-  [Required]
-  [ForeignKey("Stadium")]
-  public int StadiumId { get; set; }
+  public String WinnerName { get; set; } = string.Empty;
 
   [Required]
   [DefaultValue(false)]
@@ -32,29 +27,50 @@ public class Match : EntityBase
   public bool IsEnded { get; set; } = false;
 
   [Required]
-  [ForeignKey("Team")]
-  public int FirstTeamId { get; private set; }
+  [ForeignKey("Stadium")]
+  public int StadiumId { get; set; }
 
   [Required]
-  [ForeignKey("Team")]
-  public int SecondTeamId { get; private set; }
+  [ForeignKey(nameof(HomeTeam))]
+  public int HomeTeamId { get; private set; }
+
+  [Required]
+  [ForeignKey(nameof(GuestTeam))]
+  public int GuestTeamId { get; private set; }
+
+  [ForeignKey(nameof(HomeTeamStats))]
+  public int HomeTeamStatsId { get; private set; }
+
+  [ForeignKey(nameof(GuestTeamStats))]
+  public int GuestTeamStatsId { get; private set; }
 
   [Required]
   [ForeignKey("Event")]
   public int EventId { get; set; }
 
-  public String WinnerName { get; set; } = string.Empty;
+  //navigation properties
 
-  private List<Statistics> _fbTeamMatchStats = new List<Statistics>(2);
+  [Required]
+  public Event Event { get; set; } = null!;
 
-  [NotMapped]
-  public IEnumerable<Statistics> FbTeamMatchStats => _fbTeamMatchStats.AsReadOnly();
+  [Required]
+  public Stadium Stadium { get; set; } = null!;
+
+  [Required]
+  public Team HomeTeam { get; set; } = null!;
+
+  [Required]
+  public Team GuestTeam { get; set; } = null!;
+
+  public FbTeamMatchStats? HomeTeamStats { get; set; }
+
+  public FbTeamMatchStats? GuestTeamStats { get; set; }
 
   public Match() { }
 
   public Match(
-    DateTime startTime, 
-    DateTime endTime, 
+    DateTime startTime,
+    DateTime endTime,
     Stadium stadium,
     int stadiumId,
     int firstTeamId,
@@ -67,8 +83,8 @@ public class Match : EntityBase
     EndTime = Guard.Against.Null(endTime, nameof(endTime));
     Stadium = Guard.Against.Null(stadium, nameof(stadium));
     StadiumId = Guard.Against.NegativeOrZero(stadiumId, nameof(stadiumId));
-    FirstTeamId = Guard.Against.NegativeOrZero(firstTeamId, nameof(firstTeamId));
-    SecondTeamId = Guard.Against.NegativeOrZero(secondTeamId, nameof(secondTeamId));
+    HomeTeamId = Guard.Against.NegativeOrZero(firstTeamId, nameof(firstTeamId));
+    GuestTeamId = Guard.Against.NegativeOrZero(secondTeamId, nameof(secondTeamId));
     IsArchived = false;
     IsEnded = isEnded;
     WinnerName = Guard.Against.NullOrEmpty(winnerName, nameof(winnerName));
@@ -77,11 +93,5 @@ public class Match : EntityBase
   public void Archive()
   {
     this.IsArchived = true;
-  }
-
-  public void AddStats(Statistics newStats)
-  {
-    Guard.Against.Null(newStats, nameof(newStats));
-    _fbTeamMatchStats.Add(newStats);
   }
 }
