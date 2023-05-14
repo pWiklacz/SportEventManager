@@ -25,7 +25,6 @@ public abstract class FootballStatsBase : EntityBase
   {
     IsArchived = true;
   }
-
   protected FootballStatsBase()
   {
     Goals = 0;

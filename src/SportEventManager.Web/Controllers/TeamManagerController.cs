@@ -64,7 +64,7 @@ public class TeamManagerController : Controller
     {
       //TODO: make sure the player instantiates ok with player2Team also
       team.AddPlayer(
-          new Player(newPlayer.Name, newPlayer.Surname)
+          new Player(newPlayer.Name, newPlayer.Surname, "12345678900")
           //newPlayer.Number
         );
     }
@@ -127,7 +127,7 @@ public class TeamManagerController : Controller
     {
       //TODO: make sure the player instantiates ok with player2Team also
       team.AddPlayer(
-          new Player(newPlayer.Name, newPlayer.Surname)
+          new Player(newPlayer.Name, newPlayer.Surname, "12345678900")
          // newPlayer.Number
         );
     }

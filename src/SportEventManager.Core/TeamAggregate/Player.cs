@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
+using Microsoft.AspNetCore.Identity;
 using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.SharedKernel;
 
@@ -21,6 +22,11 @@ public class Player : EntityBase
   [DefaultValue(false)]
   public bool IsArchived { get; private set; } = false;
 
+  [Required]
+  [MinLength(11)]
+  [MaxLength(11)]
+  public string Pesel { get; private set; } = "12345678900";
+
   //navigation properties
 
   public FbPlayerStats? FbPlayerStats { get; set; }
@@ -30,10 +36,11 @@ public class Player : EntityBase
   public ICollection<Team> Teams => _teams.AsReadOnly();
   public ICollection<TeamPlayer> TeamPlayers => _teamPlayers.AsReadOnly();
 
-  public Player(string name, string surname)
+  public Player(string name, string surname, string pesel)
   {
     Name = Guard.Against.NullOrEmpty(name, nameof(name));
     Surname = Guard.Against.NullOrEmpty(surname, nameof(surname));
+    Pesel = Guard.Against.NullOrEmpty(pesel, nameof(pesel));
     IsArchived = false;
   }
 

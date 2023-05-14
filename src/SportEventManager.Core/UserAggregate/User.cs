@@ -24,7 +24,7 @@ public class User : IdentityUser, IAggregateRoot
   private List<Team> _teams = new();
 
   private List<Event> _events = new(); 
-  public IEnumerable<Team> Teams2Users => _teams.AsReadOnly();
+  public IEnumerable<Team> Teams => _teams.AsReadOnly();
   public IEnumerable<Event> Events => _events.AsReadOnly();
   public void Archive()
   {
