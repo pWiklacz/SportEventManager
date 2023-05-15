@@ -31,7 +31,6 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
 
     builder.Property(e => e.OwnerId)
       .IsRequired()
-      .HasAnnotation("ForeignKey", "User")
       .HasMaxLength(450);
   }
 }

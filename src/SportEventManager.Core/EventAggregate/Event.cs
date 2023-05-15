@@ -11,7 +11,6 @@ namespace SportEventManager.Core.EventAggregate;
 public class Event : EntityBase, IAggregateRoot
 {
   [Required]
-  [ForeignKey("User")]
   [MaxLength(450)]
   public string OwnerId { get; private set; } = string.Empty;
 
@@ -42,8 +41,9 @@ public class Event : EntityBase, IAggregateRoot
   public ICollection<Team> Teams => _teams.AsReadOnly();
   public ICollection<Stadium> Stadiums => _stadiums.AsReadOnly();
 
-  public Event(string name, DateTime startTime)
+  public Event(string ownerId, string name, DateTime startTime)
   {
+    OwnerId = Guard.Against.NullOrEmpty(ownerId, nameof(ownerId));
     Name = Guard.Against.NullOrEmpty(name, nameof(name));
     StartTime = Guard.Against.Null(startTime, nameof(startTime));
     if (startTime <= DateTime.Now)

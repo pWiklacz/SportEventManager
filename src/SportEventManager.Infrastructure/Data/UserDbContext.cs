@@ -16,24 +16,5 @@ public class UserDbContext : IdentityDbContext<User>
   { 
     base.OnModelCreating(builder);
     builder.ApplyConfiguration(new UserConfiguration());
-
-    //builder.Entity<Event>()
-    //  .ToTable("Events", t => t.ExcludeFromMigrations());
-
-    //builder.Entity<Event>()
-    //  .ToTable("Stadium", t => t.ExcludeFromMigrations());
-
-    //builder.Entity<Team>()
-    //  .ToTable("Teams", t => t.ExcludeFromMigrations());
-
-    //builder.Entity<Match>()
-    //  .ToTable("Matches", t => t.ExcludeFromMigrations());
-
-    //builder.Entity<Player>()
-    //  .ToTable("Players", t => t.ExcludeFromMigrations());
-
-    //builder.Entity<FootballStatsBase>()
-    //  .ToTable("Stats", t => t.ExcludeFromMigrations());
-    ;
   }
 }

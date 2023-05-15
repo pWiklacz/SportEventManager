@@ -38,11 +38,11 @@ public class Match : EntityBase
   [ForeignKey(nameof(GuestTeam))]
   public int GuestTeamId { get; private set; }
 
-  [ForeignKey(nameof(HomeTeamStats))]
-  public int HomeTeamStatsId { get; private set; }
+  //[ForeignKey(nameof(HomeTeamStats))]
+  //public int HomeTeamStatsId { get; private set; }
 
-  [ForeignKey(nameof(GuestTeamStats))]
-  public int GuestTeamStatsId { get; private set; }
+  //[ForeignKey(nameof(GuestTeamStats))]
+  //public int GuestTeamStatsId { get; private set; }
 
   [Required]
   [ForeignKey("Event")]
@@ -81,7 +81,7 @@ public class Match : EntityBase
   {
     StartTime = Guard.Against.Null(startTime, nameof(startTime));
     EndTime = Guard.Against.Null(endTime, nameof(endTime));
-    Stadium = Guard.Against.Null(stadium, nameof(stadium));
+    Stadium = Guard.Against.Null(stadium, nameof(stadium)); 
     StadiumId = Guard.Against.NegativeOrZero(stadiumId, nameof(stadiumId));
     HomeTeamId = Guard.Against.NegativeOrZero(firstTeamId, nameof(firstTeamId));
     GuestTeamId = Guard.Against.NegativeOrZero(secondTeamId, nameof(secondTeamId));

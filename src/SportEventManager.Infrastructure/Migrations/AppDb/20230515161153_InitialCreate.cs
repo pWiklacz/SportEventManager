@@ -22,17 +22,11 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsArchived = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    IsInprogress = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    IsInprogress = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Events_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -43,7 +37,8 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    IsArchived = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    IsArchived = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Pesel = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -88,6 +83,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    OwnerId = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     NumberOfPlayers = table.Column<int>(type: "int", nullable: false),
@@ -250,30 +246,6 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "TeamUser",
-                columns: table => new
-                {
-                    OwnersId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Teams2UsersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TeamUser", x => new { x.OwnersId, x.Teams2UsersId });
-                    table.ForeignKey(
-                        name: "FK_TeamUser_AspNetUsers_OwnersId",
-                        column: x => x.OwnersId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TeamUser_Teams_Teams2UsersId",
-                        column: x => x.Teams2UsersId,
-                        principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Matches",
                 columns: table => new
                 {
@@ -287,9 +259,9 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                     StadiumId = table.Column<int>(type: "int", nullable: false),
                     HomeTeamId = table.Column<int>(type: "int", nullable: false),
                     GuestTeamId = table.Column<int>(type: "int", nullable: false),
-                    HomeTeamStatsId = table.Column<int>(type: "int", nullable: false),
-                    GuestTeamStatsId = table.Column<int>(type: "int", nullable: false),
-                    EventId = table.Column<int>(type: "int", nullable: false)
+                    EventId = table.Column<int>(type: "int", nullable: false),
+                    HomeTeamStatsId = table.Column<int>(type: "int", nullable: true),
+                    GuestTeamStatsId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -304,14 +276,12 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         name: "FK_Matches_FbTeamMatchStats_GuestTeamStatsId",
                         column: x => x.GuestTeamStatsId,
                         principalTable: "FbTeamMatchStats",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Matches_FbTeamMatchStats_HomeTeamStatsId",
                         column: x => x.HomeTeamStatsId,
                         principalTable: "FbTeamMatchStats",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Matches_Stadiums_StadiumId",
                         column: x => x.StadiumId,
@@ -323,19 +293,14 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         column: x => x.GuestTeamId,
                         principalTable: "Teams",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Matches_Teams_HomeTeamId",
                         column: x => x.HomeTeamId,
                         principalTable: "Teams",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Events_UserId",
-                table: "Events",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EventStadium_StadiumsId",
@@ -398,11 +363,6 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                 name: "IX_TeamStats_TeamId",
                 table: "TeamStats",
                 column: "TeamId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TeamUser_Teams2UsersId",
-                table: "TeamUser",
-                column: "Teams2UsersId");
         }
 
         /// <inheritdoc />
@@ -425,9 +385,6 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
             migrationBuilder.DropTable(
                 name: "TeamStats");
-
-            migrationBuilder.DropTable(
-                name: "TeamUser");
 
             migrationBuilder.DropTable(
                 name: "Events");

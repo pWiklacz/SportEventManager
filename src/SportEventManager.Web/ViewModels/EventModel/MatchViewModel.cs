@@ -28,8 +28,8 @@ public class MatchViewModel
     EndTime = match.EndTime,
     Stadium = StadiumViewModel.FromStadium(stadium : match.Stadium),
     IsEnded = match.IsEnded,
-    FirstTeamId = match.HomeTeamId,
-    SecondTeamId = match.GuestTeamId,
+    //FirstTeamId = match.HomeTeamId,
+   // SecondTeamId = match.GuestTeamId,
     //TODO: make this work - adding the <type, type> doesn't help
     //FbTeamMatchStats = match.FbTeamMatchStats.Select(FbTeamMatchStatsViewModel.FromTeamMatchStats).ToList()
   };

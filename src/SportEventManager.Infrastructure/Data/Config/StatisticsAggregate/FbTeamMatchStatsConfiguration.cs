@@ -39,5 +39,6 @@ public class FbTeamMatchStatsConfiguration : IEntityTypeConfiguration<FbTeamMatc
 
     builder.Property(ts => ts.Passes)
       .HasDefaultValue(0);
+
   }
 }

@@ -81,18 +81,12 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                     b.Property<string>("OwnerId")
                         .IsRequired()
                         .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)")
-                        .HasAnnotation("ForeignKey", "User");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Events");
                 });
@@ -115,13 +109,13 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                     b.Property<int>("GuestTeamId")
                         .HasColumnType("int");
 
-                    b.Property<int>("GuestTeamStatsId")
+                    b.Property<int?>("GuestTeamStatsId")
                         .HasColumnType("int");
 
                     b.Property<int>("HomeTeamId")
                         .HasColumnType("int");
 
-                    b.Property<int>("HomeTeamStatsId")
+                    b.Property<int?>("HomeTeamStatsId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsArchived")
@@ -262,6 +256,11 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("Pesel")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -297,6 +296,11 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.Property<int>("NumberOfPlayers")
                         .HasColumnType("int");
+
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -398,21 +402,6 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         {
                             t.ExcludeFromMigrations();
                         });
-                });
-
-            modelBuilder.Entity("TeamUser", b =>
-                {
-                    b.Property<string>("OwnersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Teams2UsersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OwnersId", "Teams2UsersId");
-
-                    b.HasIndex("Teams2UsersId");
-
-                    b.ToTable("TeamUser");
                 });
 
             modelBuilder.Entity("SportEventManager.Core.StatisticsAggregate.FbPlayerStats", b =>
@@ -535,13 +524,6 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SportEventManager.Core.EventAggregate.Event", b =>
-                {
-                    b.HasOne("SportEventManager.Core.UserAggregate.User", null)
-                        .WithMany("Events")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("SportEventManager.Core.EventAggregate.Match", b =>
                 {
                     b.HasOne("SportEventManager.Core.EventAggregate.Event", "Event")
@@ -553,26 +535,22 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                     b.HasOne("SportEventManager.Core.TeamAggregate.Team", "GuestTeam")
                         .WithMany("AwayMatches")
                         .HasForeignKey("GuestTeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SportEventManager.Core.StatisticsAggregate.FbTeamMatchStats", "GuestTeamStats")
                         .WithMany()
-                        .HasForeignKey("GuestTeamStatsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GuestTeamStatsId");
 
                     b.HasOne("SportEventManager.Core.TeamAggregate.Team", "HomeTeam")
                         .WithMany("HomeMatches")
                         .HasForeignKey("HomeTeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SportEventManager.Core.StatisticsAggregate.FbTeamMatchStats", "HomeTeamStats")
                         .WithMany()
-                        .HasForeignKey("HomeTeamStatsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HomeTeamStatsId");
 
                     b.HasOne("SportEventManager.Core.EventAggregate.Stadium", "Stadium")
                         .WithMany("Matches")
@@ -604,21 +582,6 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                     b.HasOne("SportEventManager.Core.TeamAggregate.Team", null)
                         .WithMany("TeamPlayers")
                         .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TeamUser", b =>
-                {
-                    b.HasOne("SportEventManager.Core.UserAggregate.User", null)
-                        .WithMany()
-                        .HasForeignKey("OwnersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SportEventManager.Core.TeamAggregate.Team", null)
-                        .WithMany()
-                        .HasForeignKey("Teams2UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -690,11 +653,6 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                     b.Navigation("HomeMatches");
 
                     b.Navigation("TeamPlayers");
-                });
-
-            modelBuilder.Entity("SportEventManager.Core.UserAggregate.User", b =>
-                {
-                    b.Navigation("Events");
                 });
 #pragma warning restore 612, 618
         }

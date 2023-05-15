@@ -58,8 +58,9 @@ public class TeamManagerController : Controller
   public async Task<IActionResult> Create(TeamViewModel viewModel)
   {
     //TODO: add owner which is use also User repository and use AddOwner method similar to AddPlayer
-    //Or if it doesn't work because the User already exists then refactor it to have only id of an existing user
-    Team team = new Team(viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
+    //TODO: Or if it doesn't work because the User already exists then refactor it to have only id of an existing user
+    //TODO: refactor below code and use existing userId
+    Team team = new Team(":userID", viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
     foreach(PlayerViewModel newPlayer in viewModel.Players)
     {
       //TODO: make sure the player instantiates ok with player2Team also

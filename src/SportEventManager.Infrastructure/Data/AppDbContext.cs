@@ -48,13 +48,13 @@ public class AppDbContext : DbContext
     base.OnModelCreating(modelBuilder);
 
     modelBuilder.Entity<User>()
-       .ToTable("AspNetUsers", t => t.ExcludeFromMigrations());
+      .ToTable("AspNetUsers", t => t.ExcludeFromMigrations());
 
     modelBuilder.Entity<Statistics>().ToView("Statistics").HasNoKey();
 
     modelBuilder.Entity<FbTeamMatchStats>().ToTable("FbTeamMatchStats");
     modelBuilder.Entity<FbTeamStats>().ToTable("TeamStats");
-    modelBuilder.Entity<FbPlayerStats>().ToTable("PlayerStats");
+    modelBuilder.Entity<FbPlayerStats>().ToTable("PlayerStats"); 
     
     modelBuilder.Entity<Team>()
       .HasMany(t => t.Players)
@@ -62,6 +62,18 @@ public class AppDbContext : DbContext
       .UsingEntity<TeamPlayer>(
         l => l.HasOne<Player>().WithMany(e => e.TeamPlayers),
         r => r.HasOne<Team>().WithMany(e => e.TeamPlayers));
+
+    modelBuilder.Entity<Match>()
+      .HasOne(m => m.HomeTeam)
+      .WithMany(t => t.HomeMatches)
+      .HasForeignKey(m => m.HomeTeamId)
+      .OnDelete(DeleteBehavior.Restrict);
+
+    modelBuilder.Entity<Match>()
+      .HasOne(m => m.GuestTeam)
+      .WithMany(t => t.AwayMatches)
+      .HasForeignKey(m => m.GuestTeamId)
+      .OnDelete(DeleteBehavior.Restrict);
 
     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
   }
