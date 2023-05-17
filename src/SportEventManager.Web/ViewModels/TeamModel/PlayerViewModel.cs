@@ -12,9 +12,6 @@ public class PlayerViewModel
 
   public string Surname { get; set; } = string.Empty;
 
-  //[Range(1, 99)]
-  //public int Number { get; set; }
-
   public bool IsDeleted { get; private set; }
 
   public FbPlayerStatsViewModel? FbPlayerStats { get; set; }
@@ -26,7 +23,6 @@ public class PlayerViewModel
       Id = player.Id,
       Name = player.Name,
       Surname = player.Surname,
-      //Number = player.Number,
       IsDeleted = player.IsArchived,
       FbPlayerStats = FbPlayerStatsViewModel.FromPlayerStats(fBPlayerStats: (FbPlayerStats?) player.FbPlayerStats)
     };

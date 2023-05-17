@@ -17,6 +17,11 @@ public class TeamPlayer : EntityBase
   [Required]
   public int Number { get; private set; }
 
+  [Required]
+  public DateTime JoinOn { get; set; }
+
+  public DateTime? LeaveOn { get; set; } = null;
+
   public TeamPlayer(int teamId, int playerId, int number)
   {
     TeamId = teamId;

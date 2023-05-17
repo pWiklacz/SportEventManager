@@ -67,7 +67,7 @@ public class Event : EntityBase, IAggregateRoot
   public void AddMatch(Match newMatch)
   {
     Guard.Against.Null(newMatch, nameof(newMatch));
-    Matches.Add(newMatch);
+    _matches.Add(newMatch);
   }
   public void Archive()
   {

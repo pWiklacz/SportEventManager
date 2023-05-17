@@ -60,8 +60,15 @@ public class AppDbContext : DbContext
       .HasMany(t => t.Players)
       .WithMany(p => p.Teams)
       .UsingEntity<TeamPlayer>(
-        l => l.HasOne<Player>().WithMany(e => e.TeamPlayers),
         r => r.HasOne<Team>().WithMany(e => e.TeamPlayers));
+
+    modelBuilder.Entity<Team>()
+      .HasMany(t => t.Players)
+      .WithMany(p => p.Teams)
+      .UsingEntity<TeamPlayer>(
+       j => j.Property(e => e.JoinOn).HasDefaultValueSql("GETUTCDATE()"));
+
+
 
     modelBuilder.Entity<Match>()
       .HasOne(m => m.HomeTeam)
