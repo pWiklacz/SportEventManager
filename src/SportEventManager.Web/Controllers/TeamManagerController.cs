@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Core.TeamAggregate.Specifications;
-using SportEventManager.Core.TeamAggregate.Stats;
 using SportEventManager.SharedKernel.Interfaces;
 using SportEventManager.Web.ViewModels.TeamModel;
 using SportEventManager.Web.ViewModels.TeamModel.Stats;
@@ -37,9 +37,9 @@ public class TeamManagerController : Controller
           Id = team.Id,
           Name = team.Name,
           City = team.City,
-          IsDeleted = team.IsDeleted,
+          IsDeleted = team.IsArchived,
           NumberOfPlayers = team.NumberOfPlayers,
-          FbTeamStats = FBTeamStatsViewModel.FromTeamStats(fBTeamStats: team.FbTeamWholeStats)
+          FbTeamStats = FbTeamStatsViewModel.FromTeamStats(fBTeamStats: (FbTeamStats?)team.FbTeamWholeStats?.FootballStats)
         });
     }
 
@@ -56,12 +56,17 @@ public class TeamManagerController : Controller
 
   [HttpPost]
   public async Task<IActionResult> Create(TeamViewModel viewModel)
-  {//TODO: add owner
-    Team team = new Team(viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
+  {
+    //TODO: add owner which is use also User repository and use AddOwner method similar to AddPlayer
+    //TODO: Or if it doesn't work because the User already exists then refactor it to have only id of an existing user
+    //TODO: refactor below code and use existing userId
+    Team team = new Team(":userID", viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
     foreach(PlayerViewModel newPlayer in viewModel.Players)
     {
+      //TODO: make sure the player instantiates ok with player2Team also
       team.AddPlayer(
-          new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Number, team.Id)
+          new Player(newPlayer.Name, newPlayer.Surname, "12345678900")
+          //newPlayer.Number
         );
     }
     await _teamRepository.AddAsync(team);
@@ -97,8 +102,10 @@ public class TeamManagerController : Controller
 
   [HttpPost]
   public async Task<IActionResult> Edit(TeamViewModel viewModel)
-  {//TODO: add owner and make deleting work properly
-    //Deleting old players from a team
+  {
+    //TODO: add owner which is use also User repository and use AddOwner method similar to AddPlayer
+    //Or if it doesn't work because the User already exists then refactor it to have only id of an existing user
+    //Make deleting old players from a team work
     TeamByIdWithPlayersSpec spec = new TeamByIdWithPlayersSpec(viewModel.Id);
     Team? team = await _teamRepository.FirstOrDefaultAsync(spec);
     if (team == null || team.Players.IsNullOrEmpty())
@@ -119,8 +126,10 @@ public class TeamManagerController : Controller
 
     foreach (PlayerViewModel newPlayer in viewModel.Players)
     {
+      //TODO: make sure the player instantiates ok with player2Team also
       team.AddPlayer(
-          new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Number, team.Id)
+          new Player(newPlayer.Name, newPlayer.Surname, "12345678900")
+         // newPlayer.Number
         );
     }
     await _teamRepository.UpdateAsync(team);
@@ -163,8 +172,8 @@ public class TeamManagerController : Controller
     }
 
     foreach(Player player in team.Players)
-      player.MarkAsDeleted(); ///why it's not working?
-    team.MarkAsDeleted();
+      player.Archive(); ///why it's not working?
+    team.Archive();
     await _teamRepository.UpdateAsync(team);
     //TODO: delete also teamstats and playerstats
     return RedirectToAction("Index");

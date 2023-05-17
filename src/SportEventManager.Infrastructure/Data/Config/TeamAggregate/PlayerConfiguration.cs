@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SportEventManager.Core.TeamAggregate;
 
-namespace SportEventManager.Infrastructure.Data.Config;
+namespace SportEventManager.Infrastructure.Data.Config.TeamAggregate;
 public class PlayerConfiguration : IEntityTypeConfiguration<Player>
 {
   public void Configure(EntityTypeBuilder<Player> builder)
@@ -19,15 +19,8 @@ public class PlayerConfiguration : IEntityTypeConfiguration<Player>
         .HasMaxLength(100)
         .IsRequired();
 
-    builder.Property(p => p.Number)
-        .IsRequired();
-
-    builder.Property(p => p.IsDeleted)
+    builder.Property(p => p.IsArchived)
       .IsRequired()
       .HasDefaultValue(false);
-
-    builder.Property(p => p.TeamId)
-      .IsRequired()
-      .HasAnnotation("ForeignKey", "Team");
   }
 }

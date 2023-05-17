@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.EventAggregate.Specifications;
 using SportEventManager.Core.TeamAggregate;
@@ -8,7 +6,6 @@ using SportEventManager.Core.TeamAggregate.Specifications;
 using SportEventManager.SharedKernel.Interfaces;
 using SportEventManager.Web.ViewModels.EventModel;
 using SportEventManager.Web.ViewModels.TeamModel;
-using SportEventManager.Web.ViewModels.TeamModel.Stats;
 
 namespace SportEventManager.Web.Controllers;
 public class EventManagerController : Controller
@@ -39,8 +36,8 @@ public class EventManagerController : Controller
         {
           Id = @event.Id,
           Name = @event.Name,
-          startTime = @event.StartTime,
-          IsDeleted = @event.IsDeleted,
+          StartTime = @event.StartTime,
+          IsArchived = @event.IsArchived,
         });
     }
 
@@ -63,9 +60,9 @@ public class EventManagerController : Controller
     {
       Id = selectEvent.Id,
       Name = selectEvent.Name,
-      startTime = selectEvent.StartTime,
-      Teams = selectEvent.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
-      Stadiums = selectEvent.stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList()
+      StartTime = selectEvent.StartTime,
+      Teams = selectEvent.Teams.Select(TeamViewModel.FromTeam).ToList(),
+      Stadiums = selectEvent.Stadiums.Select(StadiumViewModel.FromStadium).ToList()
     };
 
     return View(dto);
@@ -78,7 +75,7 @@ public class EventManagerController : Controller
     EventViewModel eventView= new EventViewModel();
     eventView.Stadiums.Add(new StadiumViewModel() { Id = 1 });
     eventView.Matches.Add(new MatchViewModel() { Id= 1 });
-    eventView.selectTeamsName.Add("defoult");
+    eventView.SelectTeamsName.Add("default");
 
     EventWithTeam spec = new EventWithTeam();
     List<Event> existEvents = await _eventRepository.ListAsync(spec);
@@ -87,25 +84,19 @@ public class EventManagerController : Controller
 
     foreach(Event eventToFilter in existEvents)
     {
-        foreach(Team team in eventToFilter.Teams)
-      {
-        eventsTeamName.Add(team.Name);
-      }
-
+      eventsTeamName.AddRange(eventToFilter.Teams.Select(team => team.Name));
     }
 
-    var teams = await _teamRepository.ListAsync();  
+    var teams = await _teamRepository.ListAsync(); 
+    
     if (teams == null)
     {
       return View(eventView);
     }
 
-
-    foreach(Team team in teams)
+    foreach (var team in teams.Where(team => !eventsTeamName.Contains(team.Name) && !team.IsArchived))
     {
-      if (!eventsTeamName.Contains(team.Name) && !team.IsDeleted) { 
-        eventView.teamsName.Add(team.Name);
-      }
+      eventView.TeamsName.Add(team.Name);
     }
 
     return View(eventView);
@@ -115,16 +106,17 @@ public class EventManagerController : Controller
   [HttpPost]
   public async Task<IActionResult> Create(EventViewModel viewModel)
   {
-
-    Event eventNew = new Event(viewModel.Name, viewModel.startTime);
+    //TODO: refactor and use existing ownerID
+    Event eventNew = new Event("OwnerID", viewModel.Name, viewModel.StartTime);
     foreach(StadiumViewModel newStadium in viewModel.Stadiums)
     {
+      //TODO: Make a normal name in front-end
       eventNew.AddStadium(
-        new Stadium(newStadium.City)
-        );
+        new Stadium("name", newStadium.City)
+      );
     };
 
-    foreach(string teamName in viewModel.selectTeamsName)
+    foreach(string teamName in viewModel.SelectTeamsName)
     {
       var spec = new TeamByNameSpec(teamName);
       Team? team = await _teamRepository.FirstOrDefaultAsync(spec);
@@ -162,7 +154,7 @@ public class EventManagerController : Controller
     {
       Id = actuallEvent.Id,
       Name = actuallEvent.Name,
-      startTime = actuallEvent.StartTime
+      StartTime = actuallEvent.StartTime
     };
 
     return View(dto);
@@ -179,7 +171,7 @@ public class EventManagerController : Controller
       return NotFound();
     }
 
-    actuallEvent.MarkAsDeleted();
+    actuallEvent.Archive();
     await _eventRepository.UpdateAsync(actuallEvent);
     return RedirectToAction("Index");
   }
@@ -201,8 +193,10 @@ public class EventManagerController : Controller
     Dictionary<Team, Team> bracket = TournamentBracket.GenerateBracket_1stRound(ev.Teams.ToList());
     foreach(var pair in bracket)
     {
-      Match match = new Match(ev.StartTime, DateTime.MaxValue, ev.stadiums.ElementAt<Stadium>(0),
-        pair.Key.Id, pair.Value.Id);
+      Match match = new Match(ev.StartTime, DateTime.MaxValue, ev.Stadiums.ElementAt<Stadium>(0),
+        ev.Stadiums.ElementAt<Stadium>(0).Id,
+        pair.Key.Id, pair.Value.Id
+      );
       ev.AddMatch(match);
     }
 

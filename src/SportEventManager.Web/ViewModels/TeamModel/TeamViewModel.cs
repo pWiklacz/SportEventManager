@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using SportEventManager.Core.TeamAggregate;
+using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.Web.ViewModels.TeamModel.Stats;
 
 namespace SportEventManager.Web.ViewModels.TeamModel;
@@ -22,7 +23,7 @@ public class TeamViewModel
 
   public List<PlayerViewModel> Players { get; set; } = new List<PlayerViewModel>();
 
-  public FBTeamStatsViewModel? FbTeamStats { get; set; }
+  public FbTeamStatsViewModel? FbTeamStats { get; set; }
 
   public static TeamViewModel FromTeam(Team team) => new()
   {
@@ -30,9 +31,9 @@ public class TeamViewModel
     Name = team.Name,
     City = team.City,
     NumberOfPlayers = team.NumberOfPlayers,
-    OwnerId = team.OwnerId,
-    IsDeleted= team.IsDeleted,
+    //OwnerId = team.OwnerId,
+    IsDeleted= team.IsArchived,
     Players = team.Players.Select(p => PlayerViewModel.FromPlayer(p)).ToList(),
-    FbTeamStats = FBTeamStatsViewModel.FromTeamStats(team.FbTeamWholeStats)
+    FbTeamStats = FbTeamStatsViewModel.FromTeamStats((FbTeamStats?)team.FbTeamWholeStats?.FootballStats)
   };
 }

@@ -87,7 +87,7 @@
                     <div class="round">
                         @Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).Name)
                         <div class="date">
-                            @Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).startTime)
+                            @Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).StartTime)
                         </div>
                     </div>
                     <div class="team top">
@@ -103,7 +103,7 @@
                         </div>
                     </div>
                     <div class="team bot">
-                        Number of Matches
+                        Number of HomeMatches
                         <div class="score">
                             @Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).Matches.Count)
                         </div>

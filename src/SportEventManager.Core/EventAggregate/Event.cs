@@ -4,48 +4,54 @@ using SportEventManager.Core.TeamAggregate;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using Ardalis.GuardClauses;
+using SportEventManager.Core.UserAggregate;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SportEventManager.Core.EventAggregate;
 public class Event : EntityBase, IAggregateRoot
 {
   [Required]
+  [MaxLength(450)]
+  public string OwnerId { get; private set; } = string.Empty;
+
+  [Required]
   [MaxLength(100)]
   public String Name { get; set; } = string.Empty;
-
-  public List<Stadium> _stadiums = new List<Stadium>();
-
-  public List<Team> _teams = new List<Team>();
-
-  public List<Match> _matches = new List<Match>();
-
-  public IEnumerable<Stadium> stadiums => _stadiums.AsReadOnly();
-
-  public IEnumerable<Team> Teams => _teams.AsReadOnly();
-
-  public IEnumerable<Match> Matches => _matches.AsReadOnly();
-
-  //You should make a constructor for usage maybe?? Not sure how complicated you need
 
   [Required]
   public DateTime StartTime { get; set; }
 
   [Required]
-  [DefaultValue(false)]
-  public bool IsDeleted { get; private set; } = false;
+  public DateTime EndTime { get; set; }
 
-  public Event(string name, DateTime startTime) { 
-    Name = Guard.Against.NullOrEmpty(name, nameof(name));
-    StartTime = startTime;
-    //_stadiums = new List<Stadium>(numOfStadium);
-    //_teams = new List<Team>(numOfTeam);
-  }
-  public Event(int id, string name, DateTime startTime)
+  [Required]
+  [DefaultValue(false)]
+  public bool IsArchived { get; private set; } = false;
+
+  [Required]
+  [DefaultValue(false)]
+  public bool IsInprogress { get; private set; } = false;
+
+  //navigation properties
+
+  private List<Stadium> _stadiums  = new();
+  private List<Team> _teams = new();
+  private List<Match> _matches = new();
+  public ICollection<Match> Matches => _matches.AsReadOnly();
+  public ICollection<Team> Teams => _teams.AsReadOnly();
+  public ICollection<Stadium> Stadiums => _stadiums.AsReadOnly();
+
+  public Event(string ownerId, string name, DateTime startTime)
   {
+    OwnerId = Guard.Against.NullOrEmpty(ownerId, nameof(ownerId));
     Name = Guard.Against.NullOrEmpty(name, nameof(name));
-    StartTime = startTime;
-    //_stadiums = new List<Stadium>(numOfStadium);
-    //_teams = new List<Team>(numOfTeam);
+    StartTime = Guard.Against.Null(startTime, nameof(startTime));
+    if (startTime <= DateTime.Now)
+    {
+      IsInprogress = true;
+    }
   }
+
   public void AddStadium(Stadium newStadium)
   {
     Guard.Against.Null(newStadium, nameof(newStadium));
@@ -63,9 +69,8 @@ public class Event : EntityBase, IAggregateRoot
     Guard.Against.Null(newMatch, nameof(newMatch));
     _matches.Add(newMatch);
   }
-
-  public void MarkAsDeleted()
+  public void Archive()
   {
-    this.IsDeleted = true;
+    this.IsArchived = true;
   }
 }

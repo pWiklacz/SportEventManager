@@ -84,7 +84,11 @@
                                             <input asp-for="@Model.Players[i].Surname" class="form-control" />
                                         </td>
                                         <td>
-                                            <input asp-for="@Model.Players[i].Number" class="form-control" />
+                                            number
+                                            @*
+                                                TODO: make it use player2Team
+                                                <input asp-for="@Model.Players[i].Number" class="form-control" />
+                                            *@
                                         </td>
                                         <td style="width:60px;">
                                             <input type="hidden" asp-for="@Model.Players[i].IsDeleted" />
