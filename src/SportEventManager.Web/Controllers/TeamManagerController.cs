@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Core.TeamAggregate.Specifications;
+using SportEventManager.Core.UserAggregate;
 using SportEventManager.SharedKernel.Interfaces;
 using SportEventManager.Web.ViewModels.TeamModel;
 using SportEventManager.Web.ViewModels.TeamModel.Stats;
@@ -12,38 +14,49 @@ namespace SportEventManager.Web.Controllers;
 public class TeamManagerController : Controller
 {
   private readonly IRepository<Team> _teamRepository;
+  private readonly IRepository<User> _userRepository;
 
-  public TeamManagerController(IRepository<Team> teamRepository)
+  public TeamManagerController(IRepository<Team> teamRepository, IRepository<User> userRepository)
   {
     _teamRepository = teamRepository;
+    _userRepository = userRepository;
   }
 
   public async Task<IActionResult> Index()
   {
-    TeamsByOwnerIdSpec spec = new TeamsByOwnerIdSpec();
-    var teams = await _teamRepository.ListAsync();
-    if (teams == null)
+    
+    string? currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    TeamsByOwnerIdSpec spec;
+
+    if (currentUserId != null)
     {
-      return View();
+      spec = new TeamsByOwnerIdSpec(currentUserId);
+
+      var teams = await _teamRepository.ListAsync(spec);
+
+      if (teams == null)
+      {
+        return View();
+      }
+
+      var dto = new List<TeamViewModel>();
+
+      foreach (Team team in teams)
+      {
+        dto.Add(
+          new TeamViewModel
+          {
+            Id = team.Id,
+            Name = team.Name,
+            City = team.City,
+            IsDeleted = team.IsArchived,
+            NumberOfPlayers = team.NumberOfPlayers,
+            FbTeamStats = FbTeamStatsViewModel.FromTeamStats(fBTeamStats: (FbTeamStats?)team.FbTeamWholeStats?.FootballStats)
+          });
+      }
+      return View(dto);
     }
-
-    var dto = new List<TeamViewModel>();
-
-    foreach (Team team in teams)
-    {
-      dto.Add(
-        new TeamViewModel
-        {
-          Id = team.Id,
-          Name = team.Name,
-          City = team.City,
-          IsDeleted = team.IsArchived,
-          NumberOfPlayers = team.NumberOfPlayers,
-          FbTeamStats = FbTeamStatsViewModel.FromTeamStats(fBTeamStats: (FbTeamStats?)team.FbTeamWholeStats?.FootballStats)
-        });
-    }
-
-    return View(dto);
+    else { return View(); }
   }
 
   [HttpGet]
@@ -60,17 +73,22 @@ public class TeamManagerController : Controller
     //TODO: add owner which is use also User repository and use AddOwner method similar to AddPlayer
     //TODO: Or if it doesn't work because the User already exists then refactor it to have only id of an existing user
     //TODO: refactor below code and use existing userId
-    Team team = new Team(":userID", viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
-    foreach(PlayerViewModel newPlayer in viewModel.Players)
+
+    string? currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (currentUserId != null)
     {
-      //TODO: make sure the player instantiates ok with player2Team also
-      team.AddPlayer(
-          new Player(newPlayer.Name, newPlayer.Surname, "12345678900")
+      Team team = new Team(currentUserId, viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
+      foreach (PlayerViewModel newPlayer in viewModel.Players)
+      {
+        //TODO: make sure the player instantiates ok with player2Team also
+        team.AddPlayer(
+            new Player(newPlayer.Name, newPlayer.Surname, "12345678900")
           //newPlayer.Number
-        );
+          );
+      }
+      await _teamRepository.AddAsync(team);
+      await _teamRepository.SaveChangesAsync();
     }
-    await _teamRepository.AddAsync(team);
-    await _teamRepository.SaveChangesAsync();
 
     return RedirectToAction("Index");
   }
