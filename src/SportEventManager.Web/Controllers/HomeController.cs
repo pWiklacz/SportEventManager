@@ -7,6 +7,9 @@ using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Web.ViewModels.EventModel;
 using SportEventManager.Web.ViewModels.TeamModel;
 using Microsoft.Extensions.Logging;
+using SportEventManager.Core.UserAggregate;
+using Microsoft.AspNetCore.Identity;
+using JetBrains.Annotations;
 
 namespace SportEventManager.Web.Controllers;
 
@@ -19,39 +22,38 @@ namespace SportEventManager.Web.Controllers;
 public class HomeController : Controller
 {
   private readonly IRepository<Event> _eventRepository;
+  private readonly UserManager<User> _userManager;
 
-  public HomeController(IRepository<Event> eventRepository)
+  public HomeController(IRepository<Event> eventRepository, UserManager<User> userManager)
   {
     _eventRepository = eventRepository;
+    _userManager = userManager;
   }
 
   // GET: EventSettings
   public async Task<IActionResult> Index()
   {
+    var user = await _userManager.GetUserAsync(User);
     var sportEvents = await _eventRepository.ListAsync();
-    if (sportEvents == null)
-    {
-      return View();
-    }
+    var userId = user?.Id;
 
-    var dto = new List<EventViewModel>();
-    foreach (Event @event in sportEvents)
-    {
-      dto.Add(
-        new EventViewModel
+    var filteredEvents = sportEvents
+        .Where(e => userId == null || e.OwnerId == userId)
+        .Select(@event => new EventViewModel
         {
           Id = @event.Id,
           Name = @event.Name,
           StartTime = @event.StartTime,
+          EndTime = @event.EndTime,
           IsArchived = @event.IsArchived,
           Stadiums = @event.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
           Teams = @event.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
           Matches = @event.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList()
-        });
-    }
+        })
+        .ToList();
+    if (filteredEvents.Count == 0) return View();
 
-    return View(dto);
-
+    return View(filteredEvents);
   }
 
   public IActionResult Privacy()
