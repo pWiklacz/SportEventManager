@@ -38,12 +38,6 @@ public class Match : EntityBase
   [ForeignKey(nameof(GuestTeam))]
   public int GuestTeamId { get; private set; }
 
-  //[ForeignKey(nameof(HomeTeamStats))]
-  //public int HomeTeamStatsId { get; private set; }
-
-  //[ForeignKey(nameof(GuestTeamStats))]
-  //public int GuestTeamStatsId { get; private set; }
-
   [Required]
   [ForeignKey("Event")]
   public int EventId { get; set; }

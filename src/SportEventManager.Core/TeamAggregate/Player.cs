@@ -25,16 +25,13 @@ public class Player : EntityBase
   [Required]
   [MinLength(11)]
   [MaxLength(11)]
-  public string Pesel { get; private set; } = "12345678900";
+  public string Pesel { get; private set; }
 
   //navigation properties
 
   public FbPlayerStats? FbPlayerStats { get; set; }
-
   private List<Team> _teams = new();
-  private List<TeamPlayer> _teamPlayers = new();
   public ICollection<Team> Teams => _teams.AsReadOnly();
-  public ICollection<TeamPlayer> TeamPlayers => _teamPlayers.AsReadOnly();
 
   public Player(string name, string surname, string pesel)
   {
