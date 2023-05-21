@@ -5,6 +5,19 @@ function hasClass(elem, className) {
     return elem.classList.contains(className);
 }
 
+function checkPesel(input) {
+    var inputPesel = input.value;
+
+    console.log("Before getting existingPeselNumbers");
+    var existingPeselNumbers = JSON.parse(document.getElementById('existingPeselNumbers').value);
+    console.log("After getting existingPeselNumbers: ", existingPeselNumbers);
+
+    if (existingPeselNumbers.includes(inputPesel)) {
+        alert('This PESEL number already exists! Please enter a different one.');
+        input.value = '';
+    }
+}
+
 function DeleteItem(btn) {
 
     var table = document.getElementById('PlayersTable');

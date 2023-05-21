@@ -17,6 +17,8 @@ public class PlayerViewModel
 
   public bool IsDeleted { get; private set; }
 
+  public string Pesel { get; set; } = string.Empty;
+
   public FbPlayerStatsViewModel? FbPlayerStats { get; set; }
 
   public static PlayerViewModel FromPlayer(Player player)

@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Core.TeamAggregate.Specifications;
@@ -60,10 +61,20 @@ public class TeamManagerController : Controller
   }
 
   [HttpGet]
-  public IActionResult Create()
+  public async Task<IActionResult> Create()
   {
     TeamViewModel team = new TeamViewModel();
     team.Players.Add(new PlayerViewModel() { Id = 1 });
+
+    var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersSpec());
+
+    var existingPeselNumbers = teamsWithPlayers
+        .SelectMany(t => t.Players)
+        .Select(p => p.Pesel)
+        .ToList();
+
+   
+
     return View(team);
   }
 
@@ -82,7 +93,7 @@ public class TeamManagerController : Controller
       {
         //TODO: make sure the player instantiates ok with player2Team also
         team.AddPlayer(
-            new Player(newPlayer.Name, newPlayer.Surname, "12345678900")
+            new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel)
           //newPlayer.Number
           );
       }

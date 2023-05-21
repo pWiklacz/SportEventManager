@@ -43,9 +43,10 @@
                     </div>
                 </div>
             </div>
-            <div class="p-1 mt-4" style="height:50px;">
+            <div class="p-1 mt-5" style="height:50px;">
                 <h4>Add team members</h4>
             </div>
+            @Html.Hidden("ExistingPeselNumbers", Newtonsoft.Json.JsonConvert.SerializeObject(Model.ExistingPeselNumbers), new { id = "existingPeselNumbers" })
             <div class="container col-12">
                 <div class="col-md-12 p-0 m-0 bg-white">
                     <table id="PlayersTable" class="table table-sm CodesTable">
@@ -59,6 +60,9 @@
                                 </th>
                                 <th>
                                     Number
+                                </th>
+                                <th>
+                                    Pesel
                                 </th>
                                 <th style="width:75px;">
                                     <button
@@ -88,6 +92,10 @@
                                             TODO: make it use player2Team
                                             <input asp-for="@Model.Players[i].Number" class="form-control" />
                                         *@
+                                    </td>
+                                    <td>
+       
+                                        <input asp-for="@Model.Players[i].Pesel" class="form-control" onblur="checkPesel(this)"/>
                                     </td>
                                     <td style="width:60px;">
                                         <input type="hidden" asp-for="@Model.Players[i].IsDeleted" />

@@ -25,6 +25,8 @@ public class TeamViewModel
 
   public FbTeamStatsViewModel? FbTeamStats { get; set; }
 
+  public List<string>? ExistingPeselNumbers { get; set; }
+
   public static TeamViewModel FromTeam(Team team) => new()
   {
     Id = team.Id,
