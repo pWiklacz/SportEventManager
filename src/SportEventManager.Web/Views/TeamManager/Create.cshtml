@@ -46,7 +46,7 @@
             <div class="p-1 mt-5" style="height:50px;">
                 <h4>Add team members</h4>
             </div>
-            @Html.Hidden("ExistingPeselNumbers", Newtonsoft.Json.JsonConvert.SerializeObject(Model.ExistingPeselNumbers), new { id = "existingPeselNumbers" })
+            @Html.HiddenFor(model => model.ExistingPeselNumbers, new { id = "existingPeselNumbers" })
             <div class="container col-12">
                 <div class="col-md-12 p-0 m-0 bg-white">
                     <table id="PlayersTable" class="table table-sm CodesTable">

@@ -7,12 +7,12 @@ function hasClass(elem, className) {
 
 function checkPesel(input) {
     var inputPesel = input.value;
+ 
+    var existingPeselNumbers = document.getElementById('existingPeselNumbers').value
 
-    console.log("Before getting existingPeselNumbers");
-    var existingPeselNumbers = JSON.parse(document.getElementById('existingPeselNumbers').value);
-    console.log("After getting existingPeselNumbers: ", existingPeselNumbers);
+    var existingPeselNumbersList = existingPeselNumbers.split(',');
 
-    if (existingPeselNumbers.includes(inputPesel)) {
+    if (existingPeselNumbersList.includes(inputPesel)) {
         alert('This PESEL number already exists! Please enter a different one.');
         input.value = '';
     }

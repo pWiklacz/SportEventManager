@@ -73,7 +73,8 @@ public class TeamManagerController : Controller
         .Select(p => p.Pesel)
         .ToList();
 
-   
+    string peselNumbersString = string.Join(",", existingPeselNumbers);
+    team.ExistingPeselNumbers = peselNumbersString;
 
     return View(team);
   }
