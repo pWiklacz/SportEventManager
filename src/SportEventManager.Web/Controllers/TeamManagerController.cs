@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Ardalis.Specification;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -15,12 +16,10 @@ namespace SportEventManager.Web.Controllers;
 public class TeamManagerController : Controller
 {
   private readonly IRepository<Team> _teamRepository;
-  private readonly IRepository<User> _userRepository;
 
-  public TeamManagerController(IRepository<Team> teamRepository, IRepository<User> userRepository)
+  public TeamManagerController(IRepository<Team> teamRepository)
   {
     _teamRepository = teamRepository;
-    _userRepository = userRepository;
   }
 
   public async Task<IActionResult> Index()
@@ -66,12 +65,20 @@ public class TeamManagerController : Controller
     TeamViewModel team = new TeamViewModel();
     team.Players.Add(new PlayerViewModel() { Id = 1 });
 
-    var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersSpec());
+    var teams = await _teamRepository.ListAsync(new TeamsWithPlayersSpec());
 
-    var existingPeselNumbers = teamsWithPlayers
-        .SelectMany(t => t.Players)
-        .Select(p => p.Pesel)
+    var activeTeamPlayers = teams
+        .SelectMany(t => t.TeamPlayers)
+        .Where(tp => tp.LeaveOn == null)
         .ToList();
+
+    var activePlayerIds = activeTeamPlayers.Select(tp => tp.PlayerId).ToList();
+
+    var existingPeselNumbers = teams
+    .SelectMany(t => t.Players)
+    .Where(p => activePlayerIds.Contains(p.Id))
+    .Select(p => p.Pesel)
+    .ToList();
 
     string peselNumbersString = string.Join(",", existingPeselNumbers);
     team.ExistingPeselNumbers = peselNumbersString;

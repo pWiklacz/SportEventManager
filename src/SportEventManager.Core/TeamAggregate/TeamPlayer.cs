@@ -2,9 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using SportEventManager.SharedKernel;
 using Ardalis.GuardClauses;
+using SportEventManager.SharedKernel.Interfaces;
 
 namespace SportEventManager.Core.TeamAggregate;
-public class TeamPlayer : EntityBase
+public class TeamPlayer : EntityBase, IAggregateRoot
 {
   [Required]
   [ForeignKey("Team")]

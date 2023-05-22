@@ -12,6 +12,8 @@ public class TeamsWithPlayersSpec : Specification<Team>, ISingleResultSpecificat
   public TeamsWithPlayersSpec()
   {
     Query
-      .Include(t => t.Players);
+      .Include(t => t.TeamPlayers)
+      .Include(p => p.Players);
+
   }
 }

@@ -6,14 +6,14 @@ function hasClass(elem, className) {
 }
 
 function checkPesel(input) {
-    var inputPesel = input.value;
+    var inputPesel = String(input.value);
  
     var existingPeselNumbers = document.getElementById('existingPeselNumbers').value
 
     var existingPeselNumbersList = existingPeselNumbers.split(',');
 
     if (existingPeselNumbersList.includes(inputPesel)) {
-        alert('This PESEL number already exists! Please enter a different one.');
+        alert('This PESEL number ' + inputPesel + ' already exists!');
         input.value = '';
     }
 }
