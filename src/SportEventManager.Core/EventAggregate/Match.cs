@@ -16,7 +16,7 @@ public class Match : EntityBase
   [Required]
   public DateTime EndTime { get; set; }
 
-  public String WinnerName { get; set; } = string.Empty;
+  public String? WinnerName { get; set; } = string.Empty;
 
   [Required]
   [DefaultValue(false)]
@@ -81,7 +81,7 @@ public class Match : EntityBase
     GuestTeamId = Guard.Against.NegativeOrZero(secondTeamId, nameof(secondTeamId));
     IsArchived = false;
     IsEnded = isEnded;
-    WinnerName = Guard.Against.NullOrEmpty(winnerName, nameof(winnerName));
+    WinnerName = winnerName;
   }
 
   public void Archive()

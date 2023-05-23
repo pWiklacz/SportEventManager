@@ -136,7 +136,6 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         .HasColumnType("datetime2");
 
                     b.Property<string>("WinnerName")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 

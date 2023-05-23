@@ -4,8 +4,6 @@ using SportEventManager.Core.TeamAggregate;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using Ardalis.GuardClauses;
-using SportEventManager.Core.UserAggregate;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SportEventManager.Core.EventAggregate;
 public class Event : EntityBase, IAggregateRoot
@@ -41,15 +39,14 @@ public class Event : EntityBase, IAggregateRoot
   public ICollection<Team> Teams => _teams.AsReadOnly();
   public ICollection<Stadium> Stadiums => _stadiums.AsReadOnly();
 
-  public Event(string ownerId, string name, DateTime startTime)
+  public Event(string? ownerId, string name, DateTime startTime, DateTime endTime)
   {
     OwnerId = Guard.Against.NullOrEmpty(ownerId, nameof(ownerId));
     Name = Guard.Against.NullOrEmpty(name, nameof(name));
     StartTime = Guard.Against.Null(startTime, nameof(startTime));
-    if (startTime <= DateTime.Now)
-    {
-      IsInprogress = true;
-    }
+    EndTime = Guard.Against.Null(endTime, nameof(endTime));
+    IsInprogress = (startTime <= DateTime.Now);
+    IsArchived = false;
   }
 
   public void AddStadium(Stadium newStadium)
@@ -72,5 +69,8 @@ public class Event : EntityBase, IAggregateRoot
   public void Archive()
   {
     this.IsArchived = true;
+    this._teams.Clear();
   }
+
+  public Event() { }
 }

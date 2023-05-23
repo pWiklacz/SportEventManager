@@ -2,9 +2,9 @@
 
 namespace SportEventManager.Core.EventAggregate.Specifications;
 
-public class EventByOwnerIdSpec : Specification<Event>, ISingleResultSpecification
+public class EventsByOwnerIdSpec : Specification<Event>
 {
-  public EventByOwnerIdSpec(string ownerId)
+  public EventsByOwnerIdSpec(string? ownerId)
   {
     Query
       .Where(e => e.OwnerId == ownerId);

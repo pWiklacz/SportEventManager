@@ -1,54 +1,58 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.EventAggregate.Specifications;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Core.TeamAggregate.Specifications;
+using SportEventManager.Core.UserAggregate;
 using SportEventManager.SharedKernel.Interfaces;
 using SportEventManager.Web.ViewModels.EventModel;
-using SportEventManager.Web.ViewModels.TeamModel;
 
 namespace SportEventManager.Web.Controllers;
 public class EventManagerController : Controller
 {
   private readonly IRepository<Event> _eventRepository;
   private readonly IRepository<Team> _teamRepository;
+  private readonly UserManager<User> _userManager;
 
-  public EventManagerController(IRepository<Event> eventRepository, IRepository<Team> teamRepository)
+  public EventManagerController(
+    IRepository<Event> eventRepository,
+    IRepository<Team> teamRepository,
+    UserManager<User> userManager
+    )
   {
     _eventRepository = eventRepository;
     _teamRepository = teamRepository;
+    _userManager = userManager;
   }
 
-  // GET: EventSettings
+  // GET: Event
   public async Task<IActionResult> Index()
   {
-    var sportEvent = await _eventRepository.ListAsync();
-    if(sportEvent == null)
+    var user = await _userManager.GetUserAsync(User);
+    var spec = new EventsByOwnerIdSpec(user?.Id);
+    var sportEvents = await _eventRepository.ListAsync(spec);
+    if(sportEvents.IsNullOrEmpty())
     {
       return View();
     }
 
     var dto = new List<EventViewModel>();
-    foreach(Event @event in sportEvent)
+    foreach(Event @event in sportEvents)
     {
       dto.Add(
-        new EventViewModel
-        {
-          Id = @event.Id,
-          Name = @event.Name,
-          StartTime = @event.StartTime,
-          IsArchived = @event.IsArchived,
-        });
+        EventViewModel.FromEvent(@event)
+      );
     }
 
     return View(dto);
-
   }
 
   [HttpGet]
   public async Task<IActionResult> Details(int id)
   {
-    EventByIdWithTeamSpec spec = new EventByIdWithTeamSpec(id);
+    EventByIdWithTeamsAndStadiumsSpec spec = new EventByIdWithTeamsAndStadiumsSpec(id);
     Event? selectEvent = await _eventRepository.FirstOrDefaultAsync(spec);
 
     if (selectEvent == null)
@@ -56,67 +60,45 @@ public class EventManagerController : Controller
       return NotFound();
     }
 
-    var dto = new EventViewModel
-    {
-      Id = selectEvent.Id,
-      Name = selectEvent.Name,
-      StartTime = selectEvent.StartTime,
-      Teams = selectEvent.Teams.Select(TeamViewModel.FromTeam).ToList(),
-      Stadiums = selectEvent.Stadiums.Select(StadiumViewModel.FromStadium).ToList()
-    };
-
+    var dto = EventViewModel.FromEvent(selectEvent);
     return View(dto);
   }
 
-  // GET: EventSettings/Create
   [HttpGet]
   public async Task<IActionResult> Create()
   {
-    EventViewModel eventView= new EventViewModel();
-    eventView.Stadiums.Add(new StadiumViewModel() { Id = 1 });
-    eventView.Matches.Add(new MatchViewModel() { Id= 1 });
-    eventView.SelectTeamsName.Add("default");
+    EventViewModel viewModel = new EventViewModel();
 
-    EventWithTeam spec = new EventWithTeam();
-    List<Event> existEvents = await _eventRepository.ListAsync(spec);
+    TeamsWithoutEventsSpec teamsWithoutEventsSpec = new TeamsWithoutEventsSpec();
+    var teams = await _teamRepository.ListAsync(teamsWithoutEventsSpec);
 
-    List<String> eventsTeamName = new();
-
-    foreach(Event eventToFilter in existEvents)
+    if (teams.IsNullOrEmpty())
     {
-      eventsTeamName.AddRange(eventToFilter.Teams.Select(team => team.Name));
+      return View(viewModel);
     }
 
-    var teams = await _teamRepository.ListAsync(); 
-    
-    if (teams == null)
+    foreach (Team team in teams)
     {
-      return View(eventView);
+      viewModel.AvailableTeamsNames.Add(team.Name);
     }
 
-    foreach (var team in teams.Where(team => !eventsTeamName.Contains(team.Name) && !team.IsArchived))
-    {
-      eventView.TeamsName.Add(team.Name);
-    }
-
-    return View(eventView);
+    return View(viewModel);
   }
 
-  // POST: EventSettings/Create
   [HttpPost]
   public async Task<IActionResult> Create(EventViewModel viewModel)
   {
-    //TODO: refactor and use existing ownerID
-    Event eventNew = new Event("OwnerID", viewModel.Name, viewModel.StartTime);
+    var user = await _userManager.GetUserAsync(User);
+    Event eventNew = new Event(user?.Id, viewModel.Name, viewModel.StartTime, viewModel.EndTime);
+
     foreach(StadiumViewModel newStadium in viewModel.Stadiums)
     {
-      //TODO: Make a normal name in front-end
       eventNew.AddStadium(
-        new Stadium("name", newStadium.City)
+        new Stadium(newStadium.Name, newStadium.City)
       );
     };
 
-    foreach(string teamName in viewModel.SelectTeamsName)
+    foreach(string teamName in viewModel.ChosenTeamsNames)
     {
       var spec = new TeamByNameSpec(teamName);
       Team? team = await _teamRepository.FirstOrDefaultAsync(spec);
@@ -124,66 +106,49 @@ public class EventManagerController : Controller
       if(team == null) { return NotFound(); }
 
       eventNew.AddTeam(team);
-      
     }
-
-    //Dictionary<Team, Team> bracket = TournamentBracket.GenerateBracket_1stRound(eventNew.Teams.ToList());
-    //foreach(var team in bracket)
-    //{
-    //  Match newMatch = new();
-
-    //}
 
     await _eventRepository.AddAsync(eventNew);
     await _eventRepository.SaveChangesAsync();
-      return RedirectToAction("Index");
-    
+    return RedirectToAction("Index");
   }
 
   [HttpGet]
   public async Task<IActionResult> Delete(int id)
   {
     EventByIdSpec spec = new EventByIdSpec(id);
-    Event? actuallEvent = await _eventRepository.FirstOrDefaultAsync(spec);
-    if(actuallEvent == null)
+    Event? eventToDelete = await _eventRepository.FirstOrDefaultAsync(spec);
+
+    if(eventToDelete == null)
     {
       return NotFound();
     }
 
-    var dto = new EventViewModel
-    {
-      Id = actuallEvent.Id,
-      Name = actuallEvent.Name,
-      StartTime = actuallEvent.StartTime
-    };
-
+    var dto = EventViewModel.FromEvent(eventToDelete);
     return View(dto);
   }
 
   [HttpPost]
   public async Task<IActionResult> Delete(EventViewModel viewModel)
   {
-    EventByIdSpec spec = new EventByIdSpec(viewModel.Id);
-    Event? actuallEvent = await _eventRepository.FirstOrDefaultAsync(spec);
+    EventByIdWithTeamsAndStadiumsSpec spec = new EventByIdWithTeamsAndStadiumsSpec(viewModel.Id);
+    Event? eventToDelete = await _eventRepository.FirstOrDefaultAsync(spec);
 
-    if (actuallEvent == null)
+    if (eventToDelete == null)
     {
       return NotFound();
     }
 
-    actuallEvent.Archive();
-    await _eventRepository.UpdateAsync(actuallEvent);
+    eventToDelete.Archive();
+    await _eventRepository.UpdateAsync(eventToDelete);
     return RedirectToAction("Index");
   }
 
-  //public ActionResult Generate()
-  //{
-  //  return View();
-  //}
+  [HttpGet]
 
   public async Task<ActionResult> Generate(int id)
   {
-    EventByIdWithTeamSpec spec = new EventByIdWithTeamSpec(id);
+    EventByIdWithTeamsAndStadiumsSpec spec = new EventByIdWithTeamsAndStadiumsSpec(id);
     Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
     if(ev == null)
     {
