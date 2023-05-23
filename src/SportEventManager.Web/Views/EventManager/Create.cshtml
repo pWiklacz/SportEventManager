@@ -26,6 +26,13 @@
 
             <br style="margin-top: 20px;" />
             <div class="form-group">
+                <label asp-for="EndTime" class="control-label">End Date</label>
+                <input class="form-control" style="width: 40%;" asp-for="EndTime" id="EEndTime" placeholder="End Time" />
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+
+            <br style="margin-top: 20px;" />
+            <div class="form-group">
                 <label class="control-label">Number of Teams</label>
 				<input type="number" onkeydown="return false" min="0" class="form-control" style="width: 40%;" id="NumberOfTeam" placeholder="Number of teams" />
                 <span class="text-danger"></span>
@@ -38,8 +45,16 @@
                     <table id="StadiumsTable" class="table table-sm CodesTable">
                         <thead>
                             <tr>
+                                <th style="column-span:all">
+                                    Stadiums
+                                </th>
+                            </tr>
+                            <tr>
                                 <th>
-                                    Stadiums 
+                                    Name
+                                </th>
+                                <th>
+                                    City
                                 </th>
                                 <th style="width:75px;">
                                     <button id="btnAddStadium"
@@ -55,6 +70,9 @@
                             @for (int i = 0; i < Model.Stadiums.Count; i++)
                             {
                                 <tr>
+                                    <td>
+                                        <input asp-for="@Model.Stadiums[i].Name" class="form-control" />
+                                    </td>
                                     <td>
                                         <input asp-for="@Model.Stadiums[i].City" class="form-control" />
                                     </td>
@@ -98,19 +116,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @for (int i = 0; i < Model.SelectTeamsName.Count; i++)
+                            @for (int i = 0; i < Model.ChosenTeamsNames.Count; i++)
                             {
                               <tr>
                                 <td>
-                                   <select asp-for="@Model.SelectTeamsName[i]" class="form-control">
-                                        @foreach (var team in Model.TeamsName)
+                                   <select asp-for="@Model.ChosenTeamsNames[i]" class="form-control">
+                                        @foreach (var team in Model.AvailableTeamsNames)
                                         {
                                         <option value="@team">@team</option>
                                         }
                                    </select>
                                 </td>
                                 <td style="width:60px;">
-                                    <input type="hidden" asp-for="@Model.SelectTeamsName[i]" />
+                                    <input type="hidden" asp-for="@Model.ChosenTeamsNames[i]" />
                                     <button id="btnremove-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteTeam(this)">
                                         Delete
                                   </button>
@@ -125,7 +143,7 @@
             </div>
             @{
                 List<String> teamName = new();
-                foreach(string name in Model.SelectTeamsName)
+                foreach(string name in Model.ChosenTeamsNames)
                 {
                     teamName.Add(name);
                 }

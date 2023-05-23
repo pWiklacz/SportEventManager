@@ -1,9 +1,9 @@
 ﻿using Ardalis.Specification;
 
 namespace SportEventManager.Core.EventAggregate.Specifications;
-public class EventByIdWithTeamSpec : Specification<Event>, ISingleResultSpecification
+public class EventByIdWithTeamsAndStadiumsSpec : Specification<Event>, ISingleResultSpecification
 {
-  public EventByIdWithTeamSpec(int eventId)
+  public EventByIdWithTeamsAndStadiumsSpec(int eventId)
   {
     Query
         .Where(selectEvent => selectEvent.Id == eventId)
