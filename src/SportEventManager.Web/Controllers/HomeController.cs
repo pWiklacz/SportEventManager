@@ -10,6 +10,9 @@ using Microsoft.Extensions.Logging;
 using SportEventManager.Core.UserAggregate;
 using Microsoft.AspNetCore.Identity;
 using JetBrains.Annotations;
+using SportEventManager.Core.EventAggregate.Specifications;
+using Ardalis.Specification;
+using System.Linq;
 
 namespace SportEventManager.Web.Controllers;
 
@@ -34,11 +37,20 @@ public class HomeController : Controller
   public async Task<IActionResult> Index()
   {
     var user = await _userManager.GetUserAsync(User);
-    var sportEvents = await _eventRepository.ListAsync();
+    var sportEvents = new List<Event>();
     var userId = user?.Id;
+    if (userId != null)
+    {
+      EventByOwnerIdWithItemsSpec eventByOwnerIdWithItemsSpec = new EventByOwnerIdWithItemsSpec(userId);
+      sportEvents = await _eventRepository.ListAsync(eventByOwnerIdWithItemsSpec);
+    }
+    else
+    {
+      EventWithItemsSpec eventWithItemsSpec = new EventWithItemsSpec();
+      sportEvents = await _eventRepository.ListAsync(eventWithItemsSpec);
+    }
 
-    var filteredEvents = sportEvents
-        .Where(e => userId == null || e.OwnerId == userId)
+    var eventsList = sportEvents
         .Select(@event => new EventViewModel
         {
           Id = @event.Id,
@@ -46,14 +58,16 @@ public class HomeController : Controller
           StartTime = @event.StartTime,
           EndTime = @event.EndTime,
           IsArchived = @event.IsArchived,
-          Stadiums = @event.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
+          Stadiums = @event.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium))
+          .ToList(),
           Teams = @event.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
           Matches = @event.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList()
         })
         .ToList();
-    if (filteredEvents.Count == 0) return View();
 
-    return View(filteredEvents);
+    if (eventsList.Count == 0) return View();
+
+    return View(eventsList);
   }
 
   public IActionResult Privacy()
