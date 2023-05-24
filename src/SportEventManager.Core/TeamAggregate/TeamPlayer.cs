@@ -5,7 +5,7 @@ using Ardalis.GuardClauses;
 using SportEventManager.SharedKernel.Interfaces;
 
 namespace SportEventManager.Core.TeamAggregate;
-public class TeamPlayer : EntityBase, IAggregateRoot
+public class TeamPlayer : EntityBase
 {
   [Required]
   [ForeignKey("Team")]
@@ -16,12 +16,14 @@ public class TeamPlayer : EntityBase, IAggregateRoot
   public int PlayerId { get; private set; }
 
   [Required]
-  public int Number { get; private set; }
+  public int Number { get; set; }
 
   [Required]
   public DateTime JoinOn { get; set; }
 
   public DateTime? LeaveOn { get; set; } = null;
+  //public Team Team { get; set; } = null!;
+  //public Player Player { get; set; } = null!;
 
   public TeamPlayer(int number)
   {

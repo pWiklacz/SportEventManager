@@ -54,13 +54,15 @@ public class AppDbContext : DbContext
 
     modelBuilder.Entity<FbTeamMatchStats>().ToTable("FbTeamMatchStats");
     modelBuilder.Entity<FbTeamStats>().ToTable("TeamStats");
-    modelBuilder.Entity<FbPlayerStats>().ToTable("PlayerStats"); 
-    
+    modelBuilder.Entity<FbPlayerStats>().ToTable("PlayerStats");
+
     modelBuilder.Entity<Team>()
       .HasMany(t => t.Players)
       .WithMany(p => p.Teams)
       .UsingEntity<TeamPlayer>(
-        r => r.HasOne<Team>().WithMany(e => e.TeamPlayers));
+       l => l.HasOne<Player>().WithMany(i => i.TeamPlayers),
+       r => r.HasOne<Team>().WithMany(e => e.TeamPlayers));
+        
 
     modelBuilder.Entity<Team>()
       .HasMany(t => t.Players)

@@ -68,9 +68,11 @@ public class Team : EntityBase, IAggregateRoot
   {
     Guard.Against.Null(newPlayer, nameof(newPlayer));
     _players.Add(newPlayer);
+  }
 
-    //Guard.Against.Null(teamPlayer, nameof(teamPlayer));
-    //_teamPlayers.Add(teamPlayer);
+  public void UpdateTeamPlayer(int index, int num)
+  {
+    _teamPlayers[index].Number = num;
   }
 
   //public void AddOwner(User newUser)

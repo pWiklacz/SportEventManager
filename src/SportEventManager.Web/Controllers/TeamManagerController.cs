@@ -16,10 +16,11 @@ namespace SportEventManager.Web.Controllers;
 public class TeamManagerController : Controller
 {
   private readonly IRepository<Team> _teamRepository;
-
-  public TeamManagerController(IRepository<Team> teamRepository)
+  
+  public TeamManagerController(IRepository<Team> teamRepository, IRepository<TeamPlayer> teamPlayer)
   {
     _teamRepository = teamRepository;
+    
   }
 
   public async Task<IActionResult> Index()
@@ -84,8 +85,6 @@ public class TeamManagerController : Controller
     string peselNumbersString = string.Join(",", existingPeselNumbers);
     team.ExistingPeselNumbers = peselNumbersString;
 
-    
-
     return View(team);
   }
 
@@ -100,26 +99,32 @@ public class TeamManagerController : Controller
     if (currentUserId != null)
     {
       Team team = new Team(currentUserId, viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
-      //foreach (PlayerViewModel newPlayer in viewModel.Players)
-      //{
-      //  //TODO: make sure the player instantiates ok with player2Team also
-      //  team.AddPlayer(
-      //      new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel),
-      //      new TeamPlayer(team.Id, newPlayer.Id, 77)
-      //    //newPlayer.Number
-      //    );
-      //}
-
-      for (int i = 0; i < viewModel.Players.Count; i++)
+      foreach (PlayerViewModel newPlayer in viewModel.Players)
       {
-        PlayerViewModel newPlayer = viewModel.Players[i];
-        Player player = new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel);
-        //TeamPlayer teamPlayer = new TeamPlayer(viewModel.TeamPlayers[i].Number);
-
-        team.AddPlayer(player);
+        //TODO: make sure the player instantiates ok with player2Team also
+        team.AddPlayer(
+            new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel)
+          );
       }
 
+      //for (int i = 0; i < viewModel.Players.Count; i++)
+      //{
+      //  PlayerViewModel newPlayer = viewModel.Players[i];
+      //  Player player = new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel);
+      //  TeamPlayer teamPlayer = new TeamPlayer(viewModel.TeamPlayers[i].Number);
+
+      //  team.AddPlayer(player, teamPlayer);
+      //}
+
       await _teamRepository.AddAsync(team);
+
+      for (int i = 0; i < viewModel.TeamPlayers.Count; i++)
+      {
+        team.UpdateTeamPlayer(i, viewModel.TeamPlayers[i].Number);
+      }
+
+      await _teamRepository.UpdateAsync(team);
+
       await _teamRepository.SaveChangesAsync();
     }
 

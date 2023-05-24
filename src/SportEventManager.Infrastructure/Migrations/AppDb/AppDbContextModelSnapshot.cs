@@ -34,7 +34,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasIndex("StadiumsId");
 
-                    b.ToTable("EventStadium");
+                    b.ToTable("EventStadium", (string)null);
                 });
 
             modelBuilder.Entity("EventTeam", b =>
@@ -49,7 +49,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasIndex("TeamsId");
 
-                    b.ToTable("EventTeam");
+                    b.ToTable("EventTeam", (string)null);
                 });
 
             modelBuilder.Entity("SportEventManager.Core.EventAggregate.Event", b =>
@@ -88,7 +88,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
                 });
 
             modelBuilder.Entity("SportEventManager.Core.EventAggregate.Match", b =>
@@ -154,7 +154,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasIndex("StadiumId");
 
-                    b.ToTable("Matches");
+                    b.ToTable("Matches", (string)null);
                 });
 
             modelBuilder.Entity("SportEventManager.Core.EventAggregate.Stadium", b =>
@@ -182,7 +182,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stadiums");
+                    b.ToTable("Stadiums", (string)null);
                 });
 
             modelBuilder.Entity("SportEventManager.Core.StatisticsAggregate.FootballStatsBase", b =>
@@ -220,7 +220,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stats");
+                    b.ToTable("Stats", (string)null);
 
                     b.UseTptMappingStrategy();
                 });
@@ -268,7 +268,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Players");
+                    b.ToTable("Players", (string)null);
                 });
 
             modelBuilder.Entity("SportEventManager.Core.TeamAggregate.Team", b =>
@@ -304,7 +304,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Teams", (string)null);
                 });
 
             modelBuilder.Entity("SportEventManager.Core.TeamAggregate.TeamPlayer", b =>
@@ -338,7 +338,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("TeamPlayer");
+                    b.ToTable("TeamPlayer", (string)null);
                 });
 
             modelBuilder.Entity("SportEventManager.Core.UserAggregate.User", b =>
