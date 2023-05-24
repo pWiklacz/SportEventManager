@@ -7,9 +7,9 @@ using Ardalis.Specification;
 using Microsoft.Extensions.Logging;
 
 namespace SportEventManager.Core.EventAggregate.Specifications;
-public class EventByOwnerIdWithItemsSpec : Specification<Event>
+public class EventsByOwnerIdWithItemsSpec : Specification<Event>
 {
-  public EventByOwnerIdWithItemsSpec(string? ownerId) {
+  public EventsByOwnerIdWithItemsSpec(string? ownerId) {
     Query
         .Where(selectEvent => selectEvent.OwnerId == ownerId)
         .Include(selectEvent => selectEvent.Teams)

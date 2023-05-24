@@ -25,49 +25,29 @@ namespace SportEventManager.Web.Controllers;
 public class HomeController : Controller
 {
   private readonly IRepository<Event> _eventRepository;
-  private readonly UserManager<User> _userManager;
 
-  public HomeController(IRepository<Event> eventRepository, UserManager<User> userManager)
+  public HomeController(IRepository<Event> eventRepository)
   {
     _eventRepository = eventRepository;
-    _userManager = userManager;
   }
 
   // GET: EventSettings
   public async Task<IActionResult> Index()
   {
-    var user = await _userManager.GetUserAsync(User);
     var sportEvents = new List<Event>();
-    var userId = user?.Id;
-    if (userId != null)
+
+    EventWithItemsSpec eventWithItemsSpec = new EventWithItemsSpec();
+    sportEvents = await _eventRepository.ListAsync(eventWithItemsSpec);
+
+    var dto = new List<EventViewModel>();
+    foreach(Event @event in sportEvents)
     {
-      EventByOwnerIdWithItemsSpec eventByOwnerIdWithItemsSpec = new EventByOwnerIdWithItemsSpec(userId);
-      sportEvents = await _eventRepository.ListAsync(eventByOwnerIdWithItemsSpec);
-    }
-    else
-    {
-      EventWithItemsSpec eventWithItemsSpec = new EventWithItemsSpec();
-      sportEvents = await _eventRepository.ListAsync(eventWithItemsSpec);
+      dto.Add(
+        EventViewModel.FromEvent(@event)
+       );
     }
 
-    var eventsList = sportEvents
-        .Select(@event => new EventViewModel
-        {
-          Id = @event.Id,
-          Name = @event.Name,
-          StartTime = @event.StartTime,
-          EndTime = @event.EndTime,
-          IsArchived = @event.IsArchived,
-          Stadiums = @event.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium))
-          .ToList(),
-          Teams = @event.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
-          Matches = @event.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList()
-        })
-        .ToList();
-
-    if (eventsList.Count == 0) return View();
-
-    return View(eventsList);
+    return View(dto);
   }
 
   public IActionResult Privacy()
