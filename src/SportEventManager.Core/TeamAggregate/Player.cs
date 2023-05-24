@@ -33,6 +33,9 @@ public class Player : EntityBase
   private List<Team> _teams = new();
   public ICollection<Team> Teams => _teams.AsReadOnly();
 
+  private List<TeamPlayer> _teamPlayers = new();
+  public ICollection<TeamPlayer> TeamPlayers => _teamPlayers.AsReadOnly();
+
   public Player(string name, string surname, string pesel)
   {
     Name = Guard.Against.NullOrEmpty(name, nameof(name));

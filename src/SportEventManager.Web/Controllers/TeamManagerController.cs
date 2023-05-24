@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Ardalis.Specification;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Core.TeamAggregate.Specifications;
+using SportEventManager.Core.UserAggregate;
 using SportEventManager.SharedKernel.Interfaces;
 using SportEventManager.Web.ViewModels.TeamModel;
 using SportEventManager.Web.ViewModels.TeamModel.Stats;
@@ -20,37 +24,68 @@ public class TeamManagerController : Controller
 
   public async Task<IActionResult> Index()
   {
-    TeamsByOwnerIdSpec spec = new TeamsByOwnerIdSpec();
-    var teams = await _teamRepository.ListAsync();
-    if (teams == null)
+    
+    string? currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    TeamsByOwnerIdSpec spec;
+
+    if (currentUserId != null)
     {
-      return View();
+      spec = new TeamsByOwnerIdSpec(currentUserId);
+
+      var teams = await _teamRepository.ListAsync(spec);
+
+      if (teams == null)
+      {
+        return View();
+      }
+
+      var dto = new List<TeamViewModel>();
+
+      foreach (Team team in teams)
+      {
+        dto.Add(
+          new TeamViewModel
+          {
+            Id = team.Id,
+            Name = team.Name,
+            City = team.City,
+            IsDeleted = team.IsArchived,
+            NumberOfPlayers = team.NumberOfPlayers,
+            FbTeamStats = FbTeamStatsViewModel.FromTeamStats(fBTeamStats: (FbTeamStats?)team.FbTeamWholeStats?.FootballStats)
+          });
+      }
+      return View(dto);
     }
-
-    var dto = new List<TeamViewModel>();
-
-    foreach (Team team in teams)
-    {
-      dto.Add(
-        new TeamViewModel
-        {
-          Id = team.Id,
-          Name = team.Name,
-          City = team.City,
-          IsDeleted = team.IsArchived,
-          NumberOfPlayers = team.NumberOfPlayers,
-          FbTeamStats = FbTeamStatsViewModel.FromTeamStats(fBTeamStats: (FbTeamStats?)team.FbTeamWholeStats?.FootballStats)
-        });
-    }
-
-    return View(dto);
+    else { return View(); }
   }
 
   [HttpGet]
-  public IActionResult Create()
+  public async Task<IActionResult> Create()
   {
     TeamViewModel team = new TeamViewModel();
     team.Players.Add(new PlayerViewModel() { Id = 1 });
+    team.TeamPlayers.Add(new TeamPlayerViewModel() { });
+
+    var teams = await _teamRepository.ListAsync(new TeamsWithPlayersSpec());
+
+    var activeTeamPlayers = teams
+        .SelectMany(t => t.TeamPlayers)
+        .Where(tp => tp.LeaveOn == null)
+        .ToList();
+
+    var activePlayerIds = activeTeamPlayers.Select(tp => tp.PlayerId).ToList();
+
+    var existingPeselNumbers = teams
+    .SelectMany(t => t.Players)
+    .Where(p => activePlayerIds.Contains(p.Id))
+    .Select(p => p.Pesel)
+    .ToList();
+
+    string peselNumbersString = string.Join(",", existingPeselNumbers);
+    team.ExistingPeselNumbers = peselNumbersString;
+
+    
+
     return View(team);
   }
 
@@ -60,17 +95,33 @@ public class TeamManagerController : Controller
     //TODO: add owner which is use also User repository and use AddOwner method similar to AddPlayer
     //TODO: Or if it doesn't work because the User already exists then refactor it to have only id of an existing user
     //TODO: refactor below code and use existing userId
-    Team team = new Team(":userID", viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
-    foreach(PlayerViewModel newPlayer in viewModel.Players)
+
+    string? currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (currentUserId != null)
     {
-      //TODO: make sure the player instantiates ok with player2Team also
-      team.AddPlayer(
-          new Player(newPlayer.Name, newPlayer.Surname, "12345678900")
-          //newPlayer.Number
-        );
+      Team team = new Team(currentUserId, viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
+      //foreach (PlayerViewModel newPlayer in viewModel.Players)
+      //{
+      //  //TODO: make sure the player instantiates ok with player2Team also
+      //  team.AddPlayer(
+      //      new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel),
+      //      new TeamPlayer(team.Id, newPlayer.Id, 77)
+      //    //newPlayer.Number
+      //    );
+      //}
+
+      for (int i = 0; i < viewModel.Players.Count; i++)
+      {
+        PlayerViewModel newPlayer = viewModel.Players[i];
+        Player player = new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel);
+        //TeamPlayer teamPlayer = new TeamPlayer(viewModel.TeamPlayers[i].Number);
+
+        team.AddPlayer(player);
+      }
+
+      await _teamRepository.AddAsync(team);
+      await _teamRepository.SaveChangesAsync();
     }
-    await _teamRepository.AddAsync(team);
-    await _teamRepository.SaveChangesAsync();
 
     return RedirectToAction("Index");
   }
@@ -129,8 +180,8 @@ public class TeamManagerController : Controller
       //TODO: make sure the player instantiates ok with player2Team also
       team.AddPlayer(
           new Player(newPlayer.Name, newPlayer.Surname, "12345678900")
-         // newPlayer.Number
-        );
+        // newPlayer.Number
+        ); 
     }
     await _teamRepository.UpdateAsync(team);
     await _teamRepository.SaveChangesAsync();

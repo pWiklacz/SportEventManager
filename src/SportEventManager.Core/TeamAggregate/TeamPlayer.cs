@@ -2,9 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using SportEventManager.SharedKernel;
 using Ardalis.GuardClauses;
+using SportEventManager.SharedKernel.Interfaces;
 
 namespace SportEventManager.Core.TeamAggregate;
-public class TeamPlayer : EntityBase
+public class TeamPlayer : EntityBase, IAggregateRoot
 {
   [Required]
   [ForeignKey("Team")]
@@ -22,10 +23,10 @@ public class TeamPlayer : EntityBase
 
   public DateTime? LeaveOn { get; set; } = null;
 
-  public TeamPlayer(int teamId, int playerId, int number)
+  public TeamPlayer(int number)
   {
-    TeamId = teamId;
-    PlayerId = playerId;
+    //TeamId = teamId;
+    //PlayerId = playerId;
     Guard.Against.NegativeOrZero(number, nameof(number));
     Number = number;
   }

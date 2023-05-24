@@ -3,38 +3,37 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace SportEventManager.Infrastructure.Migrations.AppDb
-{
-    /// <inheritdoc />
-    public partial class TeamPlayerUpdate : Migration
-    {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<DateTime>(
-                name: "JoinOn",
-                table: "TeamPlayer",
-                type: "datetime2",
-                nullable: false,
-                defaultValueSql: "GETUTCDATE()");
+namespace SportEventManager.Infrastructure.Migrations.AppDb;
 
-            migrationBuilder.AddColumn<DateTime>(
-                name: "LeaveOn",
-                table: "TeamPlayer",
-                type: "datetime2",
-                nullable: true);
-        }
+  /// <inheritdoc />
+  public partial class TeamPlayerUpdate : Migration
+  {
+      /// <inheritdoc />
+      protected override void Up(MigrationBuilder migrationBuilder)
+      {
+          migrationBuilder.AddColumn<DateTime>(
+              name: "JoinOn",
+              table: "TeamPlayer",
+              type: "datetime2",
+              nullable: false,
+              defaultValueSql: "GETUTCDATE()");
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "JoinOn",
-                table: "TeamPlayer");
+          migrationBuilder.AddColumn<DateTime>(
+              name: "LeaveOn",
+              table: "TeamPlayer",
+              type: "datetime2",
+              nullable: true);
+      }
 
-            migrationBuilder.DropColumn(
-                name: "LeaveOn",
-                table: "TeamPlayer");
-        }
-    }
-}
+      /// <inheritdoc />
+      protected override void Down(MigrationBuilder migrationBuilder)
+      {
+          migrationBuilder.DropColumn(
+              name: "JoinOn",
+              table: "TeamPlayer");
+
+          migrationBuilder.DropColumn(
+              name: "LeaveOn",
+              table: "TeamPlayer");
+      }
+  }
