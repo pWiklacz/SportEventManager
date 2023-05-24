@@ -64,10 +64,13 @@ public class Team : EntityBase, IAggregateRoot
 
   public Team() { }
 
-  public void AddPlayer(Player newPlayer, int number = 1)
+  public void AddPlayer(Player newPlayer)
   {
     Guard.Against.Null(newPlayer, nameof(newPlayer));
     _players.Add(newPlayer);
+
+    //Guard.Against.Null(teamPlayer, nameof(teamPlayer));
+    //_teamPlayers.Add(teamPlayer);
   }
 
   //public void AddOwner(User newUser)

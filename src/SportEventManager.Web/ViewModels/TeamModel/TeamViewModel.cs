@@ -22,6 +22,7 @@ public class TeamViewModel
 
 
   public List<PlayerViewModel> Players { get; set; } = new List<PlayerViewModel>();
+  public List<TeamPlayerViewModel> TeamPlayers { get; set; } = new List<TeamPlayerViewModel>();
 
   public FbTeamStatsViewModel? FbTeamStats { get; set; }
 

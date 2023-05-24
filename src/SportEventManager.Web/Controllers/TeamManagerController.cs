@@ -64,6 +64,7 @@ public class TeamManagerController : Controller
   {
     TeamViewModel team = new TeamViewModel();
     team.Players.Add(new PlayerViewModel() { Id = 1 });
+    team.TeamPlayers.Add(new TeamPlayerViewModel() { });
 
     var teams = await _teamRepository.ListAsync(new TeamsWithPlayersSpec());
 
@@ -83,6 +84,8 @@ public class TeamManagerController : Controller
     string peselNumbersString = string.Join(",", existingPeselNumbers);
     team.ExistingPeselNumbers = peselNumbersString;
 
+    
+
     return View(team);
   }
 
@@ -97,14 +100,25 @@ public class TeamManagerController : Controller
     if (currentUserId != null)
     {
       Team team = new Team(currentUserId, viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
-      foreach (PlayerViewModel newPlayer in viewModel.Players)
+      //foreach (PlayerViewModel newPlayer in viewModel.Players)
+      //{
+      //  //TODO: make sure the player instantiates ok with player2Team also
+      //  team.AddPlayer(
+      //      new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel),
+      //      new TeamPlayer(team.Id, newPlayer.Id, 77)
+      //    //newPlayer.Number
+      //    );
+      //}
+
+      for (int i = 0; i < viewModel.Players.Count; i++)
       {
-        //TODO: make sure the player instantiates ok with player2Team also
-        team.AddPlayer(
-            new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel)
-          //newPlayer.Number
-          );
+        PlayerViewModel newPlayer = viewModel.Players[i];
+        Player player = new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel);
+        //TeamPlayer teamPlayer = new TeamPlayer(viewModel.TeamPlayers[i].Number);
+
+        team.AddPlayer(player);
       }
+
       await _teamRepository.AddAsync(team);
       await _teamRepository.SaveChangesAsync();
     }
@@ -166,8 +180,8 @@ public class TeamManagerController : Controller
       //TODO: make sure the player instantiates ok with player2Team also
       team.AddPlayer(
           new Player(newPlayer.Name, newPlayer.Surname, "12345678900")
-         // newPlayer.Number
-        );
+        // newPlayer.Number
+        ); 
     }
     await _teamRepository.UpdateAsync(team);
     await _teamRepository.SaveChangesAsync();
