@@ -7,6 +7,12 @@ using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Web.ViewModels.EventModel;
 using SportEventManager.Web.ViewModels.TeamModel;
 using Microsoft.Extensions.Logging;
+using SportEventManager.Core.UserAggregate;
+using Microsoft.AspNetCore.Identity;
+using JetBrains.Annotations;
+using SportEventManager.Core.EventAggregate.Specifications;
+using Ardalis.Specification;
+using System.Linq;
 
 namespace SportEventManager.Web.Controllers;
 
@@ -28,30 +34,20 @@ public class HomeController : Controller
   // GET: EventSettings
   public async Task<IActionResult> Index()
   {
-    var sportEvents = await _eventRepository.ListAsync();
-    if (sportEvents == null)
-    {
-      return View();
-    }
+    var sportEvents = new List<Event>();
+
+    EventWithItemsSpec eventWithItemsSpec = new EventWithItemsSpec();
+    sportEvents = await _eventRepository.ListAsync(eventWithItemsSpec);
 
     var dto = new List<EventViewModel>();
-    foreach (Event @event in sportEvents)
+    foreach(Event @event in sportEvents)
     {
       dto.Add(
-        new EventViewModel
-        {
-          Id = @event.Id,
-          Name = @event.Name,
-          StartTime = @event.StartTime,
-          IsArchived = @event.IsArchived,
-          Stadiums = @event.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
-          Teams = @event.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
-          Matches = @event.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList()
-        });
+        EventViewModel.FromEvent(@event)
+       );
     }
 
     return View(dto);
-
   }
 
   public IActionResult Privacy()
