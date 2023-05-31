@@ -86,5 +86,9 @@ public class Team : EntityBase, IAggregateRoot
   public void Archive()
   {
     this.IsArchived = true;
+    foreach(var teamPlayer in _teamPlayers)
+    {
+      teamPlayer.LeaveOn = DateTime.Now;
+    }
   }
 }

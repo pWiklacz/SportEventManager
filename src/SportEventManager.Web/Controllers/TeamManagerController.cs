@@ -17,7 +17,7 @@ public class TeamManagerController : Controller
 {
   private readonly IRepository<Team> _teamRepository;
   
-  public TeamManagerController(IRepository<Team> teamRepository, IRepository<TeamPlayer> teamPlayer)
+  public TeamManagerController(IRepository<Team> teamRepository)
   {
     _teamRepository = teamRepository;
     
@@ -107,15 +107,6 @@ public class TeamManagerController : Controller
           );
       }
 
-      //for (int i = 0; i < viewModel.Players.Count; i++)
-      //{
-      //  PlayerViewModel newPlayer = viewModel.Players[i];
-      //  Player player = new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel);
-      //  TeamPlayer teamPlayer = new TeamPlayer(viewModel.TeamPlayers[i].Number);
-
-      //  team.AddPlayer(player, teamPlayer);
-      //}
-
       await _teamRepository.AddAsync(team);
 
       for (int i = 0; i < viewModel.TeamPlayers.Count; i++)
@@ -148,9 +139,13 @@ public class TeamManagerController : Controller
       Name = team.Name,
       City = team.City,
       NumberOfPlayers = team.NumberOfPlayers,
+      TeamPlayers = team.TeamPlayers
+                    .Select(teamPlayer => TeamPlayerViewModel.FromTeamPlayer(teamPlayer))
+                    .ToList(),
       Players = team.Players
                     .Select(player => PlayerViewModel.FromPlayer(player))
                     .ToList()
+      
     };
 
     return View(dto);
@@ -169,12 +164,6 @@ public class TeamManagerController : Controller
       return NotFound();
     }
 
-  //  foreach (Player player in team.Players) { 
-  //    if(!viewModel.Players.Contains(PlayerViewModel.FromPlayer(player))) { 
-  //      player.MarkAsDeleted();
-  //    }
-  //  }
-
     //Adding updated team with new players
     team.Name = viewModel.Name;
     team.City = viewModel.City;
@@ -184,11 +173,19 @@ public class TeamManagerController : Controller
     {
       //TODO: make sure the player instantiates ok with player2Team also
       team.AddPlayer(
-          new Player(newPlayer.Name, newPlayer.Surname, "12345678900")
-        // newPlayer.Number
+          new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel)
+        
         ); 
     }
     await _teamRepository.UpdateAsync(team);
+
+    for (int i = 0; i < viewModel.TeamPlayers.Count; i++)
+    {
+      team.UpdateTeamPlayer(i, viewModel.TeamPlayers[i].Number);
+    }
+
+    await _teamRepository.UpdateAsync(team);
+
     await _teamRepository.SaveChangesAsync();
 
     return RedirectToAction("Index");
@@ -219,7 +216,7 @@ public class TeamManagerController : Controller
   [HttpPost]
   public async Task<IActionResult> Delete(TeamViewModel viewModel)
   {
-    TeamByIdSpec spec = new TeamByIdSpec(viewModel.Id);
+    TeamByIdWithPlayersSpec spec = new TeamByIdWithPlayersSpec(viewModel.Id);
     Team? team = await _teamRepository.FirstOrDefaultAsync(spec);
 
     if (team == null )
@@ -227,11 +224,9 @@ public class TeamManagerController : Controller
       return NotFound();
     }
 
-    foreach(Player player in team.Players)
-      player.Archive(); ///why it's not working?
     team.Archive();
     await _teamRepository.UpdateAsync(team);
-    //TODO: delete also teamstats and playerstats
+    
     return RedirectToAction("Index");
   }
 

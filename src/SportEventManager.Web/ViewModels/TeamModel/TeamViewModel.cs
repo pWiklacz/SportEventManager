@@ -37,6 +37,7 @@ public class TeamViewModel
     //OwnerId = team.OwnerId,
     IsDeleted= team.IsArchived,
     Players = team.Players.Select(p => PlayerViewModel.FromPlayer(p)).ToList(),
+    TeamPlayers = team.TeamPlayers.Select(p => TeamPlayerViewModel.FromTeamPlayer(p)).ToList(),
     FbTeamStats = FbTeamStatsViewModel.FromTeamStats((FbTeamStats?)team.FbTeamWholeStats?.FootballStats)
   };
 }

@@ -5,6 +5,7 @@ function hasClass(elem, className) {
     return elem.classList.contains(className);
 }
 
+//Create, Edit TeamManager
 function checkPesel(input) {
     var inputPesel = String(input.value);
  
@@ -18,6 +19,8 @@ function checkPesel(input) {
     }
 }
 
+
+//Create, Edit TeamManager
 function DeleteItem(btn) {
 
     var table = document.getElementById('PlayersTable');
@@ -40,6 +43,7 @@ function DeleteStadiumItem(btn) {
     $(btn).closest('tr').remove();
 }
 
+//Create, Edit EventManager
 function DeleteTeam(btn) {
 
     var table = document.getElementById('TeamTable');
@@ -57,6 +61,7 @@ function DeleteTeam(btn) {
     $(btn).closest('tr').remove();
 }
 
+//Create, Edit TeamManager
 function AddItem(btn) {
     var table = document.getElementById('PlayersTable');
     var rows = table.getElementsByTagName('tr');
@@ -83,6 +88,7 @@ function AddItem(btn) {
     delbtn.classList.add("invisible");
 }
 
+//Create, Edit Event Manager
 function AddTeam(btn) {
     var table = document.getElementById('TeamTable');
     var rows = table.getElementsByTagName('tr');
@@ -116,6 +122,7 @@ function AddTeam(btn) {
     delbtn.classList.add("invisible");
 }
 
+//Create, Edit Event Manager
 function AddStadiumItem(btn) {
     var table = document.getElementById('StadiumsTable');
     var rows = table.getElementsByTagName('tr');
@@ -143,6 +150,7 @@ function AddStadiumItem(btn) {
 }
 
 
+//Create, Edit Event Manager
 function checkParity() {
     var numberOfTeam = document.getElementById('NumberOfTeam').value;
     if (numberOfTeam % 2 != 0 && numberOfTeam != 0) {
@@ -154,15 +162,17 @@ function checkParity() {
     }
 }
 
+//Create, Edit Event Manager
 function showNextPage1() {
 
-    if (checkParity() === true) {
+    if(checkParity() === true && document.getElementById('NumberOfTeam').value > 0) {
         document.getElementById("page-1").style.display = "none";
         document.getElementById("page-2").style.display = "block";
         document.getElementById("btnBack").style.display = "block";
         document.getElementById("btnReset").style.display = "none";
         document.getElementById("btnNext1").style.display = "none";
         document.getElementById("btnNext2").style.display = "none";
+        document.getElementById("BackendErrorSpan").style.display = "none";
     }
     else {
         alert("Number from Team must be even and grater than 0!");
@@ -170,6 +180,7 @@ function showNextPage1() {
 
 }
 
+//Create, Edit Event Manager
 function showNextPage2() {
 
     var teamsCount = document.getElementById('teamsCount').value;
@@ -204,7 +215,7 @@ function showNextPage2() {
 }
 
 
-
+//Create, Edit Event Manager
 function backPage() {
     document.getElementById("page-2").style.display = "none";
     document.getElementById("page-1").style.display = "block"
@@ -214,6 +225,7 @@ function backPage() {
     document.getElementById("btnNext2").style.display = "none";
 }
 
+//Create, Edit Event Manager
 function resetDetails() {
     document.getElementById("EName").value = '';
     document.getElementById("EStadium").value = '';
