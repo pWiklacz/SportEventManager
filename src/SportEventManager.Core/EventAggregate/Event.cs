@@ -52,12 +52,19 @@ public class Event : EntityBase, IAggregateRoot
   public void AddStadium(Stadium newStadium)
   {
     Guard.Against.Null(newStadium, nameof(newStadium));
+    if(_stadiums.Contains(newStadium))
+    {
+      throw new Exception("The stadium " + newStadium.Name + " was chosen more than once.");
+    }
     _stadiums.Add(newStadium);
   }
 
   public void AddTeam(Team newTeam)
   {
     Guard.Against.Null(newTeam, nameof(newTeam));
+    if(_teams.Contains(newTeam)) {
+      throw new Exception("The team " + newTeam.Name + " was chosen more than once.");
+    }
     _teams.Add(newTeam);
   }
 
