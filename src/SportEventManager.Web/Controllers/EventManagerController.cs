@@ -65,12 +65,12 @@ public class EventManagerController : Controller
   }
 
   [HttpGet]
-  public async Task<IActionResult> Create()
+  public async Task<IActionResult> Create(string error = "")
   {
-    EventViewModel viewModel = new EventViewModel();
+    EventViewModel viewModel = new EventViewModel(error);
 
-    TeamsWithoutEventsSpec teamsWithoutEventsSpec = new TeamsWithoutEventsSpec();
-    var teams = await _teamRepository.ListAsync(teamsWithoutEventsSpec);
+    TeamsActive teamsActive = new TeamsActive();
+    var teams = await _teamRepository.ListAsync(teamsActive);
 
     if (teams.IsNullOrEmpty())
     {
@@ -105,7 +105,12 @@ public class EventManagerController : Controller
 
       if(team == null) { return NotFound(); }
 
-      eventNew.AddTeam(team);
+      try { 
+        eventNew.AddTeam(team);
+      } 
+      catch(Exception ex) {
+        return RedirectToAction("Create", new { error = ex.Message });
+      }
     }
 
     await _eventRepository.AddAsync(eventNew);

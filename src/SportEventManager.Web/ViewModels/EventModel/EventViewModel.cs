@@ -25,6 +25,8 @@ public class EventViewModel
 
   public bool IsInprogress { get; set; } = false;
 
+  public string BackendError { get; set; } = "";
+
   public static EventViewModel FromEvent(Event @event)
   {
     return new EventViewModel
@@ -38,14 +40,18 @@ public class EventViewModel
       EndTime = @event.EndTime,
       Matches = @event.Matches.Select(m => MatchViewModel.FromMatch(m)).ToList(),
       Stadiums = @event.Stadiums.Select(s => StadiumViewModel.FromStadium(s)).ToList(),
-      Teams = @event.Teams.Select(t => TeamViewModel.FromTeam(t)).ToList()
+      Teams = @event.Teams.Select(t => TeamViewModel.FromTeam(t)).ToList(),
+      BackendError = ""
     };
   }
 
-  public EventViewModel()
+  public EventViewModel(string error = "")
   {
     Stadiums.Add(new StadiumViewModel() { Id = 1 });
     Matches.Add(new MatchViewModel() { Id = 1 });
     ChosenTeamsNames.Add("default");
+    BackendError = error;
   }
+
+  public EventViewModel() { }
 } 

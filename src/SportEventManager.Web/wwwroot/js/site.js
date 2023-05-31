@@ -150,6 +150,7 @@ function showNextPage1() {
         document.getElementById("btnReset").style.display = "none";
         document.getElementById("btnNext1").style.display = "none";
         document.getElementById("btnNext2").style.display = "none";
+        document.getElementById("BackendErrorSpan").style.display = "none";
     }
     else {
         alert("Number from Team must be even and grater than 0!");

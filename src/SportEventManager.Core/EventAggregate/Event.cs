@@ -58,6 +58,9 @@ public class Event : EntityBase, IAggregateRoot
   public void AddTeam(Team newTeam)
   {
     Guard.Against.Null(newTeam, nameof(newTeam));
+    if(_teams.Contains(newTeam)) {
+      throw new Exception("The team " + newTeam.Name + " was chosen more than once.");
+    }
     _teams.Add(newTeam);
   }
 
