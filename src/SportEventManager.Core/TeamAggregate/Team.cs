@@ -90,4 +90,14 @@ public class Team : EntityBase, IAggregateRoot
       teamPlayer.LeaveOn = DateTime.Now;
     }
   }
+
+  public void DeletOldPlayers(List<Player> players)
+  {
+    foreach(var player in _players) {
+      if(!players.Contains(player)) 
+      {
+        _players.Remove(player);
+      }
+    }
+  }
 }
