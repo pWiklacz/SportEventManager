@@ -25,7 +25,7 @@ public class Player : EntityBase
   [Required]
   [MinLength(11)]
   [MaxLength(11)]
-  public string Pesel { get; private set; }
+  public string Pesel { get; set; }
 
   //navigation properties
 

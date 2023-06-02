@@ -75,13 +75,12 @@ public class Team : EntityBase, IAggregateRoot
     _teamPlayers[index].Number = num;
   }
 
-  //public void AddOwner(User newUser)
-  //{
-  //  //NOTE: Not sure if we should actually have these Owners table since User which become the owner already exists
-  //  //So maybe we only need to create a team2user and pass the id as an argument not the whole user object
-  //  //Guard.Against.Null(newUser, nameof(newUser));
-  //  //_owners.Add(newUser);
-  //}
+  public void UpdatePlayer(int i, string name, string surname, string pesel)
+  {
+    _players[i].Name = name;
+    _players[i].Surname = surname;
+    _players[i].Pesel = pesel;
+  }
 
   public void Archive()
   {

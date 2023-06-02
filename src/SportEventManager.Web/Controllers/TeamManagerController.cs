@@ -16,11 +16,12 @@ namespace SportEventManager.Web.Controllers;
 public class TeamManagerController : Controller
 {
   private readonly IRepository<Team> _teamRepository;
+  private string _existingPeselsNumbers;
   
   public TeamManagerController(IRepository<Team> teamRepository)
   {
     _teamRepository = teamRepository;
-    
+    _existingPeselsNumbers = " ";
   }
 
   public async Task<IActionResult> Index()
@@ -34,6 +35,17 @@ public class TeamManagerController : Controller
       spec = new TeamsByOwnerIdSpec(currentUserId);
 
       var teams = await _teamRepository.ListAsync(spec);
+      var teamsPesel = await _teamRepository.ListAsync(new TeamsWithPlayersSpec());
+      var existingPeselNumbers = teamsPesel
+      .SelectMany(t => t.TeamPlayers)
+      .Where(tp => tp.LeaveOn == null)
+      .Join(teams.SelectMany(t => t.Players),
+          tp => tp.PlayerId,
+          p => p.Id,
+          (tp, p) => p.Pesel)
+      .ToList();
+
+      _existingPeselsNumbers = string.Join(",", existingPeselNumbers);
 
       if (teams == null)
       {
@@ -68,32 +80,12 @@ public class TeamManagerController : Controller
     team.TeamPlayers.Add(new TeamPlayerViewModel() { });
 
     var teams = await _teamRepository.ListAsync(new TeamsWithPlayersSpec());
-
-    var activeTeamPlayers = teams
-        .SelectMany(t => t.TeamPlayers)
-        .Where(tp => tp.LeaveOn == null)
-        .ToList();
-
-    var activePlayerIds = activeTeamPlayers.Select(tp => tp.PlayerId).ToList();
-
-    var existingPeselNumbers = teams
-    .SelectMany(t => t.Players)
-    .Where(p => activePlayerIds.Contains(p.Id))
-    .Select(p => p.Pesel)
-    .ToList();
-
-    string peselNumbersString = string.Join(",", existingPeselNumbers);
-    team.ExistingPeselNumbers = peselNumbersString;
-
     return View(team);
   }
 
   [HttpPost]
   public async Task<IActionResult> Create(TeamViewModel viewModel)
   {
-    //TODO: add owner which is use also User repository and use AddOwner method similar to AddPlayer
-    //TODO: Or if it doesn't work because the User already exists then refactor it to have only id of an existing user
-    //TODO: refactor below code and use existing userId
 
     string? currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     if (currentUserId != null)
@@ -101,7 +93,6 @@ public class TeamManagerController : Controller
       Team team = new Team(currentUserId, viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
       foreach (PlayerViewModel newPlayer in viewModel.Players)
       {
-        //TODO: make sure the player instantiates ok with player2Team also
         team.AddPlayer(
             new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel)
           );
@@ -115,7 +106,6 @@ public class TeamManagerController : Controller
       }
 
       await _teamRepository.UpdateAsync(team);
-
       await _teamRepository.SaveChangesAsync();
     }
 
@@ -148,15 +138,15 @@ public class TeamManagerController : Controller
       
     };
 
+    dto.ExistingPeselNumbers = _existingPeselsNumbers;
+
     return View(dto);
   }
 
   [HttpPost]
   public async Task<IActionResult> Edit(TeamViewModel viewModel)
   {
-    //TODO: add owner which is use also User repository and use AddOwner method similar to AddPlayer
-    //Or if it doesn't work because the User already exists then refactor it to have only id of an existing user
-    //Make deleting old players from a team work
+   
     TeamByIdWithPlayersSpec spec = new TeamByIdWithPlayersSpec(viewModel.Id);
     Team? team = await _teamRepository.FirstOrDefaultAsync(spec);
     if (team == null || team.Players.IsNullOrEmpty())
@@ -164,19 +154,25 @@ public class TeamManagerController : Controller
       return NotFound();
     }
 
-    //Adding updated team with new players
     team.Name = viewModel.Name;
     team.City = viewModel.City;
     team.NumberOfPlayers = viewModel.NumberOfPlayers;
 
-    foreach (PlayerViewModel newPlayer in viewModel.Players)
+
+    for(int i = 0; i < viewModel.Players.Count; i++)
     {
-      //TODO: make sure the player instantiates ok with player2Team also
-      team.AddPlayer(
-          new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel)
-        
-        ); 
+      PlayerViewModel playerViewModel = viewModel.Players[i];
+      Player? player = team.Players.FirstOrDefault(p => p.Id == playerViewModel.Id);
+      if (player != null)
+      {
+        team.UpdatePlayer(player.Id, viewModel.Players[i].Name, viewModel.Players[i].Surname, viewModel.Players[i].Pesel);
+      }
+      else
+      {
+        team.AddPlayer(new Player(viewModel.Players[i].Name, viewModel.Players[i].Surname, viewModel.Players[i].Pesel)); 
+      }
     }
+      
     await _teamRepository.UpdateAsync(team);
 
     for (int i = 0; i < viewModel.TeamPlayers.Count; i++)
