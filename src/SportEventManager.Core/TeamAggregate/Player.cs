@@ -27,8 +27,6 @@ public class Player : EntityBase
   [MaxLength(11)]
   public string Pesel { get; set; }
 
-  //navigation properties
-
   public FbPlayerStats? FbPlayerStats { get; set; }
   private List<Team> _teams = new();
   public ICollection<Team> Teams => _teams.AsReadOnly();

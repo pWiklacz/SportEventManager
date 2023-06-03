@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Numerics;
 using Ardalis.GuardClauses;
 using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.StatisticsAggregate;
-using SportEventManager.Core.UserAggregate;
 using SportEventManager.SharedKernel;
 using SportEventManager.SharedKernel.Interfaces;
 
@@ -30,8 +30,6 @@ public class Team : EntityBase, IAggregateRoot
   [Required]
   [DefaultValue(false)]
   public bool IsArchived { get; private set; } = false;
-
-  //navigation properties
 
   [DefaultValue(null)]
   [NotMapped]
@@ -75,11 +73,12 @@ public class Team : EntityBase, IAggregateRoot
     _teamPlayers[index].Number = num;
   }
 
-  public void UpdatePlayer(int i, string name, string surname, string pesel)
+  private void UpdatePlayer(int id, string name, string surname, string pesel)
   {
-    _players[i].Name = name;
-    _players[i].Surname = surname;
-    _players[i].Pesel = pesel;
+    int index = _players.FindIndex(p => p.Id == id);
+    _players[index].Name = Guard.Against.NullOrEmpty(name, nameof(name));
+    _players[index].Surname = Guard.Against.NullOrEmpty(surname, nameof(surname));
+    _players[index].Pesel = Guard.Against.NullOrEmpty(pesel, nameof(pesel));
   }
 
   public void Archive()
@@ -98,6 +97,25 @@ public class Team : EntityBase, IAggregateRoot
       {
         _players.Remove(player);
       }
+    }
+  }
+
+  public void UpdateTeam(string name, string city, int numberOfPlayers)
+  {
+    Name = Guard.Against.NullOrEmpty(name, nameof(name));
+    City = Guard.Against.NullOrEmpty(city, nameof(city));
+    NumberOfPlayers = Guard.Against.NegativeOrZero(numberOfPlayers, nameof(numberOfPlayers));
+  }
+
+  public void UpsertPlayer(Player? player, string newName, string newSurname, string newPesel)
+  {
+    if (player != null)
+    {
+      this.UpdatePlayer(player.Id, newName, newSurname, newPesel);
+    }
+    else
+    {
+      this.AddPlayer(new Player(newName, newSurname, newPesel));
     }
   }
 }

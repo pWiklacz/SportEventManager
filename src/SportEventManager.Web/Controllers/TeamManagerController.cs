@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Ardalis.Specification;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -26,73 +27,67 @@ public class TeamManagerController : Controller
 
   public async Task<IActionResult> Index()
   {
-    
     string? currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    TeamsByOwnerIdSpec spec;
 
     if (currentUserId != null)
     {
-      spec = new TeamsByOwnerIdSpec(currentUserId);
+      var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersByOwnerIdSpec(currentUserId));
 
-      var teams = await _teamRepository.ListAsync(spec);
-      var teamsPesel = await _teamRepository.ListAsync(new TeamsWithPlayersSpec());
-      var existingPeselNumbers = teamsPesel
-      .SelectMany(t => t.TeamPlayers)
-      .Where(tp => tp.LeaveOn == null)
-      .Join(teams.SelectMany(t => t.Players),
-          tp => tp.PlayerId,
-          p => p.Id,
-          (tp, p) => p.Pesel)
-      .ToList();
-
-      _existingPeselsNumbers = string.Join(",", existingPeselNumbers);
-
-      if (teams == null)
+      if (teamsWithPlayers == null)
       {
+        _existingPeselsNumbers = "";
         return View();
       }
 
+      var existingPeselNumbers = teamsWithPlayers
+        .SelectMany(t => t.TeamPlayers)
+        .Join(teamsWithPlayers.SelectMany(t => t.Players),
+          tp => tp.PlayerId,
+          p => p.Id,
+          (tp, p) => p.Pesel)
+        .ToList();
+
+      _existingPeselsNumbers = string.Join(",", existingPeselNumbers);
+
       var dto = new List<TeamViewModel>();
 
-      foreach (Team team in teams)
+      foreach (Team team in teamsWithPlayers)
       {
         dto.Add(
-          new TeamViewModel
-          {
-            Id = team.Id,
-            Name = team.Name,
-            City = team.City,
-            IsDeleted = team.IsArchived,
-            NumberOfPlayers = team.NumberOfPlayers,
-            FbTeamStats = FbTeamStatsViewModel.FromTeamStats(fBTeamStats: (FbTeamStats?)team.FbTeamWholeStats?.FootballStats)
-          });
+          TeamViewModel.FromTeam(team)
+          );
       }
+
       return View(dto);
     }
-    else { return View(); }
+    
+    return View();
   }
 
   [HttpGet]
-  public async Task<IActionResult> Create()
+  public IActionResult Create()
   {
     TeamViewModel team = new TeamViewModel();
     team.Players.Add(new PlayerViewModel() { Id = 1 });
     team.TeamPlayers.Add(new TeamPlayerViewModel() { });
+    team.ExistingPeselNumbers = _existingPeselsNumbers;
 
-    var teams = await _teamRepository.ListAsync(new TeamsWithPlayersSpec());
     return View(team);
   }
 
   [HttpPost]
   public async Task<IActionResult> Create(TeamViewModel viewModel)
   {
-
     string? currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
     if (currentUserId != null)
     {
       Team team = new Team(currentUserId, viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
       foreach (PlayerViewModel newPlayer in viewModel.Players)
       {
+        //add a pesel validation here and if it exists in viewModel.ExistingPeselNumbers then redirect to Create again
+        //but with an error (see EventManagerController there is an example there when i catch the exception and do the redirect
+        //showing exceptions message in the front)
         team.AddPlayer(
             new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel)
           );
@@ -100,6 +95,7 @@ public class TeamManagerController : Controller
 
       await _teamRepository.AddAsync(team);
 
+      //i'm not sure if the indexes of viewModel.TeamPlayer will always be the same as in _teamPlayers, test it
       for (int i = 0; i < viewModel.TeamPlayers.Count; i++)
       {
         team.UpdateTeamPlayer(i, viewModel.TeamPlayers[i].Number);
@@ -123,21 +119,7 @@ public class TeamManagerController : Controller
       return NotFound();
     }
 
-    var dto = new TeamViewModel
-    {
-      Id = team.Id,
-      Name = team.Name,
-      City = team.City,
-      NumberOfPlayers = team.NumberOfPlayers,
-      TeamPlayers = team.TeamPlayers
-                    .Select(teamPlayer => TeamPlayerViewModel.FromTeamPlayer(teamPlayer))
-                    .ToList(),
-      Players = team.Players
-                    .Select(player => PlayerViewModel.FromPlayer(player))
-                    .ToList()
-      
-    };
-
+    var dto = TeamViewModel.FromTeam(team);
     dto.ExistingPeselNumbers = _existingPeselsNumbers;
 
     return View(dto);
@@ -146,7 +128,6 @@ public class TeamManagerController : Controller
   [HttpPost]
   public async Task<IActionResult> Edit(TeamViewModel viewModel)
   {
-   
     TeamByIdWithPlayersSpec spec = new TeamByIdWithPlayersSpec(viewModel.Id);
     Team? team = await _teamRepository.FirstOrDefaultAsync(spec);
     if (team == null || team.Players.IsNullOrEmpty())
@@ -154,27 +135,21 @@ public class TeamManagerController : Controller
       return NotFound();
     }
 
-    team.Name = viewModel.Name;
-    team.City = viewModel.City;
-    team.NumberOfPlayers = viewModel.NumberOfPlayers;
+    team.UpdateTeam(viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
 
-
-    for(int i = 0; i < viewModel.Players.Count; i++)
+    foreach(PlayerViewModel playerViewModel in viewModel.Players)
     {
-      PlayerViewModel playerViewModel = viewModel.Players[i];
       Player? player = team.Players.FirstOrDefault(p => p.Id == playerViewModel.Id);
-      if (player != null)
-      {
-        team.UpdatePlayer(player.Id, viewModel.Players[i].Name, viewModel.Players[i].Surname, viewModel.Players[i].Pesel);
-      }
-      else
-      {
-        team.AddPlayer(new Player(viewModel.Players[i].Name, viewModel.Players[i].Surname, viewModel.Players[i].Pesel)); 
-      }
+      team.UpsertPlayer(player, playerViewModel.Name, playerViewModel.Surname, playerViewModel.Pesel);
     }
+
+    //tu się psuje, bo nie może rozpoznać gracza, że istnieje na podstawie danych innych niż ID, moze trzeba zmienić
+    //żeby zamiast Contains używało foreacha też po liście z modelu podanej i porównywało ich po peselach.
+    //team.DeletOldPlayers(viewModel.getPlayersList());
       
     await _teamRepository.UpdateAsync(team);
 
+    //i'm not sure if the indexes of viewModel.TeamPlayer will always be the same as in _teamPlayers, test it
     for (int i = 0; i < viewModel.TeamPlayers.Count; i++)
     {
       team.UpdateTeamPlayer(i, viewModel.TeamPlayers[i].Number);
@@ -198,13 +173,7 @@ public class TeamManagerController : Controller
       return NotFound();
     }
 
-    var dto = new TeamViewModel
-    {
-      Id = team.Id,
-      Name = team.Name,
-      City = team.City,
-      NumberOfPlayers = team.NumberOfPlayers
-    };
+    var dto = TeamViewModel.FromTeam(team);
 
     return View(dto);
   }
@@ -237,16 +206,7 @@ public class TeamManagerController : Controller
       return NotFound();
     }
 
-    var dto = new TeamViewModel
-    {
-      Id = team.Id,
-      Name = team.Name,
-      City = team.City,
-      NumberOfPlayers = team.NumberOfPlayers,
-      Players = team.Players
-                    .Select(player => PlayerViewModel.FromPlayer(player))
-                    .ToList()
-    };
+    var dto = TeamViewModel.FromTeam(team);
 
     return View(dto);
   }

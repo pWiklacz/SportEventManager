@@ -18,7 +18,7 @@ public class TeamViewModel
 
   public string OwnerId { get; private set; } = string.Empty;
 
-  public bool IsDeleted { get; set; } = false;
+  public bool IsArchived { get; set; } = false;
 
 
   public List<PlayerViewModel> Players { get; set; } = new List<PlayerViewModel>();
@@ -34,10 +34,20 @@ public class TeamViewModel
     Name = team.Name,
     City = team.City,
     NumberOfPlayers = team.NumberOfPlayers,
-    //OwnerId = team.OwnerId,
-    IsDeleted= team.IsArchived,
+    OwnerId = team.OwnerId,
+    IsArchived = team.IsArchived,
     Players = team.Players.Select(p => PlayerViewModel.FromPlayer(p)).ToList(),
-    TeamPlayers = team.TeamPlayers.Select(p => TeamPlayerViewModel.FromTeamPlayer(p)).ToList(),
-    FbTeamStats = FbTeamStatsViewModel.FromTeamStats((FbTeamStats?)team.FbTeamWholeStats?.FootballStats)
+    TeamPlayers = team.TeamPlayers.Select(tp => TeamPlayerViewModel.FromTeamPlayer(tp)).ToList(),
+    FbTeamStats = FbTeamStatsViewModel.FromTeamStats(fBTeamStats: (FbTeamStats?)team.FbTeamWholeStats?.FootballStats)
   };
+
+  public List<Player> getPlayersList()
+  {
+    var list = new List<Player>();
+    foreach (var player in Players)
+    {
+      list.Add(new Player(player.Name, player.Surname, player.Pesel));
+    }
+    return list;
+  }
 }
