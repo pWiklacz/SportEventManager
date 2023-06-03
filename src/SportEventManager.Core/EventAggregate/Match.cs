@@ -2,8 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
+using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.Core.TeamAggregate;
-using SportEventManager.Core.TeamAggregate.Stats;
 using SportEventManager.SharedKernel;
 
 namespace SportEventManager.Core.EventAggregate;
@@ -16,65 +16,76 @@ public class Match : EntityBase
   [Required]
   public DateTime EndTime { get; set; }
 
-  [Required]
-  public Stadium Stadium { get; set; } = new Stadium();
+  public String? WinnerName { get; set; } = string.Empty;
 
   [Required]
   [DefaultValue(false)]
-  public bool IsDeleted { get; private set; } = false;
+  public bool IsArchived { get; private set; } = false;
 
   [Required]
   [DefaultValue(false)]
   public bool IsEnded { get; set; } = false;
 
   [Required]
-  [ForeignKey("Team")]
-  public int FirstTeamId { get; private set; }
+  [ForeignKey("Stadium")]
+  public int StadiumId { get; set; }
 
   [Required]
-  [ForeignKey("Team")]
-  public int SecondTeamId { get; private set; }
+  [ForeignKey(nameof(HomeTeam))]
+  public int HomeTeamId { get; private set; }
 
-  private List<FBTeamStats> _fbTeamStats = new List<FBTeamStats>(2);
+  [Required]
+  [ForeignKey(nameof(GuestTeam))]
+  public int GuestTeamId { get; private set; }
 
-  public IEnumerable<FBTeamStats> FbTeamStats => _fbTeamStats.AsReadOnly();
+  [Required]
+  [ForeignKey("Event")]
+  public int EventId { get; set; }
 
-  [MaxLength(100)]
-  public string WinnerName { get; set; } = string.Empty;
+  //navigation properties
+
+  [Required]
+  public Event Event { get; set; } = null!;
+
+  [Required]
+  public Stadium Stadium { get; set; } = null!;
+
+  [Required]
+  public Team HomeTeam { get; set; } = null!;
+
+  [Required]
+  public Team GuestTeam { get; set; } = null!;
+
+  public FbTeamMatchStats? HomeTeamStats { get; set; }
+
+  public FbTeamMatchStats? GuestTeamStats { get; set; }
 
   public Match() { }
 
   public Match(
-    DateTime startTime, 
-    DateTime endTime, 
+    DateTime startTime,
+    DateTime endTime,
     Stadium stadium,
+    int stadiumId,
     int firstTeamId,
     int secondTeamId,
     bool isEnded = false,
     string winnerName = ""
     )
   {
-    StartTime = startTime;
-    EndTime = endTime;
-    Stadium = stadium;
-    FirstTeamId = firstTeamId;
-    SecondTeamId = secondTeamId;
-    IsDeleted = false;
+    StartTime = Guard.Against.Null(startTime, nameof(startTime));
+    EndTime = Guard.Against.Null(endTime, nameof(endTime));
+    Stadium = Guard.Against.Null(stadium, nameof(stadium)); 
+    StadiumId = Guard.Against.NegativeOrZero(stadiumId, nameof(stadiumId));
+    HomeTeamId = Guard.Against.NegativeOrZero(firstTeamId, nameof(firstTeamId));
+    GuestTeamId = Guard.Against.NegativeOrZero(secondTeamId, nameof(secondTeamId));
+    IsArchived = false;
     IsEnded = isEnded;
     WinnerName = winnerName;
   }
 
-  public void MarkAsDeleted()
+  public void Archive()
   {
-    this.IsDeleted = true;
-  }
-
-  public void AddStats(FBTeamStats newStats)
-  {
-    Guard.Against.Null(newStats, nameof(newStats));
-    _fbTeamStats.Add(newStats);
-
-    //var newPlayerAddedEvent = new NewPlayerAddedEvent(this, newPlayer);
-    //base.RegisterDomainEvent(newPlayerAddedEvent);
+    this.IsArchived = true;
   }
 }

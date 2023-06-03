@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SportEventManager.Core.EventAggregate;
 
-namespace SportEventManager.Infrastructure.Data.Config;
+namespace SportEventManager.Infrastructure.Data.Config.EventAggregate;
 public class StadiumConfiguration : IEntityTypeConfiguration<Stadium>
 {
   public void Configure(EntityTypeBuilder<Stadium> builder)
@@ -15,7 +15,11 @@ public class StadiumConfiguration : IEntityTypeConfiguration<Stadium>
       .HasMaxLength(50)
       .IsRequired();
 
-    builder.Property(s => s.IsDeleted)
+    builder.Property(s => s.Name)
+      .HasMaxLength(50)
+      .IsRequired();
+
+    builder.Property(s => s.IsArchived)
       .IsRequired()
       .HasDefaultValue(false);
   }

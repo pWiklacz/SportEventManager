@@ -23,7 +23,7 @@ public class EventViewController : Controller
   [HttpGet]
   public async Task<IActionResult> Matches(int id)
   {
-    var spec = new EventByIdWithItemsSpec(id);
+    var spec = new EventsByIdWithItemsSpec(id);
     Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
 
     if (ev == null) { return NotFound(); }
@@ -32,10 +32,10 @@ public class EventViewController : Controller
     {
       Id = ev.Id,
       Name = ev.Name,
-      Stadiums = ev.stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
+      Stadiums = ev.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
       Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
       Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
-      startTime = ev.StartTime
+      StartTime = ev.StartTime
     };
 
     return View(dto);
@@ -50,7 +50,7 @@ public class EventViewController : Controller
   [HttpGet]
   public async Task<IActionResult> Bracket(int id)
   {
-    var spec = new EventByIdWithItemsSpec(id);
+    var spec = new EventsByIdWithItemsSpec(id);
     Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
 
     if (ev == null) { return NotFound(); }
@@ -59,10 +59,10 @@ public class EventViewController : Controller
     {
       Id = ev.Id,
       Name = ev.Name,
-      Stadiums = ev.stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
+      Stadiums = ev.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
       Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
       Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
-      startTime = ev.StartTime
+      StartTime = ev.StartTime
     };
 
     return View(dto);
@@ -78,7 +78,7 @@ public class EventViewController : Controller
   [HttpGet]
   public async Task<IActionResult> Standings(int id)
   {
-    var spec = new EventByIdWithItemsSpec(id);
+    var spec = new EventsByIdWithItemsSpec(id);
     Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
 
     if (ev == null) { return NotFound(); }
@@ -87,10 +87,10 @@ public class EventViewController : Controller
     {
       Id = ev.Id,
       Name = ev.Name,
-      Stadiums = ev.stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
+      Stadiums = ev.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
       Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
       Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
-      startTime = ev.StartTime
+      StartTime = ev.StartTime
     };
 
     return View(dto);
@@ -106,7 +106,7 @@ public class EventViewController : Controller
   [HttpGet]
   public async Task<IActionResult> Stats(int id)
   {
-    var spec = new EventByIdWithItemsSpec(id);
+    var spec = new EventsByIdWithItemsSpec(id);
     Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
 
     if (ev == null) { return NotFound(); }
@@ -115,10 +115,10 @@ public class EventViewController : Controller
     {
       Id = ev.Id,
       Name = ev.Name,
-      Stadiums = ev.stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
+      Stadiums = ev.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
       Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
       Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
-      startTime = ev.StartTime
+      StartTime = ev.StartTime
     };
 
     return View(dto);
