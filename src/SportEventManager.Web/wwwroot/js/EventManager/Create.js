@@ -120,7 +120,7 @@ function showNextPage2() {
     var enterNumber = document.getElementById('NumberOfTeam').value;
 
     if (teamsCount < enterNumber) {
-        alert("Invalid number of selsected teams");
+        alert("Invalid number of selected teams");
     }
     else {
         var uniqueTeams = [];
