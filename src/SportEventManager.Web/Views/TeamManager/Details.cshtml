@@ -49,12 +49,15 @@
                     <th>
                         Number
                     </th>
+                    <th>
+                        Pesel
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var Player in Model.Players)
                 {
-                    if (!Player.IsDeleted)
+                    if (!Player.IsArchived)
                     {
                         <tr>
                             <td class="team-col-colors">
@@ -64,10 +67,10 @@
                                 @Player.Surname
                             </td>
                             <td class="team-col-colors">
-                                @*
-                                    TODO: make it use player2Team
-                                    @Player.Number
-                                *@
+                                @Model.TeamPlayers.Find(tp => tp.PlayerId == Player.Id)?.Number
+                            </td>
+                            <td class="team-col-colors">
+                                @Player.Pesel
                             </td>
                         </tr>
                     }

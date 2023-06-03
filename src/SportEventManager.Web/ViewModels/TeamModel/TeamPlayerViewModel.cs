@@ -4,13 +4,19 @@ namespace SportEventManager.Web.ViewModels.TeamModel;
 
 public class TeamPlayerViewModel
 {
+  public int Id { get; set; }
+
   public int Number { get; set; }
+
+  public int PlayerId { get; set; }
 
   public static TeamPlayerViewModel FromTeamPlayer(TeamPlayer teamPlayer)
   {
     return new TeamPlayerViewModel()
     {
-      Number = teamPlayer.Number
+      Id = teamPlayer.Id,
+      Number = teamPlayer.Number,
+      PlayerId = teamPlayer.PlayerId
     };
   }
   

@@ -57,7 +57,7 @@
             <tbody>
                 @foreach (var Team in Model.Teams)
                 {
-                    if (!Team.IsDeleted)
+                    if (!Team.IsArchived)
                     {
                         <tr>
                             <td class="team-col-colors">

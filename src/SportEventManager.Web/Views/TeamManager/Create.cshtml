@@ -3,8 +3,10 @@
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
+<script src="~/js/TeamManager/CreateEdit.js"></script>
 <h1>Create your team</h1>
 <div class="container-fluid col-12 mx-auto pt-0 p-0">
     <div class="card">
@@ -90,11 +92,10 @@
                                         <input asp-for="@Model.TeamPlayers[i].Number" class="form-control" />
                                     </td>
                                     <td>
-       
-                                        <input asp-for="@Model.Players[i].Pesel" class="form-control" onblur="checkPesel(this)"/>
+                                        <input asp-for="@Model.Players[i].Pesel" class="form-control" oninput="checkPesel(this)"/>
                                     </td>
                                     <td style="width:60px;">
-                                        <input type="hidden" asp-for="@Model.Players[i].IsDeleted" />
+                                        <input type="hidden" asp-for="@Model.Players[i].IsArchived" />
                                         <button id="btnremove-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteItem(this)">
                                             Delete
                                         </button>

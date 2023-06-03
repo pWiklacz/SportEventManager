@@ -25,9 +25,7 @@ public class Player : EntityBase
   [Required]
   [MinLength(11)]
   [MaxLength(11)]
-  public string Pesel { get; private set; }
-
-  //navigation properties
+  public string Pesel { get; set; }
 
   public FbPlayerStats? FbPlayerStats { get; set; }
   private List<Team> _teams = new();
