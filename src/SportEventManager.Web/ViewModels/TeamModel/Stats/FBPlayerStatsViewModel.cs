@@ -1,14 +1,20 @@
-﻿using SportEventManager.Core.TeamAggregate.Stats;
+﻿using SportEventManager.Core.StatisticsAggregate;
 
 namespace SportEventManager.Web.ViewModels.TeamModel.Stats;
-public class FBPlayerStatsViewModel : FootballStatsViewModel
+public class FbPlayerStatsViewModel : FootballStatsViewModel
 {
-  public static FBPlayerStatsViewModel FromPlayerStats(FBPlayerStats? fBPlayerStats)
+  public int PlayerId { get; private set; }
+  
+  //NOTE: I am not sure what will now happen with this method 
+  //and whether it should have a base or a derived class or not
+  public static FbPlayerStatsViewModel FromPlayerStats(FbPlayerStats? fBPlayerStats)
   {
     if (fBPlayerStats != null)
     {
-      return new FBPlayerStatsViewModel()
+      return new FbPlayerStatsViewModel()
       {
+        Id = fBPlayerStats.Id,
+        PlayerId = fBPlayerStats.PlayerId,
         Goals = fBPlayerStats.Goals,
         Assists = fBPlayerStats.Assists,
         RedCards = fBPlayerStats.RedCards,
@@ -17,7 +23,7 @@ public class FBPlayerStatsViewModel : FootballStatsViewModel
     }
     else
     {
-      return new FBPlayerStatsViewModel();
+      return new FbPlayerStatsViewModel();
     }
   }
 }

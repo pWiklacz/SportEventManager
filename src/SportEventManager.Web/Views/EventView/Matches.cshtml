@@ -2,12 +2,12 @@
 @model EventViewModel
 
 @{
-    ViewData["Title"] = "Matches";
+    ViewData["Title"] = "HomeMatches";
     Layout = "~/Views/EventView/_EventViewLayout.cshtml";
 }
 
 @{
-    //int matchesNumb = Model.Matches.Count;
+    //int matchesNumb = Model.HomeMatches.Count;
 }
 
 <style>
@@ -238,14 +238,14 @@
                 <div class="team top">
                 @Html.DisplayFor(item => Model.Matches[i].FirstTeamId)
                     <div class="score">
-                        @*@Html.DisplayFor(item => Model.Matches[i].FbTeamStats[0].Goals)*@
+                        @*@Html.DisplayFor(item => Model.HomeMatches[i].FbTeamMatchStats[0].Goals)*@
                         0
                     </div>
                 </div>
                 <div class="team bot">
                 @Html.DisplayFor(item => Model.Matches[i].SecondTeamId)
                     <div class="score">
-                    @*@Html.DisplayFor(item => Model.Matches[i].FbTeamStats[1].Goals)*@
+                    @*@Html.DisplayFor(item => Model.HomeMatches[i].FbTeamMatchStats[1].Goals)*@
                     0
                     </div>
                 </div>
