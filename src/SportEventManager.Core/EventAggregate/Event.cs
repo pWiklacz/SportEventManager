@@ -52,6 +52,10 @@ public class Event : EntityBase, IAggregateRoot
   public void AddStadium(Stadium newStadium)
   {
     Guard.Against.Null(newStadium, nameof(newStadium));
+    if(_stadiums.Contains(newStadium))
+    {
+      throw new Exception("The stadium " + newStadium.Name + " was chosen more than once.");
+    }
     _stadiums.Add(newStadium);
   }
 

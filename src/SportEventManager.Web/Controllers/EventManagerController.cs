@@ -93,9 +93,16 @@ public class EventManagerController : Controller
 
     foreach(StadiumViewModel newStadium in viewModel.Stadiums)
     {
-      eventNew.AddStadium(
-        new Stadium(newStadium.Name, newStadium.City)
-      );
+      try
+      {
+        eventNew.AddStadium(
+          new Stadium(newStadium.Name, newStadium.City)
+        );
+      }
+      catch (Exception ex)
+      {
+        return RedirectToAction("Create", new { error = ex.Message });
+      }
     };
 
     foreach(string teamName in viewModel.ChosenTeamsNames)
