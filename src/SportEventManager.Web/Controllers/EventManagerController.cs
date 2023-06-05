@@ -35,7 +35,7 @@ public class EventManagerController : Controller
     var sportEvents = await _eventRepository.ListAsync(spec);
     if(sportEvents.IsNullOrEmpty())
     {
-      return View();
+      return View(new List<EventViewModel>());
     }
 
     var dto = new List<EventViewModel>();
