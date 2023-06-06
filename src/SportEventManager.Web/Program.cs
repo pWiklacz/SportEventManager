@@ -8,6 +8,7 @@ using SportEventManager.Web;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using SportEventManager.Core.UserAggregate;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +31,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(appConnectionString!).EnableSensitiveDataLogging(true));
 
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<UserDbContext>();
+  .AddRoles<IdentityRole>()
+  .AddEntityFrameworkStores<UserDbContext>();
 
 builder.Services.AddControllersWithViews().AddNewtonsoftJson();
 builder.Services.AddRazorPages();
@@ -77,6 +79,45 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+using (var scope = app.Services.CreateScope())
+{
+  var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+  var roles = new[] { "Admin", "EventManager", "TeamManager" };
+  foreach (var role in roles)
+  {
+    if (!await roleManager.RoleExistsAsync(role))
+    {
+      await roleManager.CreateAsync(new IdentityRole(role));
+    }
+  }
+}
+
+using (var scope = app.Services.CreateScope())
+{
+  var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+
+  var emails = new[] { "admin@admin.com", "event@event.com", "team@team.com"};
+  var names = new[] {"Admin","EventManager","TeamManager"};
+  var passwords = new[] {"Admin1!", "Event1!", "Team1!"};
+
+  for (int i = 0; i < 3; i++)
+  {
+    if (await userManager.FindByEmailAsync(emails[i]) == null)
+    {
+      var user = new User()
+      {
+        FirstName = names[i],
+        LastName = names[i],
+        UserName = names[i],
+        Email = emails[i],
+        EmailConfirmed = true
+      };
+      await userManager.CreateAsync(user, passwords[i]);
+      await userManager.AddToRoleAsync(user, names[i]);
+    }
+  }
+}
 
 // Seed Database
 //using (var scope = app.Services.CreateScope())

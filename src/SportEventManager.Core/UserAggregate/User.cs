@@ -15,8 +15,6 @@ public class User : IdentityUser, IAggregateRoot
   [PersonalData]
   public string? LastName { get; set; }
 
-  public UserRoleEnum? AccountType { get; private set; }
-
   [Required]
   [DefaultValue(false)]
   public bool IsArchived { get; private set; } = false;

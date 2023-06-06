@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SportEventManager.Core.EventAggregate;
@@ -10,6 +11,7 @@ using SportEventManager.SharedKernel.Interfaces;
 using SportEventManager.Web.ViewModels.EventModel;
 
 namespace SportEventManager.Web.Controllers;
+[Authorize(Roles = "Admin,EventManager")]
 public class EventManagerController : Controller
 {
   private readonly IRepository<Event> _eventRepository;
