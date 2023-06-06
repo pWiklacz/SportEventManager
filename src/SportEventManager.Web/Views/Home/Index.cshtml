@@ -1,5 +1,103 @@
-﻿@{
+﻿@using SportEventManager.Web.ViewModels.EventModel;
+@model IEnumerable<EventViewModel>
+@{
     ViewData["Title"] = "Home Page";
 }
 
+<style>
+    /* Create four equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 30%;
+        margin-left: 15px;
+    }
 
+    .event {
+        transition: 0.3s;
+        border: 1px solid #AAA;
+        border-radius: 15px;
+        padding: 10px;
+        margin-bottom: 15px;
+        background-color: #f9f9f9;
+    }
+
+        .event:hover {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            background-color: rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+    .title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .info {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .team {
+        font-size: 20px;
+        margin-right: 10px;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .default {
+        border-color: #e7e7e7;
+        color: black;
+    }
+
+        .default:hover {
+            background: #e7e7e7;
+        }
+
+</style>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        @for (int i = 0; i < Model.Count<EventViewModel>(); i++)
+        {
+            int currentId = Model.ElementAt<EventViewModel>(i).Id;
+            <div class="column">
+                <a class="nav-link" asp-controller="EventView" asp-action="Matches" asp-route-id="@currentId">
+
+                    <div class="event">
+                        <div class="title">
+                            @Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).Name)
+                        </div>
+                        <div class="info">
+                            <span>Start date:</span>
+                            <span>@Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).StartTime)</span>
+                        </div>
+                        <div class="info">
+                            <span>End date:</span>
+                            <span>@Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).EndTime)</span>
+                        </div>
+                        <div class="info">
+                            <span>Number of teams:</span>
+                            <span>@Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).Teams.Count)</span>
+                        </div>
+                        <div class="info">
+                            <span>Number of stadiums:</span>
+                            <span>@Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).Stadiums.Count)</span>
+                        </div>
+                        <div class="info">
+                            <span>Number of matches:</span>
+                            <span>@Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).Matches.Count)</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+}
+else
+{
+<h1>No events are available now</h1>
+}

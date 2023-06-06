@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ardalis.Specification;
-using Microsoft.EntityFrameworkCore.Query;
+﻿using Ardalis.Specification;
 
 namespace SportEventManager.Core.EventAggregate.Specifications;
 public class EventByIdSpec : Specification<Event>, ISingleResultSpecification

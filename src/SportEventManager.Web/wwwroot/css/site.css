@@ -86,29 +86,113 @@ h3 {
     width: 25%;   
     margin: 0;
     max-width: 135px;
-    font-size: 15px;
+    font-size: 15px; 
 }
 
 .round {
     float: left;
 }
 
-    .round.r-of-4 {
+    .round.r-of-32 .bracket-game {
+        max-width: 125px;
+        margin: 10px 0;
     }
 
-    .round.r-of-2 {
-        margin-top: 25px;
+    .round.r-of-16 .bracket-game1 {
+        position: relative;
+        max-width: 125px;
+        top: 41px;
     }
 
-.bracket-game {
-    max-width: 125px;
-    margin: 10px 0;
-}
+    .round.r-of-16 .bracket-game2 {
+        position: relative;
+        max-width: 125px;
+        top: 113px;
+    }
+
+    .round.r-of-16 .bracket-game3 {
+        position: relative;
+        max-width: 125px;
+        top: 185px;
+    }
+
+    .round.r-of-16 .bracket-game4 {
+        position: relative;
+        max-width: 125px;
+        top: 257px;
+    }
+
+    .round.r-of-16 .bracket-game5 {
+        position: relative;
+        max-width: 125px;
+        top: 330px;
+    }
+
+    .round.r-of-16 .bracket-game6 {
+        position: relative;
+        max-width: 125px;
+        top: 402px;
+    }
+
+    .round.r-of-16 .bracket-game7 {
+        position: relative;
+        max-width: 125px;
+        top: 474px;
+    }
+
+    .round.r-of-16 .bracket-game8 {
+        position: relative;
+        max-width: 125px;
+        top: 545px;
+    }
+
+    .round.r-of-8 .bracket-game1 {
+        position: relative;
+        max-width: 125px;
+        top: 104px;
+    }
+
+    .round.r-of-8 .bracket-game2 {
+        position: relative;
+        max-width: 125px;
+        top: 300px;
+    }
+
+    .round.r-of-8 .bracket-game3 {
+        position: relative;
+        max-width: 125px;
+        top: 496px;
+    }
+
+    .round.r-of-8 .bracket-game4 {
+        position: relative;
+        max-width: 125px;
+        top: 692px;
+    }
+
+    .round.r-of-4 .bracket-game1 {
+        position: relative;
+        max-width: 125px;
+        top: 228px;
+    }
+
+    .round.r-of-4 .bracket-game2 {
+        position: relative;
+        max-width: 125px;
+        top: 671px;
+    }
+
+    .round.r-of-2 .bracket-game {
+        position: relative;
+        max-width: 125px;
+        top: 474px;
+    }
 
 .player {
     min-width: 100px;
     border: 1px solid #AAA;
     padding-left: 10px;
+
 }
 
     .player.top {
@@ -141,31 +225,452 @@ h3 {
     min-width: 35px;
 }
 
+    .connectors.r-of-16 .top-line1 {
+        position: relative;
+        top: 35px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .bottom-line1 {
+        position: relative;
+        top: 95px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .vert-line1 {
+        position: relative;
+        top: 31px;
+        left: -16px;
+        height: 64px;
+        border-right: 2px solid #AAA;
+    }
+
+    .connectors.r-of-16 .next-line1 {
+        position: relative;
+        top: -2px;
+        left: 17px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .top-line2 {
+        position: relative;
+        top: 89px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .bottom-line2 {
+        position: relative;
+        top: 149px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .vert-line2 {
+        position: relative;
+        top: 85px;
+        left: -16px;
+        height: 64px;
+        border-right: 2px solid #AAA;
+    }
+
+    .connectors.r-of-16 .next-line2 {
+        position: relative;
+        top: 52px;
+        left: 17px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .top-line3 {
+        position: relative;
+        top: 143px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .bottom-line3 {
+        position: relative;
+        top: 203px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .vert-line3 {
+        position: relative;
+        top: 139px;
+        left: -16px;
+        height: 64px;
+        border-right: 2px solid #AAA;
+    }
+
+    .connectors.r-of-16 .next-line3 {
+        position: relative;
+        top: 106px;
+        left: 17px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .top-line4 {
+        position: relative;
+        top: 197px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .bottom-line4 {
+        position: relative;
+        top: 257px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .vert-line4 {
+        position: relative;
+        top: 193px;
+        left: -16px;
+        height: 64px;
+        border-right: 2px solid #AAA;
+    }
+
+    .connectors.r-of-16 .next-line4 {
+        position: relative;
+        top: 160px;
+        left: 17px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .top-line5 {
+        position: relative;
+        top: 251px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .bottom-line5 {
+        position: relative;
+        top: 311px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .vert-line5 {
+        position: relative;
+        top: 247px;
+        left: -16px;
+        height: 64px;
+        border-right: 2px solid #AAA;
+    }
+
+    .connectors.r-of-16 .next-line5 {
+        position: relative;
+        top: 214px;
+        left: 17px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .top-line6 {
+        position: relative;
+        top: 305px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .bottom-line6 {
+        position: relative;
+        top: 365px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .vert-line6 {
+        position: relative;
+        top: 301px;
+        left: -16px;
+        height: 64px;
+        border-right: 2px solid #AAA;
+    }
+
+    .connectors.r-of-16 .next-line6 {
+        position: relative;
+        top: 268px;
+        left: 17px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .top-line7 {
+        position: relative;
+        top: 359px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .bottom-line7 {
+        position: relative;
+        top: 419px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .vert-line7 {
+        position: relative;
+        top: 355px;
+        left: -16px;
+        height: 64px;
+        border-right: 2px solid #AAA;
+    }
+
+    .connectors.r-of-16 .next-line7 {
+        position: relative;
+        top: 322px;
+        left: 17px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .top-line8 {
+        position: relative;
+        top: 413px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .bottom-line8 {
+        position: relative;
+        top: 473px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-16 .vert-line8 {
+        position: relative;
+        top: 409px;
+        left: -16px;
+        height: 64px;
+        border-right: 2px solid #AAA;
+    }
+
+    .connectors.r-of-16 .next-line8 {
+        position: relative;
+        top: 376px;
+        left: 17px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+
+    .connectors.r-of-8 .top-line1 {
+        position: relative;
+        top: 66px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-8 .bottom-line1 {
+        position: relative;
+        top: 188px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-8 .vert-line1 {
+        position: relative;
+        top: 62px;
+        left: -16px;
+        height: 126px;
+        border-right: 2px solid #AAA;
+    }
+
+    .connectors.r-of-8 .next-line1 {
+        position: relative;
+        top: -2px;
+        left: 17px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-8 .top-line2 {
+        position: relative;
+        top: 182px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-8 .bottom-line2 {
+        position: relative;
+        top: 304px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-8 .vert-line2 {
+        position: relative;
+        top: 178px;
+        left: -16px;
+        height: 126px;
+        border-right: 2px solid #AAA;
+    }
+
+    .connectors.r-of-8 .next-line2 {
+        position: relative;
+        top: 114px;
+        left: 17px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-8 .top-line3 {
+        position: relative;
+        top: 298px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-8 .bottom-line3 {
+        position: relative;
+        top: 420px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-8 .vert-line3 {
+        position: relative;
+        top: 294px;
+        left: -16px;
+        height: 126px;
+        border-right: 2px solid #AAA;
+    }
+
+    .connectors.r-of-8 .next-line3 {
+        position: relative;
+        top: 230px;
+        left: 17px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-8 .top-line4 {
+        position: relative;
+        top: 414px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-8 .bottom-line4 {
+        position: relative;
+        top: 536px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-8 .vert-line4 {
+        position: relative;
+        top: 410px;
+        left: -16px;
+        height: 126px;
+        border-right: 2px solid #AAA;
+    }
+
+    .connectors.r-of-8 .next-line4 {
+        position: relative;
+        top: 346px;
+        left: 17px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-4 .top-line1 {
+        position: relative;
+        top: 129px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-4 .bottom-line1 {
+        position: relative;
+        top: 375px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-4 .vert-line1 {
+        position: relative;
+        top: 125px;
+        left: -16px;
+        height: 250px;
+        border-right: 2px solid #AAA;
+    }
+
+    .connectors.r-of-4 .next-line1 {
+        position: relative;
+        top: -2px;
+        left: 17px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-4 .top-line2 {
+        position: relative;
+        top: 369px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-4 .bottom-line2 {
+        position: relative;
+        top: 615px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
+    .connectors.r-of-4 .vert-line2 {
+        position: relative;
+        top: 365px;
+        left: -16px;
+        height: 250px;
+        border-right: 2px solid #AAA;
+    }
+
+    .connectors.r-of-4 .next-line2 {
+        position: relative;
+        top: 238px;
+        left: 17px;
+        width: 17px;
+        border: 1px solid #AAA;
+    }
+
     .connectors.r-of-2 .top-line {
         position: relative;
-        top: 30px;
+        top: 253px;
         width: 17px;
         border: 1px solid #AAA;
     }
 
     .connectors.r-of-2 .bottom-line {
         position: relative;
-        top: 81px;
+        top: 746px;
         width: 17px;
         border: 1px solid #AAA;
     }
 
     .connectors.r-of-2 .vert-line {
         position: relative;
-        top: 26px;
+        top: 249px;
         left: -16px;
-        height: 55px;
+        height: 497px;
         border-right: 2px solid #AAA;
     }
 
     .connectors.r-of-2 .next-line {
         position: relative;
-        top: -4px;
+        top: -2px;
         left: 17px;
         width: 17px;
         border: 1px solid #AAA;
