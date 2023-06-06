@@ -1,16 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using SportEventManager.Core.TeamAggregate.Stats;
+using SportEventManager.Core.StatisticsAggregate;
 
 namespace SportEventManager.Web.ViewModels.TeamModel.Stats;
-public class FBTeamStatsViewModel : FootballStatsViewModel
+public class FbTeamStatsViewModel : FootballStatsViewModel
 {
   public int Wins { get; set; } = 0;
 
   public int Losses { get; set; } = 0;
 
-  public int Drawes { get; set; } = 0;
+  public int Draws { get; set; } = 0;
 
   public int Shoots { get; set; } = 0;
 
@@ -20,15 +20,18 @@ public class FBTeamStatsViewModel : FootballStatsViewModel
 
   public int Passes { get; set; } = 0;
 
-  public static FBTeamStatsViewModel FromTeamStats(FBTeamStats? fBTeamStats)
+  public int TeamId { get; set; }
+
+  public static FbTeamStatsViewModel FromTeamStats(FbTeamStats? fBTeamStats)
   {
     if (fBTeamStats != null)
     {
-      return new FBTeamStatsViewModel()
+      return new FbTeamStatsViewModel()
       {
+        Id = fBTeamStats.Id,
         Wins = fBTeamStats.Wins,
         Losses = fBTeamStats.Losses,
-        Drawes = fBTeamStats.Drawes,
+        Draws = fBTeamStats.Draws,
         Shoots = fBTeamStats.Shoots,
         ShootsOnTarget = fBTeamStats.ShootsOnTarget,
         Fouls = fBTeamStats.Fouls,
@@ -36,12 +39,13 @@ public class FBTeamStatsViewModel : FootballStatsViewModel
         Goals = fBTeamStats.Goals,
         Assists = fBTeamStats.Assists,
         RedCards = fBTeamStats.RedCards,
-        YellowCards = fBTeamStats.YellowCards
+        YellowCards = fBTeamStats.YellowCards,
+        TeamId = fBTeamStats.TeamId,
       };
     }
     else
     {
-      return new FBTeamStatsViewModel();
+      return new FbTeamStatsViewModel();
     }
   }
 }

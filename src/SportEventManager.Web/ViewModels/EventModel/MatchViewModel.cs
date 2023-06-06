@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using SportEventManager.Core.EventAggregate;
+﻿using SportEventManager.Core.EventAggregate;
+using SportEventManager.Web.ViewModels.TeamModel.Stats;
 
 namespace SportEventManager.Web.ViewModels.EventModel;
 
@@ -12,7 +11,13 @@ public class MatchViewModel
 
   public DateTime EndTime { get; set; }
 
-  public bool IsEnd { get; set; }
+  public bool IsEnded { get; set; }
+
+  public int FirstTeamId { get; private set; }
+
+  public int SecondTeamId { get; private set; }
+
+  public List<FbTeamMatchStatsViewModel> FbTeamMatchStats { get; private set; } = new List<FbTeamMatchStatsViewModel>(2);
 
   public StadiumViewModel? Stadium { get; set; }
 
@@ -21,7 +26,12 @@ public class MatchViewModel
     Id = match.Id,
     StartTime = match.StartTime,
     EndTime = match.EndTime,
-    Stadium = StadiumViewModel.FromStadium(stadium : match.Stadium)
+    Stadium = StadiumViewModel.FromStadium(stadium : match.Stadium),
+    IsEnded = match.IsEnded,
+    //FirstTeamId = match.HomeTeamId,
+   // SecondTeamId = match.GuestTeamId,
+    //TODO: make this work - adding the <type, type> doesn't help
+    //FbTeamMatchStats = match.FbTeamMatchStats.Select(FbTeamMatchStatsViewModel.FromTeamMatchStats).ToList()
   };
 }
 

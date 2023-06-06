@@ -1,20 +1,39 @@
 ﻿using System.Diagnostics;
 using SportEventManager.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using SportEventManager.Core.EventAggregate;
+using SportEventManager.SharedKernel.Interfaces;
+using SportEventManager.Web.ViewModels.EventModel;
+using SportEventManager.Core.EventAggregate.Specifications;
 
 namespace SportEventManager.Web.Controllers;
 
-/// <summary>
-/// A sample MVC controller that uses views.
-/// Razor Pages provides a better way to manage view-based content, since the behavior, viewmodel, and view are all in one place,
-/// rather than spread between 3 different folders in your Web project. Look in /Pages to see examples.
-/// See: https://ardalis.com/aspnet-core-razor-pages-%E2%80%93-worth-checking-out/
-/// </summary>
 public class HomeController : Controller
 {
-  public IActionResult Index()
+  private readonly IRepository<Event> _eventRepository;
+
+  public HomeController(IRepository<Event> eventRepository)
   {
-    return View();
+    _eventRepository = eventRepository;
+  }
+
+  // GET: EventSettings
+  public async Task<IActionResult> Index()
+  {
+    var sportEvents = new List<Event>();
+
+    EventsWithItemsSpec eventWithItemsSpec = new EventsWithItemsSpec();
+    sportEvents = await _eventRepository.ListAsync(eventWithItemsSpec);
+
+    var dto = new List<EventViewModel>();
+    foreach(Event @event in sportEvents)
+    {
+      dto.Add(
+        EventViewModel.FromEvent(@event)
+       );
+    }
+
+    return View(dto);
   }
 
   public IActionResult Privacy()
