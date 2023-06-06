@@ -9,12 +9,15 @@ public class StadiumViewModel
 
   public string City { get; set; } = string.Empty;
 
+  public string Name { get; set; } = string.Empty;
+
   public static StadiumViewModel FromStadium(Stadium stadium)
   {
     return new StadiumViewModel()
     {
       Id = stadium.Id,
-      City = stadium.City
+      City = stadium.City,
+      Name = stadium.Name,
     };
   }
 }

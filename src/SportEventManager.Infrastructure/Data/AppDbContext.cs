@@ -4,8 +4,8 @@ using SportEventManager.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using SportEventManager.Core.UserAggregate;
 using SportEventManager.Core.TeamAggregate;
-using SportEventManager.Core.TeamAggregate.Stats;
 using SportEventManager.Core.EventAggregate;
+using SportEventManager.Core.StatisticsAggregate;
 
 namespace SportEventManager.Infrastructure.Data;
 
@@ -23,9 +23,14 @@ public class AppDbContext : DbContext
 
   public DbSet<Event> Events => Set<Event>();
 
-  public DbSet<FBPlayerStats> PlayersStats => Set<FBPlayerStats>();
+  public DbSet<FootballStatsBase> Stats => Set<FootballStatsBase>();
 
-  public DbSet<FBTeamStats> TeamsStats => Set<FBTeamStats>();
+  public DbSet<FbPlayerStats> PlayersStats => Set<FbPlayerStats>();
+
+  public DbSet<FbTeamStats> TeamsStats => Set<FbTeamStats>();
+
+  public DbSet<FbTeamMatchStats> TeamsMatchesStats => Set<FbTeamMatchStats>();
+
 
   public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
   {
@@ -41,8 +46,43 @@ public class AppDbContext : DbContext
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     base.OnModelCreating(modelBuilder);
+
     modelBuilder.Entity<User>()
-       .ToTable("AspNetUsers", t => t.ExcludeFromMigrations());
+      .ToTable("AspNetUsers", t => t.ExcludeFromMigrations());
+
+    modelBuilder.Entity<Statistics>().ToView("Statistics").HasNoKey();
+
+    modelBuilder.Entity<FbTeamMatchStats>().ToTable("FbTeamMatchStats");
+    modelBuilder.Entity<FbTeamStats>().ToTable("TeamStats");
+    modelBuilder.Entity<FbPlayerStats>().ToTable("PlayerStats");
+
+    modelBuilder.Entity<Team>()
+      .HasMany(t => t.Players)
+      .WithMany(p => p.Teams)
+      .UsingEntity<TeamPlayer>(
+       l => l.HasOne<Player>().WithMany(i => i.TeamPlayers),
+       r => r.HasOne<Team>().WithMany(e => e.TeamPlayers));
+        
+
+    modelBuilder.Entity<Team>()
+      .HasMany(t => t.Players)
+      .WithMany(p => p.Teams)
+      .UsingEntity<TeamPlayer>(
+       j => j.Property(e => e.JoinOn).HasDefaultValueSql("GETUTCDATE()"));
+
+
+
+    modelBuilder.Entity<Match>()
+      .HasOne(m => m.HomeTeam)
+      .WithMany(t => t.HomeMatches)
+      .HasForeignKey(m => m.HomeTeamId)
+      .OnDelete(DeleteBehavior.Restrict);
+
+    modelBuilder.Entity<Match>()
+      .HasOne(m => m.GuestTeam)
+      .WithMany(t => t.AwayMatches)
+      .HasForeignKey(m => m.GuestTeamId)
+      .OnDelete(DeleteBehavior.Restrict);
 
     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
   }

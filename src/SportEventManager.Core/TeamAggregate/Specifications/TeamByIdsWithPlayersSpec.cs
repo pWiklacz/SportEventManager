@@ -7,7 +7,7 @@ public class TeamByIdsWithPlayersSpec : Specification<Team>, ISingleResultSpecif
   {
     Query
         .Where(team => team.Id == teamId)
-        .Where(team => team.OwnerId == ownerId)
+        //.Where(team => team.OwnerId == ownerId)
         .Include(team => team.Players);
   }
 }

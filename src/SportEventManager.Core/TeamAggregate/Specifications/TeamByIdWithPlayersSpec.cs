@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ardalis.Specification;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+﻿using Ardalis.Specification;
 
 namespace SportEventManager.Core.TeamAggregate.Specifications;
 public class TeamByIdWithPlayersSpec : Specification<Team>, ISingleResultSpecification
@@ -13,6 +7,8 @@ public class TeamByIdWithPlayersSpec : Specification<Team>, ISingleResultSpecifi
   {
     Query
         .Where(team => team.Id == teamId)
-        .Include(team => team.Players);
+        .Include(t => t.TeamPlayers.Where(tp => tp.LeaveOn == null))
+        .Include(team => team.Players)
+        .Where(t => !t.IsArchived);
   }
 }

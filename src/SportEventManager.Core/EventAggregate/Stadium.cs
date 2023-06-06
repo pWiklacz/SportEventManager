@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
 using SportEventManager.SharedKernel;
 
@@ -9,23 +8,37 @@ public class Stadium : EntityBase
 {
   [Required]
   [MaxLength(50)]
+  public String Name { get; set; } = string.Empty;
+
+  [Required]
+  [MaxLength(50)]
   public String City { get; set; } = string.Empty;
 
   [Required]
   [DefaultValue(false)]
-  public bool IsDeleted { get; private set; } = false;
+  public bool IsArchived { get; private set; } = false;
 
+  //navigation properties
 
-  public Stadium() { }
+  private List<Event> _events = new();
+  private List<Match> _matches = new();
+  public ICollection<Event> Events => _events.AsReadOnly();
 
-  public Stadium(string city)
+  public ICollection<Match> Matches => _matches.AsReadOnly();
+
+  public Stadium()
   {
-    City = Guard.Against.NullOrEmpty(city, nameof(city));
-    IsDeleted = false;
   }
 
-  public void MarkAsDeleted()
+  public Stadium(string name, string city)
   {
-    this.IsDeleted = true;
+    City = Guard.Against.NullOrEmpty(city, nameof(city));
+    Name = Guard.Against.NullOrEmpty(name, nameof(name));
+    IsArchived = false;
+  }
+
+  public void Archive()
+  {
+    this.IsArchived = true;
   }
 }

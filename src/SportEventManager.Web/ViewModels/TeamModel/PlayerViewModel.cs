@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Web.ViewModels.TeamModel.Stats;
 
@@ -11,12 +12,11 @@ public class PlayerViewModel
 
   public string Surname { get; set; } = string.Empty;
 
-  [Range(1, 99)]
-  public int Number { get; set; }
+  public bool IsArchived { get; private set; }
 
-  public bool IsDeleted { get; private set; }
+  public string Pesel { get; set; } = string.Empty;
 
-  public FBPlayerStatsViewModel? FbPlayerStats { get; set; }
+  public FbPlayerStatsViewModel? FbPlayerStats { get; set; }
 
   public static PlayerViewModel FromPlayer(Player player)
   {
@@ -25,9 +25,9 @@ public class PlayerViewModel
       Id = player.Id,
       Name = player.Name,
       Surname = player.Surname,
-      Number = player.Number,
-      IsDeleted = player.IsDeleted,
-      FbPlayerStats = FBPlayerStatsViewModel.FromPlayerStats(fBPlayerStats: player.FbPlayerStats)
+      IsArchived = player.IsArchived,
+      Pesel = player.Pesel,
+      FbPlayerStats = FbPlayerStatsViewModel.FromPlayerStats(fBPlayerStats: (FbPlayerStats?) player.FbPlayerStats)
     };
   }
 }
