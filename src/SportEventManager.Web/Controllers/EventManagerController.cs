@@ -1,37 +1,35 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.EventAggregate.Specifications;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Core.TeamAggregate.Specifications;
-using SportEventManager.Core.UserAggregate;
 using SportEventManager.SharedKernel.Interfaces;
 using SportEventManager.Web.ViewModels.EventModel;
 
 namespace SportEventManager.Web.Controllers;
+[Authorize(Roles = "Admin,EventManager")]
 public class EventManagerController : Controller
 {
   private readonly IRepository<Event> _eventRepository;
   private readonly IRepository<Team> _teamRepository;
-  private readonly UserManager<User> _userManager;
 
   public EventManagerController(
     IRepository<Event> eventRepository,
-    IRepository<Team> teamRepository,
-    UserManager<User> userManager
+    IRepository<Team> teamRepository
     )
   {
     _eventRepository = eventRepository;
     _teamRepository = teamRepository;
-    _userManager = userManager;
   }
 
   // GET: Event
   public async Task<IActionResult> Index()
   {
-    var user = await _userManager.GetUserAsync(User);
-    var spec = new EventsByOwnerIdSpec(user?.Id);
+    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    var spec = new EventsByOwnerIdSpec(userId);
     var sportEvents = await _eventRepository.ListAsync(spec);
     if(sportEvents.IsNullOrEmpty())
     {
@@ -88,8 +86,8 @@ public class EventManagerController : Controller
   [HttpPost]
   public async Task<IActionResult> Create(EventViewModel viewModel)
   {
-    var user = await _userManager.GetUserAsync(User);
-    Event eventNew = new Event(user?.Id, viewModel.Name, viewModel.StartTime, viewModel.EndTime);
+    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    Event eventNew = new Event(userId, viewModel.Name, viewModel.StartTime, viewModel.EndTime);
 
     foreach(StadiumViewModel newStadium in viewModel.Stadiums)
     {
@@ -157,7 +155,6 @@ public class EventManagerController : Controller
   }
 
   [HttpGet]
-
   public async Task<ActionResult> Generate(int id)
   {
     EventByIdWithTeamsAndStadiumsSpec spec = new EventByIdWithTeamsAndStadiumsSpec(id);

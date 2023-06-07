@@ -7,10 +7,6 @@ public class StadiumConfiguration : IEntityTypeConfiguration<Stadium>
 {
   public void Configure(EntityTypeBuilder<Stadium> builder)
   {
-    builder.Property(s => s.Id)
-      .UseIdentityColumn()
-      .IsRequired();
-
     builder.Property(s => s.City)
       .HasMaxLength(50)
       .IsRequired();
