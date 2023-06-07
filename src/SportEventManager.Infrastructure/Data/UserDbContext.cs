@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using SportEventManager.Core.EventAggregate;
-using SportEventManager.Core.StatisticsAggregate;
-using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Core.UserAggregate;
 using SportEventManager.Infrastructure.Data.Config.UserAggregate;
 
