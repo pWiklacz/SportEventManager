@@ -236,14 +236,14 @@
                     </div>
                 </div>
                 <div class="team top">
-                @Html.DisplayFor(item => Model.Matches[i].FirstTeamId)
+                @Html.DisplayFor(item => Model.Matches[i].HomeTeam.Name)
                     <div class="score">
                         @*@Html.DisplayFor(item => Model.HomeMatches[i].FbTeamMatchStats[0].Goals)*@
                         0
                     </div>
                 </div>
                 <div class="team bot">
-                @Html.DisplayFor(item => Model.Matches[i].SecondTeamId)
+                @Html.DisplayFor(item => Model.Matches[i].GuestTeam.Name)
                     <div class="score">
                     @*@Html.DisplayFor(item => Model.HomeMatches[i].FbTeamMatchStats[1].Goals)*@
                     0
@@ -575,23 +575,23 @@
 <script>
         // Open the Modal
         function openModal() {
-            document.getElementById("myModal").style.display = "block";
+            document.getElementByID("myModal").style.display = "block";
         }
 
         // Close the Modal
         function closeModal() {
-            document.getElementById("myModal").style.display = "none";
+            document.getElementByID("myModal").style.display = "none";
         }
 
           // Open the Modal
         function openModal2() {
-            document.getElementById("myModal2").style.display = "block";
-        document.getElementById("myModal").style.display = "none";
+            document.getElementByID("myModal2").style.display = "block";
+        document.getElementByID("myModal").style.display = "none";
         }
 
         // Close the Modal
         function closeModal2() {
-            document.getElementById("myModal2").style.display = "none";
+            document.getElementByID("myModal2").style.display = "none";
         }
      
     </script>

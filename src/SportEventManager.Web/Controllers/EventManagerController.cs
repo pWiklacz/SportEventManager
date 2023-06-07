@@ -155,7 +155,6 @@ public class EventManagerController : Controller
   }
 
   [HttpGet]
-
   public async Task<ActionResult> Generate(int id)
   {
     EventByIdWithTeamsAndStadiumsSpec spec = new EventByIdWithTeamsAndStadiumsSpec(id);
