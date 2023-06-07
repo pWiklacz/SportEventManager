@@ -30,7 +30,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(appConnectionString!).EnableSensitiveDataLogging(true));
 
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-  .AddEntityFrameworkStores<UserDbContext>();//  .AddRoles<IdentityRole>()
+  .AddRoles<IdentityRole>()
+  .AddEntityFrameworkStores<UserDbContext>();
 
 builder.Services.AddControllersWithViews().AddNewtonsoftJson();
 builder.Services.AddRazorPages();
