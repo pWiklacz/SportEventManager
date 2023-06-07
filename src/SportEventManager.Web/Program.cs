@@ -4,10 +4,10 @@ using Autofac.Extensions.DependencyInjection;
 using SportEventManager.Core;
 using SportEventManager.Infrastructure;
 using SportEventManager.Infrastructure.Data;
-using SportEventManager.Web;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using SportEventManager.Core.UserAggregate;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +30,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(appConnectionString!).EnableSensitiveDataLogging(true));
 
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<UserDbContext>();
+  .AddRoles<IdentityRole>()
+  .AddEntityFrameworkStores<UserDbContext>();
 
 builder.Services.AddControllersWithViews().AddNewtonsoftJson();
 builder.Services.AddRazorPages();
@@ -78,23 +79,26 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
-// Seed Database
-//using (var scope = app.Services.CreateScope())
-//{
-//  var services = scope.ServiceProvider;
-//
-//  try
-//  {
-//    var context = services.GetRequiredService<AppDbContext>();
-//    //                    context.Database.Migrate();
-//    context.Database.EnsureCreated();
-//    SeedData.Initialize(services);
-//  }
-//  catch (Exception ex)
-//  {
-//    var logger = services.GetRequiredService<ILogger<Program>>();
-//    logger.LogError(ex, "An error occurred seeding the DB. {exceptionMessage}", ex.Message);
-//  }
-//}
+using (var scope = app.Services.CreateScope())
+{
+  var services = scope.ServiceProvider;
+  try
+  {
+    var appContext = services.GetRequiredService<AppDbContext>();
+    appContext.Database.Migrate();
+    appContext.Database.EnsureCreated();
+
+    var userContext = services.GetRequiredService<UserDbContext>();
+    userContext.Database.Migrate();
+    userContext.Database.EnsureCreated();
+
+    await SportEventManager.Web.SeedData.InitializeAsync(services);
+  }
+  catch (Exception ex)
+  {
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occurred seeding the DB. {exceptionMessage}", ex.Message);
+  }
+}
 
 app.Run();
