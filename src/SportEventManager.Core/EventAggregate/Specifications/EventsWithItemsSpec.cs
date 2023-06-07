@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 using Ardalis.Specification;
 
 namespace SportEventManager.Core.EventAggregate.Specifications;
-public class EventWithItemsSpec : Specification<Event>
+public class EventsWithItemsSpec : Specification<Event>
 {
-  public EventWithItemsSpec()
+  public EventsWithItemsSpec()
   {
     Query
         .Include(selectEvent => selectEvent.Teams)
         .Include(selectEvent => selectEvent.Stadiums)
-        .Include(selectEvent => selectEvent.Matches);
+        .Include(selectEvent => selectEvent.Matches)
+        .Where(selectEvent => !selectEvent.IsArchived)
+        .OrderByDescending(selectEvent => selectEvent.StartTime);
   }
 }

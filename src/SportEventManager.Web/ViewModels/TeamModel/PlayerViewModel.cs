@@ -12,7 +12,7 @@ public class PlayerViewModel
 
   public string Surname { get; set; } = string.Empty;
 
-  public bool IsDeleted { get; private set; }
+  public bool IsArchived { get; private set; }
 
   public string Pesel { get; set; } = string.Empty;
 
@@ -25,7 +25,8 @@ public class PlayerViewModel
       Id = player.Id,
       Name = player.Name,
       Surname = player.Surname,
-      IsDeleted = player.IsArchived,
+      IsArchived = player.IsArchived,
+      Pesel = player.Pesel,
       FbPlayerStats = FbPlayerStatsViewModel.FromPlayerStats(fBPlayerStats: (FbPlayerStats?) player.FbPlayerStats)
     };
   }

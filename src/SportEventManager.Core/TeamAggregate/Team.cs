@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Numerics;
 using Ardalis.GuardClauses;
 using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.StatisticsAggregate;
-using SportEventManager.Core.UserAggregate;
 using SportEventManager.SharedKernel;
 using SportEventManager.SharedKernel.Interfaces;
 
@@ -30,8 +30,6 @@ public class Team : EntityBase, IAggregateRoot
   [Required]
   [DefaultValue(false)]
   public bool IsArchived { get; private set; } = false;
-
-  //navigation properties
 
   [DefaultValue(null)]
   [NotMapped]
@@ -68,21 +66,56 @@ public class Team : EntityBase, IAggregateRoot
   {
     Guard.Against.Null(newPlayer, nameof(newPlayer));
     _players.Add(newPlayer);
-
-    //Guard.Against.Null(teamPlayer, nameof(teamPlayer));
-    //_teamPlayers.Add(teamPlayer);
   }
 
-  //public void AddOwner(User newUser)
-  //{
-  //  //NOTE: Not sure if we should actually have these Owners table since User which become the owner already exists
-  //  //So maybe we only need to create a team2user and pass the id as an argument not the whole user object
-  //  //Guard.Against.Null(newUser, nameof(newUser));
-  //  //_owners.Add(newUser);
-  //}
+  public void UpdateTeamPlayer(int index, int num)
+  {
+    _teamPlayers[index].Number = num;
+  }
+
+  private void UpdatePlayer(int id, string name, string surname, string pesel)
+  {
+    int index = _players.FindIndex(p => p.Id == id);
+    _players[index].Name = Guard.Against.NullOrEmpty(name, nameof(name));
+    _players[index].Surname = Guard.Against.NullOrEmpty(surname, nameof(surname));
+    _players[index].Pesel = Guard.Against.NullOrEmpty(pesel, nameof(pesel));
+  }
 
   public void Archive()
   {
     this.IsArchived = true;
+    foreach(var teamPlayer in _teamPlayers)
+    {
+      teamPlayer.LeaveOn = DateTime.Now;
+    }
+  }
+
+  public void DeletOldPlayers(List<Player> players)
+  {
+    foreach(var player in _players) {
+      if(!players.Contains(player)) 
+      {
+        _players.Remove(player);
+      }
+    }
+  }
+
+  public void UpdateTeam(string name, string city, int numberOfPlayers)
+  {
+    Name = Guard.Against.NullOrEmpty(name, nameof(name));
+    City = Guard.Against.NullOrEmpty(city, nameof(city));
+    NumberOfPlayers = Guard.Against.NegativeOrZero(numberOfPlayers, nameof(numberOfPlayers));
+  }
+
+  public void UpsertPlayer(Player? player, string newName, string newSurname, string newPesel)
+  {
+    if (player != null)
+    {
+      this.UpdatePlayer(player.Id, newName, newSurname, newPesel);
+    }
+    else
+    {
+      this.AddPlayer(new Player(newName, newSurname, newPesel));
+    }
   }
 }

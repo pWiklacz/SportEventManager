@@ -6,7 +6,7 @@ public class TeamsByOwnerIdSpec : Specification<Team>, ISingleResultSpecificatio
   public TeamsByOwnerIdSpec(string ownerId)
   {
     Query
-        .Where(team => team.OwnerId == ownerId);
-        //.Include(team => team.Players);
+        .Where(team => team.OwnerId == ownerId)
+        .Where(team => !team.IsArchived);
   }
 }
