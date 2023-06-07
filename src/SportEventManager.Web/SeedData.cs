@@ -38,20 +38,6 @@ public static class SeedData
       ClearUserDb(userDb);
       await PrepareExampleUserRolesAsync(serviceProvider);
       await PrepareExampleUsersAsync(serviceProvider);
-
-      //var userTemp = userDb.Users?.FirstOrDefault(user => user.UserName == "admin");
-      //var roleTemp = userDb.Roles?.FirstOrDefault(role => role.Name == "Admin");
-      //
-      //if (userTemp == null || roleTemp == null)
-      //{
-      //  return;
-      //}
-      //
-      //userDb.UserRoles.Add(
-      //  new IdentityUserRole<string> { 
-      //    UserId = userTemp.Id,
-      //    RoleId = roleTemp.Id
-      //  });
       await userDb.SaveChangesAsync();
     }
   }
