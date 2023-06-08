@@ -1,0 +1,280 @@
+﻿.row > .column {
+    padding: 0 8px;
+    margin-bottom: 20px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+/* Create four equal columns that floats next to eachother */
+.column {
+    float: left;
+    width: 32%;
+    margin-left: 12px;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #002b36;
+    margin: auto;
+    padding: 0;
+    width: 90%;
+    max-width: 1200px;
+}
+
+/* Modal Header */
+.modal-header {
+    padding: 2px 16px;
+    background-color: rgba(7, 54, 66);
+    color: white;
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 2px 16px;
+}
+
+/* Modal Footer */
+.modal-footer {
+    padding: 2px 16px;
+    background-color: rgba(7, 54, 66);
+    float: inherit;
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+    .close:hover,
+    .close:focus {
+        color: #999;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+
+.inTeam1 {
+    display: inline;
+    float: left;
+    margin-left: 100px;
+    font-size: 30px;
+}
+
+.inTeam2 {
+    display: inline;
+    float: right;
+    margin-right: 100px;
+    font-size: 30px;
+}
+
+.inTeam1 .score {
+    display: inline;
+    float: right;
+    margin-left: 182px;
+}
+
+.inTeam2 .score {
+    display: inline;
+    float: left;
+    margin-right: 182px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.modal-body .row {
+}
+
+.modal-body .column {
+    width: 32%;
+    padding: 1px;
+}
+
+.stat1 {
+    text-align: center;
+    margin-left: 372px;
+    font-size: 20px;
+}
+
+.statName {
+    text-align: center;
+}
+
+.stat2 {
+    text-align: center;
+    margin-right: 372px;
+    font-size: 20px;
+}
+
+.addstat1 {
+    text-align: center;
+    font-size: 20px;
+}
+
+.addstat2 {
+    text-align: center;
+    font-size: 20px;
+}
+
+.modal-footer .btn {
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+    padding: 14px 28px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.default {
+    border-color: #e7e7e7;
+    color: black;
+}
+
+    .default:hover {
+        background: #e7e7e7;
+    }
+
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+
+
+:root {
+    --color-text-primary: #1c2a38;
+    --color-text-secondary: #8A8F98;
+    --color-text-alert: #d72641;
+    --color-text-icon: #dbdade;
+    --color-bg-primary: #fff;
+    --color-bg-secondary: #f3f5f9;
+    --color-bg-alert: #fdeaec;
+    --color-theme-primary: #623ce6;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+strong {
+    font-weight: 500;
+}
+
+.match {
+    transition: 0.3s;
+    margin-top: 15px;
+    background-color: var(--color-bg-primary);
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    box-shadow: 0 0 2px 0 rgba(48, 48, 48, 0.1), 0 4px 4px 0 rgba(48, 48, 48, 0.1);
+}
+.match:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.match-header {
+    display: flex;
+    padding: 16px;
+    
+}
+
+
+.match-content {
+    display: flex;
+    position: relative;
+}
+
+.match-column {
+    padding: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100%/3);
+}
+
+.team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.team-name {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.match-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.match-date {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+}
+
+    .match-date strong {
+        color: var(--color-text-secondary);
+    }
+
+.match-score {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.match-score-number {
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+
+.match-score-divider {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-text-icon);
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.match-time-lapsed {
+    color: #DF9443;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 8px;
+}
+

@@ -1,600 +1,477 @@
 ﻿@using SportEventManager.Web.ViewModels.EventModel;
+@using SportEventManager.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model EventViewModel
 
 @{
     ViewData["Title"] = "HomeMatches";
     Layout = "~/Views/EventView/_EventViewLayout.cshtml";
 }
-
 @{
-    //int matchesNumb = Model.HomeMatches.Count;
+    //int a = 0;
 }
 
-<style>
-    .row > .column {
-        padding: 0 8px;
-        margin-bottom: 20px;
-    }
 
-    .row:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-
-    /* Create four equal columns that floats next to eachother */
-    .column {
-        float: left;
-        width: 25%;
-    }
-
-    /* The Modal (background) */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        padding-top: 100px;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.8);
-    }
-
-    /* Modal Content */
-    .modal-content {
-        position: relative;
-        background-color: #002b36;
-        margin: auto;
-        padding: 0;
-        width: 90%;
-        max-width: 1200px;
-    }
-
-    /* Modal Header */
-    .modal-header {
-        padding: 2px 16px;
-        background-color: rgba(7, 54, 66);
-        color: white;
-    }
-
-    /* Modal Body */
-    .modal-body {
-        padding: 2px 16px;
-    }
-
-    /* Modal Footer */
-    .modal-footer {
-        padding: 2px 16px;
-        background-color: rgba(7, 54, 66);
-       float: inherit;
-    }
-
-    /* The Close Button */
-    .close {
-        color: white;
-        position: absolute;
-        top: 10px;
-        right: 25px;
-        font-size: 35px;
-        font-weight: bold;
-    }
-
-        .close:hover,
-        .close:focus {
-            color: #999;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-    .match {
-        transition: 0.3s;
-        border: 1px solid #AAA;
-        border-radius: 15px 15px 15px 15px;
-        margin-right: 15px;
-    }
-
-    .round {
-        min-width: 300px;
-        padding-left: 10px;
-    }
-
-        .round .date {
-            display: inline;
-            float: right;
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-
-    .match:hover {
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        background-color: rgba(0, 0, 0, 0.3);
-        cursor: pointer;
-    }
-
-    .team {
-        min-width: 100px;
-        padding-left: 10px;
-    }
-
-        .team.top {
-            border-radius: 15px 15px 0 0;
-            font-size: 30px;
-        }
-
-        .team.bot {
-            border-radius: 0 0 15px 15px;
-            font-size: 30px;
-        }
-
-        .team .score {
-            display: inline;
-            float: right;
-            padding-left: 10px;
-            padding-right: 10px;
-            font-size: 30px;
-        }
+<link rel="stylesheet" type="text/css" href="~/css/EventView/Matches.css" />
+<script src="~/js/EventView/Matches.js"></script>
 
 
-    .inTeam1 {
-        display: inline;
-        float: left;
-        margin-left: 100px;
-        font-size: 30px;
-    }
-
-    .inTeam2 {
-        display: inline;
-        float: right;
-        margin-right: 100px;
-        font-size: 30px;
-    }
-
-    .inTeam1 .score {
-        display: inline;
-        float: right;
-        margin-left: 182px;
-    }
-
-    .inTeam2 .score {
-        display: inline;
-        float: left;
-        margin-right: 182px;
-    }
-
-    * {
-        box-sizing: border-box;
-    }
-
-    .modal-body .row {
-    }
-
-    .modal-body .column {
-        width: 33.33333333%;
-        padding: 5px;
-    }
-
-
-    .stat1 {
-        text-align: center;
-        margin-left: 372px;
-        font-size: 20px;
-    }
-
-    .statName {
-        text-align: center;
-    }
-
-    .stat2 {
-        text-align: center;
-        margin-right: 372px;
-        font-size: 20px;
-    }
-
-    .addstat1 {
-        text-align: center;
-        font-size: 20px;
-    }
-
-     .addstat2 {
-        text-align: center;
-        
-        font-size: 20px;
-    }
-
-    .modal-footer .btn {
-        border: 2px solid black;
-        border-radius: 5px;
-        background-color: white;
-        color: black;
-        padding: 14px 28px;
-        font-size: 16px;
-        cursor: pointer;
-    }
-
-    .default {
-        border-color: #e7e7e7;
-        color: black;
-    }
-
-        .default:hover {
-            background: #e7e7e7;
-        }
-
-</style>
-
-
-@for (int i = 0; i < Model.Matches.Count ; i++)
+@for (int i = 0; i < Model.Matches.Count; i++)
 {
-        <div class="column">
-            <div onclick="openModal()" class="match">
-                <div class="round">
-                    Round of @Html.DisplayFor(item => Model.Matches.Count)
-                    <div class="date">
-                        @Html.DisplayFor(item => Model.Matches[i].StartTime)
+    <style>
+        .match-status {
+            background-color: @(Model.Matches[i].IsLive ? "#fdeaec" : "#fff");
+            color: @(Model.Matches[i].IsLive ? "#d72641" : "#8A8F98");
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            line-height: 1;
+            margin-right: auto;
+        }
+
+            .match-status:before {
+                content: "";
+                display: block;
+                width: 6px;
+                height: 6px;
+                background-color: currentcolor;
+                border-radius: 50%;
+                margin-right: 8px;
+            }
+    </style>
+    <div class="column">
+        <!-- code here -->
+        <div onclick="openModal(@i)" class="match">
+            <div class="match-header">
+                <div class="match-status">Live</div>
+            </div>
+            <div class="match-content">
+                <div class="match-column">
+                    <div class="team team--home">
+                        <h2 class="team-name">
+                            @Html.DisplayFor(item => Model.Matches[i].HomeTeam.Name)
+                        </h2>
                     </div>
                 </div>
-                <div class="team top">
-                @Html.DisplayFor(item => Model.Matches[i].HomeTeam.Name)
-                    <div class="score">
-                        @*@Html.DisplayFor(item => Model.HomeMatches[i].FbTeamMatchStats[0].Goals)*@
-                        0
+                <div class="match-column">
+                    <div class="match-details">
+                        <div class="match-date">
+                            @Model.Matches[i].StartTime.ToString("d MMM") at <strong>@Model.Matches[i].StartTime.ToString("HH:mm")</strong>
+                        </div>
+                        <div class="match-score">
+                            <span class="match-score-number">
+                                @Html.DisplayFor(item => Model.Matches[i].HomeTeamStats.Goals)
+                            </span>
+                            <span class="match-score-divider">:</span>
+                            <span class="match-score-number">
+                                @Html.DisplayFor(item => Model.Matches[i].GuestTeamStats.Goals)
+                            </span>
+                        </div>
+                        <div id="match-time-lapsed-@i" class="match-time-lapsed">
+                            @(Model.Matches[i].IsLive ? Model.Matches[i].CalculateMinutesElapsed() + "'" : "")
+                        </div>
                     </div>
                 </div>
-                <div class="team bot">
-                @Html.DisplayFor(item => Model.Matches[i].GuestTeam.Name)
-                    <div class="score">
-                    @*@Html.DisplayFor(item => Model.HomeMatches[i].FbTeamMatchStats[1].Goals)*@
-                    0
+                <div class="match-column">
+                    <div class="team team--away">
+                        <h2 class="team-name">
+                            @Html.DisplayFor(item => Model.Matches[i].GuestTeam.Name)
+                        </h2>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+
+    <div id="myModal-@i" class="modal">
+        <span class="close cursor" onclick="closeModal(@i)">&times;</span>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="inTeam1">
+                    @Html.DisplayFor(item => Model.Matches[i].HomeTeam.Name)
+                    <div class="score">
+                        @Html.DisplayFor(item => Model.Matches[i].HomeTeamStats.Goals)
+                    </div>
+                </div>
+                VS
+                <div class="inTeam2">
+                    @Html.DisplayFor(item => Model.Matches[i].GuestTeam.Name)
+                    <div class="score">
+                        @Html.DisplayFor(item => Model.Matches[i].GuestTeamStats.Goals)
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="column">
+                        <div class="stat1">
+                            @Html.DisplayFor(item => Model.Matches[i].HomeTeamStats.Goals)
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            GOALS
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="stat2">
+                            @Html.DisplayFor(item => Model.Matches[i].GuestTeamStats.Goals)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <div class="stat1">
+                            @Html.DisplayFor(item => Model.Matches[i].HomeTeamStats.Assists)
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            ASSIST
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="stat2">
+                            @Html.DisplayFor(item => Model.Matches[i].GuestTeamStats.Assists)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <div class="stat1">
+                            @Html.DisplayFor(item => Model.Matches[i].HomeTeamStats.Shoots)
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            SHOOTS
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="stat2">
+                            @Html.DisplayFor(item => Model.Matches[i].GuestTeamStats.Shoots)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <div class="stat1">
+                            @Html.DisplayFor(item => Model.Matches[i].HomeTeamStats.ShootsOnTarget)
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            SHOOTS ON TARGET
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="stat2">
+                            @Html.DisplayFor(item => Model.Matches[i].GuestTeamStats.ShootsOnTarget)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <div class="stat1">
+                            @Html.DisplayFor(item => Model.Matches[i].HomeTeamStats.Passes)
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            PASSES
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="stat2">
+                            @Html.DisplayFor(item => Model.Matches[i].GuestTeamStats.Passes)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <div class="stat1">
+                            @Html.DisplayFor(item => Model.Matches[i].HomeTeamStats.Fouls)
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            FOULS
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="stat2">
+                            @Html.DisplayFor(item => Model.Matches[i].GuestTeamStats.Fouls)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <div class="stat1">
+                            @Html.DisplayFor(item => Model.Matches[i].HomeTeamStats.YellowCards)
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            YELLOW CARDS
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="stat2">
+                            @Html.DisplayFor(item => Model.Matches[i].GuestTeamStats.YellowCards)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <div class="stat1">
+                            @Html.DisplayFor(item => Model.Matches[i].HomeTeamStats.RedCards)
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="statName">
+                            RED CARDS
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="stat2">
+                            @Html.DisplayFor(item => Model.Matches[i].GuestTeamStats.RedCards)
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn default" onclick="openModal2(@i)">Match Ended</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <form asp-action="Matches" >
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div id="myModal2-@i" class="modal">
+            <span class="close cursor" onclick="closeModal2(@i)">&times;</span>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="inTeam1">
+                        @Html.DisplayFor(item => Model.Matches[i].HomeTeam.Name)
+                    </div>
+                    VS
+                    <div class="inTeam2">
+                        @Html.DisplayFor(item => Model.Matches[i].GuestTeam.Name)
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="column">
+                            <div class="addstat1">
+                                <input type="number" asp-for="Matches[i].HomeTeamStats.Goals" id="goals1" name="goals1" min="0" value="0">
+                                <span asp-validation-for="Matches[i].HomeTeamStats.Goals" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="statName">
+                                GOALS
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="addstat2">
+                                <input type="number" asp-for="Matches[i].GuestTeamStats.Goals" id="goals2" name="goals2" min="0" value="0">
+                                <span asp-validation-for="Matches[i].GuestTeamStats.Goals" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column">
+                            <div class="addstat1">
+                                <input type="number" id="assist1" name="assist1" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="statName">
+                                ASSIST
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="addstat2">
+                                <input type="number" id="assist2" name="assist2" min="0" value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column">
+                            <div class="addstat1">
+                                <input type="number" id="shoots1" name="shoots1" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="statName">
+                                SHOOTS
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="addstat2">
+                                <input type="number" id="shoots2" name="shoots2" min="0" value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column">
+                            <div class="addstat1">
+                                <input type="number" id="shootsontarget1" name="shootsontarget1" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="statName">
+                                SHOOTS ON TARGET
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="addstat2">
+                                <input type="number" id="shootsontarget2" name="shootsontarget2" min="0" value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column">
+                            <div class="addstat1">
+                                <input type="number" id="passes1" name="passes1" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="statName">
+                                PASSES
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="addstat2">
+                                <input type="number" id="passes2" name="passes2" min="0" value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column">
+                            <div class="addstat1">
+                                <input type="number" id="fouls1" name="fouls1" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="statName">
+                                FOULS
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="addstat2">
+                                <input type="number" id="fouls2" name="fouls2" min="0" value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column">
+                            <div class="addstat1">
+                                <input type="number" id="ycards1" name="ycards1" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="statName">
+                                YELLOW CARDS
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="addstat2">
+                                <input type="number" id="ycards2" name="ycards2" min="0" value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column">
+                            <div class="addstat1">
+                                <input type="number" id="rcards1" name="rcards1" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="statName">
+                                RED CARDS
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="addstat2">
+                                <input type="number" id="rcards2" name="rcards2" min="0" value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" asp-for="@Model.Matches" />
+
+                    <div class="modal-footer">
+                        <button type="submit" formaction="@Url.Action("Matches", "EventViewController") class="btn default">Save Stats</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 }
 
-
-<div id="myModal" class="modal">
-    <span class="close cursor" onclick="closeModal()">&times;</span>
-    <div class="modal-content">
-        <div class="modal-header">
-            <div class="inTeam1">
-                Team1
-                <div class="score">
-                    0
-                </div>
-            </div>
-            VS
-            <div class="inTeam2">
-                Team2
-                <div class="score">
-                    0
-                </div>
-            </div>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="column">
-                    <div class="stat1">
-                        0
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="statName">
-                        GOALS
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="stat2">
-                        0
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="column">
-                    <div class="stat1">
-                        0
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="statName">
-                        ASSIST
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="stat2">
-                        0
-                    </div>
-                </div>
-            </div>
-                <div class="row">
-                    <div class="column">
-                        <div class="stat1">
-                            0
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="statName">
-                            SHOOTS
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="stat2">
-                            0
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="column">
-                        <div class="stat1">
-                            0
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="statName">
-                            SHOOTS ON TARGET
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="stat2">
-                            0
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="column">
-                        <div class="stat1">
-                            0
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="statName">
-                            PASSES
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="stat2">
-                            0
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="column">
-                        <div class="stat1">
-                            0
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="statName">
-                            FOULS
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="stat2">
-                            0
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                <div class="column">
-                    <div class="stat1">
-                        0
-                    </div>
-                </div>
-                    <div class="column">
-                        <div class="statName">
-                            YELLOW CARDS
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="stat2">
-                            0
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="column">
-                        <div class="stat1">
-                            0
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="statName">
-                            RED CARDS
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="stat2">
-                            0
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn default" onclick="openModal2()">Match Ended</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-<div id="myModal2" class="modal">
-    <span class="close cursor" onclick="closeModal2()">&times;</span>
-    <div class="modal-content">
-        <div class="modal-header">
-            <div class="inTeam1">
-                Team1             
-            </div>
-            VS
-            <div class="inTeam2">
-                Team2
-            </div>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="column">
-                    <div class="addstat1">
-                        <input type="number" id="goals1" name="goals1" min="0" value="0">
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="statName">
-                        GOALS
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="addstat2">
-                        <input type="number" id="goals2" name="goals2" min="0" value="0">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="column">
-                    <div class="addstat1">
-                        <input type="number" id="assist1" name="assist1" min="0" value="0">
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="statName">
-                        ASSIST
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="addstat2">
-                        <input type="number" id="assist2" name="assist2" min="0" value="0">
-                    </div>
-                </div>
-            </div>
-                <div class="row">
-                    <div class="column">
-                        <div class="addstat1">
-                        <input type="number" id="shoots1" name="shoots1" min="0" value="0"> 
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="statName">
-                            SHOOTS
-                        </div>
-                    </div>
-                    <div class="column">
-                    <div class="addstat2">
-                        <input type="number" id="shoots2" name="shoots2" min="0" value="0">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="column">
-                        <div class="addstat1">
-                        <input type="number" id="shootsontarget1" name="shootsontarget1" min="0" value="0">
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="statName">
-                            SHOOTS ON TARGET
-                        </div>
-                    </div>
-                    <div class="column">
-                    <div class="addstat2">
-                        <input type="number" id="shootsontarget2" name="shootsontarget2" min="0" value="0">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="column">
-                        <div class="addstat1">
-                        <input type="number" id="passes1" name="passes1" min="0" value="0">
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="statName">
-                            PASSES
-                        </div>
-                    </div>
-                    <div class="column">
-                    <div class="addstat2">
-                        <input type="number" id="passes2" name="passes2" min="0" value="0">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="column">
-                        <div class="addstat1">
-                        <input type="number" id="fouls1" name="fouls1" min="0" value="0">
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="statName">
-                            FOULS
-                        </div>
-                    </div>
-                    <div class="column">
-                    <div class="addstat2">
-                        <input type="number" id="fouls2" name="fouls2" min="0" value="0">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                <div class="column">
-                    <div class="addstat1">
-                        <input type="number" id="ycards1" name="ycards1" min="0" value="0">
-                    </div>
-                </div>
-                    <div class="column">
-                        <div class="statName">
-                            YELLOW CARDS
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="addstat2">
-                        <input type="number" id="ycards2" name="ycards2" min="0" value="0">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="column">
-                    <div class="addstat1">
-                        <input type="number" id="rcards1" name="rcards1" min="0" value="0">
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="statName">
-                            RED CARDS
-                        </div>
-                    </div>
-                    <div class="column">
-                    <div class="addstat2">
-                        <input type="number" id="rcards2" name="rcards2" min="0" value="0">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn default">Save Stats</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 <script>
-        // Open the Modal
-        function openModal() {
-            document.getElementByID("myModal").style.display = "block";
+        function openModal(a) {
+            var modalId = "myModal-" + a.toString();
+            var modal = document.getElementById(modalId);
+
+            if (modal) {
+                modal.style.display = "block";
+            }
         }
 
-        // Close the Modal
-        function closeModal() {
-            document.getElementByID("myModal").style.display = "none";
+    function closeModal(a) {
+        var modalId = "myModal-" + a.toString();
+        var modal = document.getElementById(modalId);
+
+        if (modal) {
+            modal.style.display = "none";
+        }
+    }
+
+
+        function openModal2(a) {
+            document.getElementById("myModal2-" + a.toString()).style.display = "block";
+        document.getElementById("myModal-" + a.toString()).style.display = "none";
         }
 
-          // Open the Modal
-        function openModal2() {
-            document.getElementByID("myModal2").style.display = "block";
-        document.getElementByID("myModal").style.display = "none";
+    function closeModal2(a) {
+        document.getElementById("myModal2-" + a.toString()).style.display = "none";
+    }
+
+
+    @*setInterval(UpdateMinutes, 1000);
+        function minutesPassed(startTime) {
+        var now = new Date();
+        var start = new Date(startTime);
+
+        var timeDiff = now.getTime() - start.getTime();
+        var minutes = Math.floor(timeDiff / (1000 * 60));
+
+        return minutes;
         }
 
-        // Close the Modal
-        function closeModal2() {
-            document.getElementByID("myModal2").style.display = "none";
+
+
+
+
+        function UpdateMinutes() {
+        for (let i = 0; i < @Model.Matches.Count; i++) {
+        var minutes = minutesPassed("2023-06-08T12:30:00"));
+        document.getElementById("match-time-lapsed-" + i.toString()).innerHTML = minutes;
         }
-     
-    </script>
+        }
+        *@
+</script>
+
+
+
+
 
 
 

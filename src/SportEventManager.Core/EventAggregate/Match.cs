@@ -86,9 +86,11 @@ public class Match : EntityBase
     IsArchived = false;
     IsEnded = isEnded;
     WinnerName = winnerName;
+    HomeTeamStats = new FbTeamMatchStats(HomeTeamId);
+    GuestTeamStats = new FbTeamMatchStats(GuestTeamId);
   }
 
-  public void AddStatistics(FbTeamMatchStats homeStats, FbTeamMatchStats guestStats)
+  public void UpdateStatistics(FbTeamMatchStats homeStats, FbTeamMatchStats guestStats)
   {
     HomeTeamStats = Guard.Against.Null(homeStats, nameof(homeStats));
     GuestTeamStats = Guard.Against.Null(guestStats, nameof(guestStats));

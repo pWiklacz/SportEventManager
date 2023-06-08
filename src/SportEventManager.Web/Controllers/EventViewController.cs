@@ -6,7 +6,9 @@ using SportEventManager.Web.ViewModels.EventModel;
 using SportEventManager.SharedKernel.Interfaces;
 using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.EventAggregate.Specification;
+using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.Web.ViewModels.TeamModel;
+using SportEventManager.Web.ViewModels.TeamModel.Stats;
 
 namespace SportEventManager.Web.Controllers;
 
@@ -28,23 +30,32 @@ public class EventViewController : Controller
 
     if (ev == null) { return NotFound(); }
 
-    var dto = new EventViewModel
-    {
-      Id = ev.Id,
-      Name = ev.Name,
-      Stadiums = ev.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
-      Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
-      Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
-      StartTime = ev.StartTime
-    };
+    var viewModel = EventViewModel.FromEvent(ev);
 
-    return View(dto);
+    return View(viewModel);
   }
 
   [HttpPost]
-  public IActionResult Matches(EventViewModel viewModel)
+  public async Task<IActionResult> Matches([FromQuery] EventViewModel viewModel)
   {
-    return RedirectToAction("Matches", viewModel.Id);
+    var spec = new EventsByIdWithItemsSpec(viewModel.Id);
+    Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
+
+    var aa = viewModel.Matches;
+    
+    
+    if (ev == null) { return NotFound(); }
+
+    for (int i = 0; i < ev.Matches.Count; ++i)
+    {
+      var hTeamStats = StatsFromViewModel(viewModel.Matches[i].HomeTeamStats);
+      var gTeamStats = StatsFromViewModel(viewModel.Matches[i].GuestTeamStats);
+      ev.UpdateMatchStats(i, hTeamStats, gTeamStats);
+    }
+
+    await _eventRepository.UpdateAsync(ev);
+    await _eventRepository.SaveChangesAsync();
+    return RedirectToAction("Matches");
   }
 
   [HttpGet]
@@ -55,15 +66,7 @@ public class EventViewController : Controller
 
     if (ev == null) { return NotFound(); }
 
-    var dto = new EventViewModel
-    {
-      Id = ev.Id,
-      Name = ev.Name,
-      Stadiums = ev.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
-      Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
-      Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
-      StartTime = ev.StartTime
-    };
+    var dto = EventViewModel.FromEvent(ev);
 
     return View(dto);
   }
@@ -83,16 +86,7 @@ public class EventViewController : Controller
 
     if (ev == null) { return NotFound(); }
 
-    var dto = new EventViewModel
-    {
-      Id = ev.Id,
-      Name = ev.Name,
-      Stadiums = ev.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
-      Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
-      Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
-      StartTime = ev.StartTime
-    };
-
+    var dto = EventViewModel.FromEvent(ev);
     return View(dto);
   }
 
@@ -111,16 +105,7 @@ public class EventViewController : Controller
 
     if (ev == null) { return NotFound(); }
 
-    var dto = new EventViewModel
-    {
-      Id = ev.Id,
-      Name = ev.Name,
-      Stadiums = ev.Stadiums.Select(stadium => StadiumViewModel.FromStadium(stadium)).ToList(),
-      Teams = ev.Teams.Select(team => TeamViewModel.FromTeam(team)).ToList(),
-      Matches = ev.Matches.Select(match => MatchViewModel.FromMatch(match)).ToList(),
-      StartTime = ev.StartTime
-    };
-
+    var dto = EventViewModel.FromEvent(ev);
     return View(dto);
   }
 
@@ -128,6 +113,26 @@ public class EventViewController : Controller
   public IActionResult Stats(EventViewModel viewModel)
   {
     return RedirectToAction("Stats", viewModel.Id);
+  }
+
+  private FbTeamMatchStats StatsFromViewModel(FbTeamMatchStatsViewModel stats)
+  {
+    return new()
+    {
+      Id = stats.Id,
+      Shoots = stats.Shoots,
+      ShootsOnTarget = stats.ShootsOnTarget,
+      Fouls = stats.Fouls,
+      Passes = stats.Passes,
+      Goals = stats.Goals,
+      Assists = stats.Assists,
+      RedCards = stats.RedCards,
+      YellowCards = stats.YellowCards,
+      TeamId = stats.TeamId,
+      Win = stats.Win,
+      Draw = stats.Draw,
+      Loss = stats.Loss
+    };
   }
 }
 

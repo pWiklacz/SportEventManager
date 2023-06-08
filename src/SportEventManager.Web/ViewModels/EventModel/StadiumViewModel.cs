@@ -13,9 +13,6 @@ public class StadiumViewModel
 
   public bool IsArchived { get; private set; } = false;
 
-  public List<EventViewModel> Events { get; private set; } = new();
-
-  public List<MatchViewModel> Matches { get; private set; } = new();
   public static StadiumViewModel FromStadium(Stadium stadium)
   {
     return new StadiumViewModel()
@@ -24,8 +21,6 @@ public class StadiumViewModel
       City = stadium.City,
       Name = stadium.Name,
       IsArchived = stadium.IsArchived,
-      Events = stadium.Events.Select(e => EventViewModel.FromEvent(e)).ToList(),
-      Matches = stadium.Matches.Select(m => MatchViewModel.FromMatch(m)).ToList()
     };
   }
 }

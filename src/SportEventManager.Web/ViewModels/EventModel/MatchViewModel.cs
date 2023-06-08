@@ -1,4 +1,5 @@
-﻿using SportEventManager.Core.EventAggregate;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Web.ViewModels.TeamModel;
@@ -24,13 +25,24 @@ public class MatchViewModel
 
   public StadiumViewModel? Stadium { get; set; }
 
-  public FbTeamMatchStatsViewModel? HomeTeamStats { get; set; }
+  public FbTeamMatchStatsViewModel HomeTeamStats { get; set; } = null!;
 
-  public FbTeamMatchStatsViewModel? GuestTeamStats { get; set; }
+  public FbTeamMatchStatsViewModel GuestTeamStats { get; set; } = null!;
+
+  public int HomeTeamId { get; set; }
+
+  public int GuestTeamId { get; set; }
 
   public TeamViewModel HomeTeam { get; set; } = null!;
 
   public TeamViewModel GuestTeam { get; set; } = null!;
+  public bool IsLive
+  {
+    get
+    {
+      return DateTime.Now >= StartTime && DateTime.Now <= EndTime;
+    }
+  }
 
   public static MatchViewModel FromMatch(Match match) => new()
   {
@@ -44,8 +56,19 @@ public class MatchViewModel
     EventId = match.EventId,
     HomeTeamStats = FbTeamMatchStatsViewModel.FromTeamMatchStats(match.HomeTeamStats),
     GuestTeamStats = FbTeamMatchStatsViewModel.FromTeamMatchStats(match.GuestTeamStats),
-    HomeTeam = TeamViewModel.FromTeam(team: match.HomeTeam),
+    HomeTeamId = match.HomeTeamId,
+    GuestTeamId = match.GuestTeamId,
+    HomeTeam = TeamViewModel.FromTeam(team : match.HomeTeam),
     GuestTeam = TeamViewModel.FromTeam(team: match.GuestTeam)
+
   };
+
+  public int CalculateMinutesElapsed()
+  {
+    TimeSpan elapsedTime = DateTime.Now - StartTime;
+    int minutesElapsed = (int)elapsedTime.TotalMinutes;
+
+    return minutesElapsed;
+  }
 }
 

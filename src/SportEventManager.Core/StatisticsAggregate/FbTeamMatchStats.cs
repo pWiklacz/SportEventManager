@@ -25,7 +25,7 @@ public class FbTeamMatchStats : FootballStatsBase
   public bool Draw { get; set; } = false;
 
   [Required]
-  public int TeamId { get; private set; }
+  public int TeamId { get; set; }
 
   public FbTeamMatchStats(int teamId)
   {
