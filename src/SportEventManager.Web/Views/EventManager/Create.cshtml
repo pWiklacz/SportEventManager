@@ -9,26 +9,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-<script>
-    flatpickr("#EStartTime", {
-        enableTime: true,
-        noCalendar: false,
-        dateFormat: "d-m-Y H:i",
-        time_24hr: true,
-        minuteIncrement: 15,
-        defaultDate: "today"
-    });
-
-    flatpickr("#EEndTime", {
-        enableTime: true,
-        noCalendar: false,
-        dateFormat: "d-m-Y H:i",
-        time_24hr: true,
-        minuteIncrement: 15,
-        defaultDate: "today"
-    });
-</script>
-
 
 <script src="~/js/EventManager/Create.js"></script>
 <h1>Create Event Form</h1>
@@ -208,3 +188,23 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<script>
+    flatpickr("#EStartTime", {
+        enableTime: true,
+        noCalendar: false,
+        dateFormat: "d-m-Y H:i",
+        time_24hr: true,
+        minuteIncrement: 15,
+        defaultDate: "today"
+    });
+
+    flatpickr("#EEndTime", {
+        enableTime: true,
+        noCalendar: false,
+        dateFormat: "d-m-Y H:i",
+        time_24hr: true,
+        minuteIncrement: 15,
+        defaultDate: "today"
+    });
+</script>
