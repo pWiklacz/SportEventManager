@@ -39,6 +39,14 @@ public class Match : EntityBase
   public int GuestTeamId { get; private set; }
 
   [Required]
+  [ForeignKey(nameof(HomeTeamStats))]
+  public int HomeTeamStatsId { get; private set; }
+
+  [Required]
+  [ForeignKey(nameof(GuestTeamStats))]
+  public int GuestTeamStatsId { get; private set; }
+
+  [Required]
   [ForeignKey("Event")]
   public int EventId { get; set; }
 
@@ -56,9 +64,11 @@ public class Match : EntityBase
   [Required]
   public Team GuestTeam { get; set; } = null!;
 
-  public FbTeamMatchStats? HomeTeamStats { get; set; }
+  [Required]
+  public FbTeamMatchStats HomeTeamStats { get; set; } = null!;
 
-  public FbTeamMatchStats? GuestTeamStats { get; set; }
+  [Required]
+  public FbTeamMatchStats GuestTeamStats { get; set; } = null!;
 
   private List<FbPlayerMatchStats> _playersStats = new();
 
@@ -88,6 +98,8 @@ public class Match : EntityBase
     WinnerName = winnerName;
     HomeTeamStats = new FbTeamMatchStats(HomeTeamId);
     GuestTeamStats = new FbTeamMatchStats(GuestTeamId);
+    HomeTeamStatsId = HomeTeamStats.Id;
+    GuestTeamStatsId = GuestTeamStats.Id;
   }
 
   public void UpdateStatistics(FbTeamMatchStats homeStats, FbTeamMatchStats guestStats)

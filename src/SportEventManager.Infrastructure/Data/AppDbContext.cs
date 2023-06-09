@@ -51,7 +51,7 @@ public class AppDbContext : DbContext
       .UsingEntity<TeamPlayer>(
        l => l.HasOne<Player>().WithMany(i => i.TeamPlayers),
        r => r.HasOne<Team>().WithMany(e => e.TeamPlayers));
-    
+
     modelBuilder.Entity<Team>()
       .HasMany(t => t.Players)
       .WithMany(p => p.Teams)
@@ -68,6 +68,16 @@ public class AppDbContext : DbContext
       .HasOne(m => m.GuestTeam)
       .WithMany(t => t.AwayMatches)
       .HasForeignKey(m => m.GuestTeamId)
+      .OnDelete(DeleteBehavior.Restrict);
+
+    modelBuilder.Entity<Match>()
+  .HasOne(m => m.HomeTeamStats)
+  .WithOne()
+  .OnDelete(DeleteBehavior.Restrict);
+
+    modelBuilder.Entity<Match>()
+      .HasOne(m => m.GuestTeamStats)
+      .WithOne()
       .OnDelete(DeleteBehavior.Restrict);
 
     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

@@ -16,18 +16,22 @@ public class EventViewController : Controller
 {
 
   private readonly IRepository<Event> _eventRepository;
+  private readonly IRepository<Statistics> _statisticsRepository;
 
-  public EventViewController(IRepository<Event> eventRepository)
+  public EventViewController(IRepository<Event> eventRepository, IRepository<Statistics> statisticsRepository)
   {
-    _eventRepository = eventRepository;
+    _eventRepository = eventRepository; 
+    _statisticsRepository = statisticsRepository;
   }
 
   [HttpGet]
-  public async Task<IActionResult> Matches(int id)
+  public async Task<IActionResult> ShowMatches(int id)
   {
     var spec = new EventsByIdWithItemsSpec(id);
     Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
 
+    
+    
     if (ev == null) { return NotFound(); }
 
     var viewModel = EventViewModel.FromEvent(ev);
@@ -36,7 +40,7 @@ public class EventViewController : Controller
   }
 
   [HttpPost]
-  public async Task<IActionResult> Matches([FromQuery] EventViewModel viewModel)
+  public async Task<IActionResult> ShowMatches(EventViewModel viewModel)
   {
     var spec = new EventsByIdWithItemsSpec(viewModel.Id);
     Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
@@ -53,9 +57,9 @@ public class EventViewController : Controller
       ev.UpdateMatchStats(i, hTeamStats, gTeamStats);
     }
 
-    await _eventRepository.UpdateAsync(ev);
-    await _eventRepository.SaveChangesAsync();
-    return RedirectToAction("Matches");
+    //await _eventRepository.UpdateAsync(ev);
+    //await _eventRepository.SaveChangesAsync();
+    return RedirectToAction("ShowMatches");
   }
 
   [HttpGet]

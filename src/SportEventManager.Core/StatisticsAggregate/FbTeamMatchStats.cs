@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using SportEventManager.Core.EventAggregate;
 
 namespace SportEventManager.Core.StatisticsAggregate;
  
