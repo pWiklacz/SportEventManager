@@ -5,9 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var startDateInput = document.getElementById('EStartTime');
+        var endDateInput = document.getElementById('EEndTime');
 
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        var currentDate = new Date();
+
+        startDateInput.value = currentDate.toISOString().slice(0, 16);
+        endDateInput.value = currentDate.toISOString().slice(0, 16);
+    });
+</script>
 
 
 <script src="~/js/EventManager/Create.js"></script>
@@ -189,22 +197,3 @@
     }
 }
 
-<script>
-    flatpickr("#EStartTime", {
-        enableTime: true,
-        noCalendar: false,
-        dateFormat: "d-m-Y H:i",
-        time_24hr: true,
-        minuteIncrement: 15,
-        defaultDate: "today"
-    });
-
-    flatpickr("#EEndTime", {
-        enableTime: true,
-        noCalendar: false,
-        dateFormat: "d-m-Y H:i",
-        time_24hr: true,
-        minuteIncrement: 15,
-        defaultDate: "today"
-    });
-</script>
