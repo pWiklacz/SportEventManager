@@ -5,17 +5,42 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    flatpickr("#EStartTime", {
+        enableTime: true,
+        noCalendar: false,
+        dateFormat: "d-m-Y H:i",
+        time_24hr: true,
+        minuteIncrement: 15,
+        defaultDate: "today"
+    });
+
+    flatpickr("#EEndTime", {
+        enableTime: true,
+        noCalendar: false,
+        dateFormat: "d-m-Y H:i",
+        time_24hr: true,
+        minuteIncrement: 15,
+        defaultDate: "today"
+    });
+</script>
+
+
 <script src="~/js/EventManager/Create.js"></script>
 <h1>Create Event Form</h1>
 <span class="text-danger m-2 w-100" id="BackendErrorSpan">@Model.BackendError</span>
 <form id="EventForm" asp-action="Create">
     <div class="form-page" id="page-1">
-      <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-      <div class="event-card">
-          <h2>First Part</h2>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="event-card">
+            <h2>First Part</h2>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input type="text" class="form-control" style="width: 40%;" asp-for="Name" id="EName" placeholder="Event Name" size="20"/>
+                <input type="text" class="form-control" style="width: 40%;" asp-for="Name" id="EName" placeholder="Event Name" size="20" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
@@ -35,7 +60,7 @@
 
             <br style="margin-top: 20px;" />
             <div class="form-group">
-                <label class="control-label">Number of Teams</label> <br/>
+                <label class="control-label">Number of Teams</label> <br />
                 @*<input type="number" onkeydown="return false" min="0" class="form-control" style="width: 40%;" id="NumberOfTeam" placeholder="Number of teams" />*@
                 <select id="NumberOfTeam" style="width: 40%;">
                     <option value="2" selected>2</option>
@@ -48,8 +73,8 @@
             </div>
 
             <br style="margin-top: 20px;" />
-            <div class="form-group" >
-            <label class="control-label" style="max-width: 200px;">Add Stadiums To Event</label>
+            <div class="form-group">
+                <label class="control-label" style="max-width: 200px;">Add Stadiums To Event</label>
                 <div class="col-md-8 p-0 m-0 bg-white">
                     <table id="StadiumsTable" class="table table-sm CodesTable">
                         <thead>
@@ -98,14 +123,14 @@
                 </div>
                 <input type="hidden" id="hdnLastIndexStadium" value="0" />
             </div>
-      </div>
+        </div>
     </div>
 
     <div class="form-page" id="page-2" style="display: none;">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="event-card">
             <h2>Second Part</h2>
-        <br style="margin-top: 20px;" />
+            <br style="margin-top: 20px;" />
             <div class="container col-8 me-1">
                 <div class="col-md-8 p-0 m-0 bg-white">
                     <table id="TeamTable" class="table table-bordered">
@@ -127,22 +152,22 @@
                         <tbody>
                             @for (int i = 0; i < Model.ChosenTeamsNames.Count; i++)
                             {
-                              <tr>
-                                <td>
-                                   <select asp-for="@Model.ChosenTeamsNames[i]" class="form-control">
-                                        @foreach (var team in Model.AvailableTeamsNames)
-                                        {
-                                        <option value="@team">@team</option>
-                                        }
-                                   </select>
-                                </td>
-                                <td style="width:60px;">
-                                    <input type="hidden" asp-for="@Model.ChosenTeamsNames[i]" />
-                                    <button id="btnremove-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteTeam(this)">
-                                        Delete
-                                  </button>
-                                </td>
-                              </tr>
+                                <tr>
+                                    <td>
+                                        <select asp-for="@Model.ChosenTeamsNames[i]" class="form-control">
+                                            @foreach (var team in Model.AvailableTeamsNames)
+                                            {
+                                                <option value="@team">@team</option>
+                                            }
+                                        </select>
+                                    </td>
+                                    <td style="width:60px;">
+                                        <input type="hidden" asp-for="@Model.ChosenTeamsNames[i]" />
+                                        <button id="btnremove-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteTeam(this)">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
 
                             }
                         </tbody>
@@ -152,7 +177,7 @@
             </div>
             @{
                 List<String> teamName = new();
-                foreach(string name in Model.ChosenTeamsNames)
+                foreach (string name in Model.ChosenTeamsNames)
                 {
                     teamName.Add(name);
                 }
@@ -183,5 +208,3 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-
-
