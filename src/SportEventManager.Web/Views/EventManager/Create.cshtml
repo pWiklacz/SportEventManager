@@ -12,10 +12,14 @@
 
         var currentDate = new Date();
 
-        startDateInput.value = currentDate.toISOString().slice(0, 16);
-        endDateInput.value = currentDate.toISOString().slice(0, 16);
+        var timezoneOffset = currentDate.getTimezoneOffset() * 60000;
+        var currentDateTime = new Date(currentDate.getTime() - timezoneOffset);
+
+        startDateInput.value = currentDateTime.toISOString().slice(0, 16);
+        endDateInput.value = currentDateTime.toISOString().slice(0, 16);
     });
 </script>
+
 
 
 <script src="~/js/EventManager/Create.js"></script>
