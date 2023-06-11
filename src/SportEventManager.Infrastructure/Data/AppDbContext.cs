@@ -71,9 +71,9 @@ public class AppDbContext : DbContext
       .OnDelete(DeleteBehavior.Restrict);
 
     modelBuilder.Entity<Match>()
-  .HasOne(m => m.HomeTeamStats)
-  .WithOne()
-  .OnDelete(DeleteBehavior.Restrict);
+      .HasOne(m => m.HomeTeamStats)
+      .WithOne()
+      .OnDelete(DeleteBehavior.Restrict);
 
     modelBuilder.Entity<Match>()
       .HasOne(m => m.GuestTeamStats)

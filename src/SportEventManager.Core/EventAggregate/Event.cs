@@ -52,7 +52,7 @@ public class Event : EntityBase, IAggregateRoot
 
   public void UpdateMatchStats(int i, FbTeamMatchStats homeStats, FbTeamMatchStats guestStats)
   {
-    _matches[i].UpdateStatistics(homeStats, guestStats);
+    _matches[i].EndMatch(homeStats, guestStats);
   }
 
   public void AddStadium(Stadium newStadium)

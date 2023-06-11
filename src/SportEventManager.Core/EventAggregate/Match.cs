@@ -89,7 +89,7 @@ public class Match : EntityBase
   {
     StartTime = Guard.Against.Null(startTime, nameof(startTime));
     EndTime = Guard.Against.Null(endTime, nameof(endTime));
-    Stadium = Guard.Against.Null(stadium, nameof(stadium)); 
+    Stadium = Guard.Against.Null(stadium, nameof(stadium));
     StadiumId = Guard.Against.NullOrEmpty(stadiumId, nameof(stadiumId));
     HomeTeamId = Guard.Against.NegativeOrZero(firstTeamId, nameof(firstTeamId));
     GuestTeamId = Guard.Against.NegativeOrZero(secondTeamId, nameof(secondTeamId));
@@ -102,10 +102,19 @@ public class Match : EntityBase
     GuestTeamStatsId = GuestTeamStats.Id;
   }
 
-  public void UpdateStatistics(FbTeamMatchStats homeStats, FbTeamMatchStats guestStats)
+  public void EndMatch(FbTeamMatchStats homeStats, FbTeamMatchStats guestStats)
   {
-    HomeTeamStats = Guard.Against.Null(homeStats, nameof(homeStats));
-    GuestTeamStats = Guard.Against.Null(guestStats, nameof(guestStats));
+    Guard.Against.Null(homeStats, nameof(homeStats));
+    Guard.Against.Null(guestStats, nameof(guestStats));
+
+    HomeTeamStats.Update(homeStats);
+    GuestTeamStats.Update(guestStats);
+
+    if (HomeTeamStats.Win)
+      WinnerName = HomeTeam.Name;
+    else if (HomeTeamStats.Draw)
+      WinnerName = "DRAW";
+    else WinnerName = GuestTeam.Name;
   }
 
   public void Archive()

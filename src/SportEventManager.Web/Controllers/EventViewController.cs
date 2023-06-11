@@ -57,8 +57,8 @@ public class EventViewController : Controller
       ev.UpdateMatchStats(i, hTeamStats, gTeamStats);
     }
 
-    //await _eventRepository.UpdateAsync(ev);
-    //await _eventRepository.SaveChangesAsync();
+    await _eventRepository.UpdateAsync(ev);
+    await _eventRepository.SaveChangesAsync();
     return RedirectToAction("ShowMatches");
   }
 

@@ -34,4 +34,29 @@ public class FbTeamMatchStats : FootballStatsBase
   }
 
   public FbTeamMatchStats() : base() { }
+
+  public void Update(FbTeamMatchStats stats)
+  {
+    Guard.Against.Null(stats, nameof(stats));
+
+    if (this.Id != stats.Id && this.TeamId != stats.TeamId)
+    {
+      throw new Exception("Try to update wrong entity of statistics.");
+    }
+
+    Shoots = stats.Shoots;
+    ShootsOnTarget = stats.ShootsOnTarget;
+    Fouls = stats.Fouls;
+    Passes = stats.Passes;
+    Goals = stats.Goals;
+    Assists = stats.Assists;
+    RedCards = stats.RedCards;
+    YellowCards = stats.YellowCards;
+
+    if (this.Goals < stats.Goals)
+      Win = true;
+    else if (this.Goals == stats.Goals)
+      Draw = true;
+    else Loss = true;
+  }
 }
