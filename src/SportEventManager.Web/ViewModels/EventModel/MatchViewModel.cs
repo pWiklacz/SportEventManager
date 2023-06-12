@@ -51,11 +51,7 @@ public class MatchViewModel
 
   public static MatchViewModel FromMatch(Match match)
   {
-    //var HomeTeamPlayersStats = match.PlayersStats.Select(
-    //    ps => FbPlayerMatchStatsViewModel.FromPlayerMatchStats(ps)).Where(ps => ps.Player.Id)
-    //  .ToList();
-
-    return new()
+    MatchViewModel matchViewModel = new()
     {
       Id = match.Id,
       StartTime = match.StartTime,
@@ -71,18 +67,22 @@ public class MatchViewModel
       GuestTeamId = match.GuestTeamId,
       HomeTeam = TeamViewModel.FromTeam(team: match.HomeTeam),
       GuestTeam = TeamViewModel.FromTeam(team: match.GuestTeam),
+      HomeTeamPlayersMatchStats = match.PlayersStats.Select(
+                ps => FbPlayerMatchStatsViewModel.FromPlayerMatchStats(ps)).ToList()
     };
+     matchViewModel.GetTeamPlayersStats();
+
+     return matchViewModel;
   }
 
-  //private List<FbPlayerMatchStatsViewModel> GetTeamPlayersStats(TeamViewModel team, Match match)
-  //{
-  //  //var list = new List<FbPlayerMatchStatsViewModel>();
-  //  //foreach (var player in team.Players)
-  //  //{
-  //  //      list.Add(match.PlayersStats.Select(
-  //  //          ps => FbPlayerMatchStatsViewModel.FromPlayerMatchStats(ps)).Where(ps => ps.PlayerId == player.Id))
-  //  //}
-  //}
+  private void GetTeamPlayersStats()
+  {
+    for (int i = 0; i < GuestTeam.Players.Count; i++)
+    {
+      GuestTeamPlayersMatchStats.Add(HomeTeamPlayersMatchStats[HomeTeam.Players.Count]);
+      HomeTeamPlayersMatchStats.RemoveAt(HomeTeam.Players.Count);
+    }
+  }
 
   public int CalculateMinutesElapsed()
   {

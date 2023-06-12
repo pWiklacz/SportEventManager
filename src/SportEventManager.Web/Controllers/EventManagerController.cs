@@ -169,7 +169,7 @@ public class EventManagerController : Controller
     {
       Match match = new Match(ev.StartTime, DateTime.MaxValue,
         ev.Stadiums.ElementAt<Stadium>(0).Id,
-        pair.Key.Id, pair.Value.Id
+        pair.Key, pair.Value
       );
       ev.AddMatch(match);
     }

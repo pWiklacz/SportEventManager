@@ -15,25 +15,22 @@
         font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48
     }
 
-    .player-table-left {
-        width: 50%;
+    .player-table {
+        width: 100%;
         border-collapse: collapse;
     }
 
-    .player-table-right {
-        width: 50%;
-        border-collapse: collapse;
-    }
-
-    .player-table-left th, .player-table-left td {
+     .left-th, .left-td {
         padding: 8px;
         text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
+     }
 
-    .player-table-right th, .player-table-right td {
+    .right-th, .right-td {
         padding: 8px;
         text-align: right;
+    }
+        
+    .player-table tr {
         border-bottom: 1px solid #ddd;
     }
 
@@ -55,93 +52,73 @@
 
 
 <div class="table-container">
-    <table class="player-table-left">
+    <table class="player-table">
         <tr>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Goals</th>
-            <th>Assists</th>
-            <th>
+            <th class="left-th">Name</th>
+            <th class="left-th">Surname</th>
+            <th class="left-th">Goals</th>
+            <th class="left-th">Assists</th>
+            <th class="left-th">
                 <span class="material-symbols-outlined" style="color:yellow">
                     crop_portrait
                 </span>
             </th>
-            <th>
+            <th class="left-th">
                 <span class="material-symbols-outlined" style="color:red">
                     crop_portrait
                 </span>
             </th>
-        </tr>
-        <tr>
-            <td>John</td>
-            <td>Doe</td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-           
-        </tr>
-        <tr>
-            <td>Jane</td>
-            <td>Smith</td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-        </tr>
-        <tr>
-            <td>Mike</td>
-            <td>Johnson</td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-        </tr>
-        <!-- Add more player rows as needed -->
-    </table>
-    <div class="vertical-separator"></div>
-    <table class="player-table-right">
-        <tr>
-            <th>
+            <th class ="right-th">
                 <span class="material-symbols-outlined" style="color:red">
                     crop_portrait
                 </span>
             </th>
-            <th>
+            <th class="right-th">
                 <span class="material-symbols-outlined" style="color:yellow">
                     crop_portrait
                 </span>
             </th>
-            <th>Assists</th>
-            <th>Goals</th>
-            <th>Name</th>
-            <th>Surname</th>
+            <th class="right-th">Assists</th>
+            <th class="right-th">Goals</th>
+            <th class="right-th">Name</th>
+            <th class="right-th">Surname</th>
         </tr>
         <tr>
-
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td>Doe</td>
-            <td>John</td>
+            <td class ="left-td">John</td>
+            <td class="left-td">Doe</td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class ="right-td"><input class="number-input" type="number" min="0"></td>
+            <td class="right-td"><input class="number-input" type="number" min="0"></td>
+            <td class="right-td"><input class="number-input" type="number" min="0"></td>
+            <td class ="right-td"><input class="number-input" type="number" min="0"></td>
+            <td class="right-td">Doe</td>
+            <td class="right-td">John</td>
         </tr>
         <tr>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td>Smith</td>
-            <td>Jane</td>
+            <td class ="left-td">John</td>
+            <td class="left-td">Doe</td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class ="right-td"><input class="number-input" type="number" min="0"></td>
+            <td class="right-td"><input class="number-input" type="number" min="0"></td>
+            <td class="right-td"><input class="number-input" type="number" min="0"></td>
+            <td class ="right-td"><input class="number-input" type="number" min="0"></td>
+            <td class="right-td">Doe</td>
+            <td class="right-td">John</td>
         </tr>
         <tr>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td><input class="number-input" type="number" min="0"></td>
-            <td>Johnson</td>
-            <td>Mike</td>
+            <td class ="left-td">John</td>
+            <td class="left-td">Doe</td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
         </tr>
-        <!-- Dodaj więcej wierszy graczy, jeśli jest to potrzebne -->
     </table>
 </div>
+

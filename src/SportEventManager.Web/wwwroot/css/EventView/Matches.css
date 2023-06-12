@@ -4,25 +4,36 @@
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48
 }
 
-.player-table-left {
-    width: 50%;
+.player-table {
+    width: 100%;
     border-collapse: collapse;
 }
 
-.player-table-right {
-    width: 50%;
-    border-collapse: collapse;
+.left-th, .left-td {
+    padding: 8px;
+    text-align: center;
+    max-width: 60px;
 }
 
-.player-table-left th, .player-table-left td {
+.right-th, .right-td {
+    padding: 8px;
+    text-align: center;
+    max-width: 60px;
+}
+
+.left-th-name, .left-td-name {
     padding: 8px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    max-width: 60px;
 }
 
-.player-table-right th, .player-table-right td {
+.right-th-name, .right-td-name {
     padding: 8px;
     text-align: right;
+    max-width: 60px;
+}
+
+.player-table tr {
     border-bottom: 1px solid #ddd;
 }
 
@@ -39,7 +50,6 @@
     background-color: #ccc;
     margin: 0 10px;
 }
-
 .row > .column {
     padding: 0 8px;
     margin-bottom: 20px;
@@ -77,8 +87,8 @@
     background-color: #002b36;
     margin: auto;
     padding: 0;
-    width: 90%;
-    max-width: 1200px;
+    width: 100%;
+    max-width: 1500px;
 }
 
 /* Modal Header */
