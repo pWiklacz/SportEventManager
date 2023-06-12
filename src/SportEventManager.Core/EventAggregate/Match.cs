@@ -70,16 +70,17 @@ public class Match : EntityBase
   [Required]
   public FbTeamMatchStats GuestTeamStats { get; set; } = null!;
 
+
   private List<FbPlayerMatchStats> _playersStats = new();
 
   public ICollection<FbPlayerMatchStats> PlayersStats => _playersStats;
+
 
   public Match() { }
 
   public Match(
     DateTime startTime,
     DateTime endTime,
-    Stadium stadium,
     string stadiumId,
     int firstTeamId,
     int secondTeamId,
@@ -89,7 +90,7 @@ public class Match : EntityBase
   {
     StartTime = Guard.Against.Null(startTime, nameof(startTime));
     EndTime = Guard.Against.Null(endTime, nameof(endTime));
-    Stadium = Guard.Against.Null(stadium, nameof(stadium));
+
     StadiumId = Guard.Against.NullOrEmpty(stadiumId, nameof(stadiumId));
     HomeTeamId = Guard.Against.NegativeOrZero(firstTeamId, nameof(firstTeamId));
     GuestTeamId = Guard.Against.NegativeOrZero(secondTeamId, nameof(secondTeamId));
@@ -98,8 +99,16 @@ public class Match : EntityBase
     WinnerName = winnerName;
     HomeTeamStats = new FbTeamMatchStats(HomeTeamId);
     GuestTeamStats = new FbTeamMatchStats(GuestTeamId);
-    HomeTeamStatsId = HomeTeamStats.Id;
-    GuestTeamStatsId = GuestTeamStats.Id;
+
+    foreach (var player in HomeTeam.Players)
+    {
+      _playersStats.Add(new FbPlayerMatchStats(player.Id));
+    }
+    foreach (var player in GuestTeam.Players)
+    {
+      _playersStats.Add(new FbPlayerMatchStats(player.Id));
+    }
+
   }
 
   public void EndMatch(FbTeamMatchStats homeStats, FbTeamMatchStats guestStats)

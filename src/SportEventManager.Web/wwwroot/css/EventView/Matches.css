@@ -1,4 +1,46 @@
-﻿.row > .column {
+﻿@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48
+}
+
+.player-table-left {
+    width: 50%;
+    border-collapse: collapse;
+}
+
+.player-table-right {
+    width: 50%;
+    border-collapse: collapse;
+}
+
+.player-table-left th, .player-table-left td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.player-table-right th, .player-table-right td {
+    padding: 8px;
+    text-align: right;
+    border-bottom: 1px solid #ddd;
+}
+
+.number-input {
+    width: 40px;
+}
+
+.table-container {
+    display: flex;
+}
+
+.vertical-separator {
+    width: 1px;
+    background-color: #ccc;
+    margin: 0 10px;
+}
+
+.row > .column {
     padding: 0 8px;
     margin-bottom: 20px;
 }
@@ -159,10 +201,6 @@
         background: #e7e7e7;
     }
 
-
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
-
-
 :root {
     --color-text-primary: #1c2a38;
     --color-text-secondary: #8A8F98;
@@ -277,4 +315,7 @@ strong {
     font-weight: 600;
     margin-top: 8px;
 }
+
+/*Player Stats/////////////////////////////////////////////////////////////////////////////////*/
+
 
