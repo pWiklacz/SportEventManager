@@ -30,8 +30,6 @@ public class EventViewController : Controller
     var spec = new EventsByIdWithItemsSpec(id);
     Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
 
-    
-    
     if (ev == null) { return NotFound(); }
 
     var viewModel = EventViewModel.FromEvent(ev);
@@ -45,16 +43,15 @@ public class EventViewController : Controller
     var spec = new EventsByIdWithItemsSpec(viewModel.Id);
     Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
 
-    var aa = viewModel.Matches;
-    
-    
     if (ev == null) { return NotFound(); }
 
     for (int i = 0; i < ev.Matches.Count; ++i)
     {
-      var hTeamStats = StatsFromViewModel(viewModel.Matches[i].HomeTeamStats);
-      var gTeamStats = StatsFromViewModel(viewModel.Matches[i].GuestTeamStats);
-      ev.UpdateMatchStats(i, hTeamStats, gTeamStats);
+      var hTeamStats = TeamStatsFromViewModel(viewModel.Matches[i].HomeTeamStats);
+      var gTeamStats = TeamStatsFromViewModel(viewModel.Matches[i].GuestTeamStats);
+      var playerStats = PlayersStatsFromViewModel(viewModel.Matches[i].HomeTeamPlayersMatchStats,
+        viewModel.Matches[i].GuestTeamPlayersMatchStats);
+      ev.UpdateMatchStats(i, hTeamStats, gTeamStats, playerStats);
     }
 
     await _eventRepository.UpdateAsync(ev);
@@ -119,7 +116,7 @@ public class EventViewController : Controller
     return RedirectToAction("Stats", viewModel.Id);
   }
 
-  private FbTeamMatchStats StatsFromViewModel(FbTeamMatchStatsViewModel stats)
+  private FbTeamMatchStats TeamStatsFromViewModel(FbTeamMatchStatsViewModel stats)
   {
     return new()
     {
@@ -137,6 +134,34 @@ public class EventViewController : Controller
       Draw = stats.Draw,
       Loss = stats.Loss
     };
+  }
+
+  private List<FbPlayerMatchStats> PlayersStatsFromViewModel(
+    List<FbPlayerMatchStatsViewModel> homeStats,
+    List<FbPlayerMatchStatsViewModel> guestStats)
+  {
+    List<FbPlayerMatchStats> list = homeStats.Select(playerStat => new FbPlayerMatchStats()
+      {
+        Id = playerStat.Id,
+        PlayerId = playerStat.PlayerId,
+        Goals = playerStat.Goals,
+        Assists = playerStat.Assists,
+        RedCards = playerStat.RedCards,
+        YellowCards = playerStat.YellowCards
+      })
+      .ToList();
+
+    list.AddRange(guestStats.Select(playerStat => new FbPlayerMatchStats()
+    {
+      Id = playerStat.Id,
+      PlayerId = playerStat.PlayerId,
+      Goals = playerStat.Goals,
+      Assists = playerStat.Assists,
+      RedCards = playerStat.RedCards,
+      YellowCards = playerStat.YellowCards
+    }));
+
+    return list;
   }
 }
 

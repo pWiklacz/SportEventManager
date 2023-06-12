@@ -37,7 +37,7 @@ public class FbTeamMatchStats : FootballStatsBase
 
   public void Update(FbTeamMatchStats stats)
   {
-    Guard.Against.Null(stats, nameof(stats));
+   Guard.Against.Null(stats, nameof(stats)); 
 
     if (this.Id != stats.Id && this.TeamId != stats.TeamId)
     {

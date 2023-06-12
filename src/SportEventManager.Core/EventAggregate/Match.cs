@@ -82,23 +82,22 @@ public class Match : EntityBase
     DateTime startTime,
     DateTime endTime,
     string stadiumId,
-    int firstTeamId,
-    int secondTeamId,
+    Team homeTeam,
+    Team guestTeam,
     bool isEnded = false,
     string winnerName = ""
     )
   {
     StartTime = Guard.Against.Null(startTime, nameof(startTime));
     EndTime = Guard.Against.Null(endTime, nameof(endTime));
-
     StadiumId = Guard.Against.NullOrEmpty(stadiumId, nameof(stadiumId));
-    HomeTeamId = Guard.Against.NegativeOrZero(firstTeamId, nameof(firstTeamId));
-    GuestTeamId = Guard.Against.NegativeOrZero(secondTeamId, nameof(secondTeamId));
+    HomeTeam = Guard.Against.Null(homeTeam, nameof(homeTeam));
+    GuestTeam = Guard.Against.Null(guestTeam, nameof(guestTeam));
     IsArchived = false;
     IsEnded = isEnded;
     WinnerName = winnerName;
-    HomeTeamStats = new FbTeamMatchStats(HomeTeamId);
-    GuestTeamStats = new FbTeamMatchStats(GuestTeamId);
+    HomeTeamStats = new FbTeamMatchStats(HomeTeam.Id);
+    GuestTeamStats = new FbTeamMatchStats(GuestTeam.Id);
 
     foreach (var player in HomeTeam.Players)
     {
@@ -108,14 +107,18 @@ public class Match : EntityBase
     {
       _playersStats.Add(new FbPlayerMatchStats(player.Id));
     }
-
   }
 
-  public void EndMatch(FbTeamMatchStats homeStats, FbTeamMatchStats guestStats)
+  public void EndMatch(FbTeamMatchStats homeStats, FbTeamMatchStats guestStats, List<FbPlayerMatchStats> playerStats)
   {
     Guard.Against.Null(homeStats, nameof(homeStats));
     Guard.Against.Null(guestStats, nameof(guestStats));
+    Guard.Against.Null(playerStats, nameof(playerStats));
 
+    for (int i = 0; i < _playersStats.Count; i++)
+    {
+      _playersStats[i].Update(playerStats[i]);
+    }
     HomeTeamStats.Update(homeStats);
     GuestTeamStats.Update(guestStats);
 

@@ -3,7 +3,7 @@
 namespace SportEventManager.Core.EventAggregate.Specification;
 public class EventsByIdWithItemsSpec : Specification<Event>, ISingleResultSpecification
 {
-  public EventsByIdWithItemsSpec(int eventId)
+  public  EventsByIdWithItemsSpec(int eventId)
   {
     Query
       .Where(selectEvent => selectEvent.Id == eventId)
@@ -13,6 +13,12 @@ public class EventsByIdWithItemsSpec : Specification<Event>, ISingleResultSpecif
       .Include(selectEven => selectEven.Matches)
       .ThenInclude(match => match.GuestTeamStats)
       .Include(selectEven => selectEven.Matches)
-      .ThenInclude(match => match.HomeTeamStats);
+      .ThenInclude(match => match.HomeTeamStats)
+      .Include(selectEven => selectEven.Matches)
+      .ThenInclude(match => match.PlayersStats)
+      .Include(selectEven => selectEven.Matches)
+      .ThenInclude(match => match.HomeTeam.Players)
+      .Include(selectEven => selectEven.Matches)
+      .ThenInclude(match => match.GuestTeam.Players);
   }
 }

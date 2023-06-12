@@ -50,9 +50,9 @@ public class Event : EntityBase, IAggregateRoot
     IsArchived = false;
   }
 
-  public void UpdateMatchStats(int i, FbTeamMatchStats homeStats, FbTeamMatchStats guestStats)
+  public void UpdateMatchStats(int i, FbTeamMatchStats homeStats, FbTeamMatchStats guestStats, List<FbPlayerMatchStats> playerStats)
   {
-    _matches[i].EndMatch(homeStats, guestStats);
+    _matches[i].EndMatch(homeStats, guestStats, playerStats);
   }
 
   public void AddStadium(Stadium newStadium)
