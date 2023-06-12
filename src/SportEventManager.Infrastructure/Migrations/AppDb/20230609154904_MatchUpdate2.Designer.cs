@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportEventManager.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using SportEventManager.Infrastructure.Data;
 namespace SportEventManager.Infrastructure.Migrations.AppDb
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230609154904_MatchUpdate2")]
+    partial class MatchUpdate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -420,8 +423,6 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasIndex("MatchId");
 
-                    b.HasIndex("PlayerId");
-
                     b.ToTable("PlayerMatchStats", (string)null);
                 });
 
@@ -571,14 +572,6 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                     b.HasOne("SportEventManager.Core.EventAggregate.Match", null)
                         .WithMany("PlayersStats")
                         .HasForeignKey("MatchId");
-
-                    b.HasOne("SportEventManager.Core.TeamAggregate.Player", "Player")
-                        .WithMany()
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("SportEventManager.Core.StatisticsAggregate.FbTeamMatchStats", b =>

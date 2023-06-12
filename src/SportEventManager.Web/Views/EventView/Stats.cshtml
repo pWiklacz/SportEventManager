@@ -6,4 +6,142 @@
     Layout = "~/Views/EventView/_EventViewLayout.cshtml";
 }
 
-<p>Stats</p>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+
+
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48
+    }
+
+    .player-table-left {
+        width: 50%;
+        border-collapse: collapse;
+    }
+
+    .player-table-right {
+        width: 50%;
+        border-collapse: collapse;
+    }
+
+    .player-table-left th, .player-table-left td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .player-table-right th, .player-table-right td {
+        padding: 8px;
+        text-align: right;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .number-input {
+        width: 30px;
+    }
+
+    .table-container {
+        display: flex;
+    }
+
+    .vertical-separator {
+        width: 1px;
+        background-color: #ccc;
+        margin: 0 10px;
+    }
+</style>
+
+
+
+<div class="table-container">
+    <table class="player-table-left">
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Goals</th>
+            <th>Assists</th>
+            <th>
+                <span class="material-symbols-outlined" style="color:yellow">
+                    crop_portrait
+                </span>
+            </th>
+            <th>
+                <span class="material-symbols-outlined" style="color:red">
+                    crop_portrait
+                </span>
+            </th>
+        </tr>
+        <tr>
+            <td>John</td>
+            <td>Doe</td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+           
+        </tr>
+        <tr>
+            <td>Jane</td>
+            <td>Smith</td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+        </tr>
+        <tr>
+            <td>Mike</td>
+            <td>Johnson</td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+        </tr>
+        <!-- Add more player rows as needed -->
+    </table>
+    <div class="vertical-separator"></div>
+    <table class="player-table-right">
+        <tr>
+            <th>
+                <span class="material-symbols-outlined" style="color:red">
+                    crop_portrait
+                </span>
+            </th>
+            <th>
+                <span class="material-symbols-outlined" style="color:yellow">
+                    crop_portrait
+                </span>
+            </th>
+            <th>Assists</th>
+            <th>Goals</th>
+            <th>Name</th>
+            <th>Surname</th>
+        </tr>
+        <tr>
+
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td>Doe</td>
+            <td>John</td>
+        </tr>
+        <tr>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td>Smith</td>
+            <td>Jane</td>
+        </tr>
+        <tr>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td><input class="number-input" type="number" min="0"></td>
+            <td>Johnson</td>
+            <td>Mike</td>
+        </tr>
+        <!-- Dodaj więcej wierszy graczy, jeśli jest to potrzebne -->
+    </table>
+</div>

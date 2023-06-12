@@ -9,14 +9,14 @@
 
 <div class="row">
     <div class="col-md-12 offset-md-0">
-    <div class="event-name">NAZWA</div>
+    <div class="event-name">@Model.Name</div>
     </div>
 	<div class="col-md-12 offset-md-0">
         <div class="card event-view-tab">
 			<div class="card-header">
 				<ul class="nav nav-tabs card-header-tabs">
 					<li class="nav-item">
-                        <a class="nav-link" asp-controller="EventView" asp-action="Matches" asp-route-id="@currentId">MATCHES</a>
+                        <a class="nav-link" asp-controller="EventView" asp-action="ShowMatches" asp-route-id="@currentId">MATCHES</a>
 					</li>
 					<li class="nav-item">
                         <a class="nav-link" asp-controller="EventView" asp-action="Bracket" asp-route-id="@currentId">BRACKET</a>

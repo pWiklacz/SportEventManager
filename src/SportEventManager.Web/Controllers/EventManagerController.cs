@@ -167,7 +167,7 @@ public class EventManagerController : Controller
     Dictionary<Team, Team> bracket = TournamentBracket.GenerateBracket_1stRound(ev.Teams.ToList());
     foreach(var pair in bracket)
     {
-      Match match = new Match(ev.StartTime, DateTime.MaxValue, ev.Stadiums.ElementAt<Stadium>(0),
+      Match match = new Match(ev.StartTime, DateTime.MaxValue,
         ev.Stadiums.ElementAt<Stadium>(0).Id,
         pair.Key.Id, pair.Value.Id
       );

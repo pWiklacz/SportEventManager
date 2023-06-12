@@ -18,13 +18,8 @@ public class TeamViewModel
 
   [Range(1, 50)]
   public int NumberOfPlayers { get; set; }
-
   public List<PlayerViewModel> Players { get; set; } = new();
   public List<TeamPlayerViewModel> TeamPlayers { get; set; } = new();
-  public List<EventViewModel> Events { get; set; } = new();
-  public List<MatchViewModel> HomeMatches { get; set; } = new();
-  public List<MatchViewModel> AwayMatches { get; set; } = new();
-
   public string? ExistingPeselNumbers { get; set; }
 
   public static TeamViewModel FromTeam(Team team) => new()
@@ -36,10 +31,7 @@ public class TeamViewModel
     OwnerId = team.OwnerId,
     IsArchived = team.IsArchived,
     Players = team.Players.Select(p => PlayerViewModel.FromPlayer(p)).ToList(),
-    TeamPlayers = team.TeamPlayers.Select(tp => TeamPlayerViewModel.FromTeamPlayer(tp)).ToList(),
-    Events = team.Events.Select(e => EventViewModel.FromEvent(e)).ToList(),
-    HomeMatches = team.HomeMatches.Select(m => MatchViewModel.FromMatch(m)).ToList(),
-    AwayMatches = team.AwayMatches.Select(m => MatchViewModel.FromMatch(m)).ToList()
+    TeamPlayers = team.TeamPlayers.Select(tp => TeamPlayerViewModel.FromTeamPlayer(tp)).ToList()
   };
 
   public List<Player> getPlayersList()

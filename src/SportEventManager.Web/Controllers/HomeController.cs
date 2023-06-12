@@ -20,12 +20,11 @@ public class HomeController : Controller
   // GET: EventSettings
   public async Task<IActionResult> Index()
   {
-    var sportEvents = new List<Event>();
-
     EventsWithItemsSpec eventWithItemsSpec = new EventsWithItemsSpec();
-    sportEvents = await _eventRepository.ListAsync(eventWithItemsSpec);
+    var sportEvents = await _eventRepository.ListAsync(eventWithItemsSpec);
 
     var dto = new List<EventViewModel>();
+
     foreach(Event @event in sportEvents)
     {
       dto.Add(

@@ -4,6 +4,7 @@ using SportEventManager.Core.TeamAggregate;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using Ardalis.GuardClauses;
+using SportEventManager.Core.StatisticsAggregate;
 
 namespace SportEventManager.Core.EventAggregate;
 public class Event : EntityBase, IAggregateRoot
@@ -47,6 +48,11 @@ public class Event : EntityBase, IAggregateRoot
     EndTime = Guard.Against.Null(endTime, nameof(endTime));
     IsInprogress = (startTime <= DateTime.Now);
     IsArchived = false;
+  }
+
+  public void UpdateMatchStats(int i, FbTeamMatchStats homeStats, FbTeamMatchStats guestStats)
+  {
+    _matches[i].EndMatch(homeStats, guestStats);
   }
 
   public void AddStadium(Stadium newStadium)

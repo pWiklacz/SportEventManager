@@ -79,25 +79,64 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
+//using (var scope = app.Services.CreateScope())
+//{
+//  var services = scope.ServiceProvider;
+//  try
+//  {
+//    var appContext = services.GetRequiredService<AppDbContext>();
+//    appContext.Database.Migrate();
+//    appContext.Database.EnsureCreated();
+
+//    var userContext = services.GetRequiredService<UserDbContext>();
+//    userContext.Database.Migrate();
+//    userContext.Database.EnsureCreated();
+
+//    await SportEventManager.Web.SeedData.InitializeAsync(services);
+//  }
+//  catch (Exception ex)
+//  {
+//    var logger = services.GetRequiredService<ILogger<Program>>();
+//    logger.LogError(ex, "An error occurred seeding the DB. {exceptionMessage}", ex.Message);
+//  }
+//}
+
 using (var scope = app.Services.CreateScope())
 {
-  var services = scope.ServiceProvider;
-  try
+  var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+  var roles = new[] { "Admin", "EventManager", "TeamManager" };
+  foreach (var role in roles)
   {
-    var appContext = services.GetRequiredService<AppDbContext>();
-    appContext.Database.Migrate();
-    appContext.Database.EnsureCreated();
-
-    var userContext = services.GetRequiredService<UserDbContext>();
-    userContext.Database.Migrate();
-    userContext.Database.EnsureCreated();
-
-    await SportEventManager.Web.SeedData.InitializeAsync(services);
+    if (!await roleManager.RoleExistsAsync(role))
+    {
+      await roleManager.CreateAsync(new IdentityRole(role));
+    }
   }
-  catch (Exception ex)
+}
+
+using (var scope = app.Services.CreateScope())
+{
+  var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+
+  var emails = new[] { "admin@admin.com", "event@event.com", "team@team.com" };
+  var names = new[] { "Admin", "EventManager", "TeamManager" };
+  var passwords = new[] { "Admin1!", "Event1!", "Team1!" };
+
+  for (int i = 0; i < 3; i++)
   {
-    var logger = services.GetRequiredService<ILogger<Program>>();
-    logger.LogError(ex, "An error occurred seeding the DB. {exceptionMessage}", ex.Message);
+    if (await userManager.FindByEmailAsync(emails[i]) == null)
+    {
+      var user = new User()
+      {
+        FirstName = names[i],
+        LastName = names[i],
+        UserName = names[i],
+        Email = emails[i],
+        EmailConfirmed = true
+      };
+      await userManager.CreateAsync(user, passwords[i]);
+      await userManager.AddToRoleAsync(user, names[i]);
+    }
   }
 }
 
