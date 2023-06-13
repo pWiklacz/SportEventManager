@@ -7,12 +7,17 @@ public class TournamentBracket
   private List<Team> _teams;
   public TournamentBracket(List<Team> teams) => _teams = teams;
 
+  /// <summary>
+  /// Generate first round of bracket, the key is always home team and the value is always guest team.
+  /// </summary>
+  /// <param name="teams"></param>
+  /// <returns></returns>
   public static Dictionary<Team, Team> GenerateBracket_1stRound(List<Team> teams)
   {
     Dictionary<Team, Team> bracket = new Dictionary<Team, Team>();
     List<int> rng = TournamentBracket.getRandomList(teams.Count);
     int i;
-    for (i = 0; i < teams.Count; i += 2)
+    for ( i = 0; i < teams.Count; i += 2)
     {
       bracket.Add(teams[rng[i]], teams[rng[i + 1]]);
     }
@@ -34,7 +39,7 @@ public class TournamentBracket
   {
     var list = new List<int>();
     int i;
-    for (i = 0; i <= count; i++)
+    for (i = 0; i < count; i++)
     {
       list.Add(i);
     }

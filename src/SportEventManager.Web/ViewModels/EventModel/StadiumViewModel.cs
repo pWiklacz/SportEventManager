@@ -5,11 +5,13 @@ namespace SportEventManager.Web.ViewModels.EventModel;
 
 public class StadiumViewModel
 {
-  public int Id { get; set; }
+  public string Id { get; set; } = string.Empty;
 
   public string City { get; set; } = string.Empty;
 
   public string Name { get; set; } = string.Empty;
+
+  public bool IsArchived { get; private set; } = false;
 
   public static StadiumViewModel FromStadium(Stadium stadium)
   {
@@ -18,6 +20,7 @@ public class StadiumViewModel
       Id = stadium.Id,
       City = stadium.City,
       Name = stadium.Name,
+      IsArchived = stadium.IsArchived,
     };
   }
 }

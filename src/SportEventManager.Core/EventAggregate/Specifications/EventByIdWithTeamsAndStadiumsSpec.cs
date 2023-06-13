@@ -6,9 +6,10 @@ public class EventByIdWithTeamsAndStadiumsSpec : Specification<Event>, ISingleRe
   public EventByIdWithTeamsAndStadiumsSpec(int eventId)
   {
     Query
-        .Where(selectEvent => selectEvent.Id == eventId)
-        .Include(selectEven => selectEven.Teams)
-        .Include(selectEven => selectEven.Stadiums);
+      .Where(selectEvent => selectEvent.Id == eventId)
+      .Include(selectEven => selectEven.Stadiums)
+      .Include(selectEven => selectEven.Teams)
+      .ThenInclude(team => team.Players);
   }
 }
 

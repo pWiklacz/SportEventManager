@@ -9,7 +9,6 @@ public class EventViewModel
   public int Id { get; set;}
   public string OwnerId { get; private set; } = string.Empty;
   public string Name { get; set;} = string.Empty;
-
   public List<MatchViewModel> Matches { get; set; } = new List<MatchViewModel>();
   public List<StadiumViewModel> Stadiums { get; set;} = new List<StadiumViewModel>();
   public List<TeamViewModel> Teams { get; set; } = new List<TeamViewModel>();
@@ -48,7 +47,7 @@ public class EventViewModel
 
   public EventViewModel(string error = "")
   {
-    Stadiums.Add(new StadiumViewModel() { Id = 1 });
+    Stadiums.Add(new StadiumViewModel() { Id = "" });
     Matches.Add(new MatchViewModel() { Id = 1 });
     ChosenTeamsNames.Add("default");
     BackendError = error;

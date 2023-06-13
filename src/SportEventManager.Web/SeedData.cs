@@ -2,6 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using SportEventManager.Infrastructure.Data;
 using SportEventManager.Core.UserAggregate;
+using SportEventManager.Core.EventAggregate;
+using SportEventManager.Core.TeamAggregate;
+using System;
 
 namespace SportEventManager.Web;
 
@@ -14,48 +17,45 @@ public static class SeedData
 
   public async static Task InitializeAsync(IServiceProvider serviceProvider)
   {
-    using (var appDbContext = new AppDbContext(
-        serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>(), null))
-    {
-      await PopulateTestDataAsync(appDbContext, serviceProvider);
-    }
-
     using (var userDbContext = new UserDbContext(
         serviceProvider.GetRequiredService<DbContextOptions<UserDbContext>>()))
     {
-      await PopulateTestDataAsync(userDbContext, serviceProvider);
+      if(userDbContext.Users.Count() < 3)
+      {
+        await PopulateTestDataAsync(userDbContext, serviceProvider);
+      }
+    }
+
+    using (var appDbContext = new AppDbContext(
+        serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>(), null))
+    {
+      if(appDbContext.Events.Count() >= 3)
+      {
+        return; //DB has been already seeded
+      }
+      await PopulateTestDataAsync(appDbContext, serviceProvider);
     }
   }
   public async static Task PopulateTestDataAsync(DbContext dbContext, IServiceProvider serviceProvider)
   {
     if(dbContext is AppDbContext appDb)
     {
-      //seed the appDb with some data once you'll need them for testing purposes
-      appDb.SaveChanges();
+      ClearAppDb(appDb);
+      await PrepareExampleAppDbDataAsync(appDb, serviceProvider);
     } 
     else if(dbContext is UserDbContext userDb) 
     {
       ClearUserDb(userDb);
       await PrepareExampleUserRolesAsync(serviceProvider);
       await PrepareExampleUsersAsync(serviceProvider);
-      await userDb.SaveChangesAsync();
     }
   }
 
   private static void ClearUserDb(UserDbContext userDb)
   {
-    foreach (var user in userDb.Users)
-    {
-      userDb.Remove(user);
-    }
-    foreach (var userRole in userDb.UserRoles)
-    {
-      userDb.Remove(userRole);
-    }
-    foreach (var role in userDb.Roles)
-    {
-      userDb.Remove(role);
-    }
+    userDb.RemoveRange(userDb.Users);
+    userDb.RemoveRange(userDb.UserRoles);
+    userDb.RemoveRange(userDb.Roles);
     userDb.SaveChanges();
   }
 
@@ -91,6 +91,87 @@ public static class SeedData
           await userManager.AddToRoleAsync(user, names[i]);
         }
       }
+  }
+
+  private static void ClearAppDb(AppDbContext appDb)
+  {
+    appDb.RemoveRange(appDb.PlayersMatchStats);
+    appDb.RemoveRange(appDb.Players);
+    appDb.RemoveRange(appDb.TeamsMatchesStats);
+    appDb.RemoveRange(appDb.Teams);
+    appDb.RemoveRange(appDb.Stats);
+    appDb.RemoveRange(appDb.Stadiums);
+    appDb.RemoveRange(appDb.Matches);
+    appDb.RemoveRange(appDb.Events);
+
+    appDb.SaveChanges();
+  }
+
+  private async static Task PrepareExampleAppDbDataAsync(AppDbContext appDb, IServiceProvider serviceProvider)
+  {
+    var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+    var teamManagerUser = await userManager.FindByNameAsync("TeamManager");
+    var eventManagerUser = await userManager.FindByNameAsync("EventManager");
+
+    for (int i = 1; i <= 9; i++)
+    {
+      var stadium = new Stadium($"Stadion {i}", $"Miasto {i}");
+      appDb.Stadiums.Add(stadium);
+    }
+
+    appDb.SaveChanges();
+
+    List<Team> teams = new List<Team>(48);
+    for (int i = 1; i <= 48; i++)
+    {
+      var team = new Team($"{teamManagerUser?.Id}", $"Drużyna {i}", $"Miasto {i}", 11);
+      await appDb.Teams.AddAsync(team);
+      for (int j = 1; j <= 11; j++)
+      {
+        var player = new Player($"Imię {j} - {team.Name}", $"Nazwisko {j} - {team.Name}", $"{90030501900 + j}");
+        appDb.Players.Add(player);
+        team.AddPlayer(player);
+      }
+      teams.Add(team);
+    }
+
+    appDb.SaveChanges();  //saving players and empty teams
+
+    foreach(Team team in teams)
+    {
+      int n = 1;
+      for (int k = 0; k < team.TeamPlayers.Count; k++)
+      {
+        team.UpdateTeamPlayer(k, n++);
+      }
+      appDb.Update(team);  
+    }
+    appDb.SaveChanges(); //saving updated teams with players
+
+    for (int i = 1; i <= 3; i++)
+    {
+      var eventName = $"Event {i}";
+      var startTime = DateTime.Now.AddDays(i);
+      var endTime = startTime.AddHours(2);
+
+      var @event = new Event(eventManagerUser?.Id, eventName, startTime, endTime);
+
+      var teamsForEvent = appDb.Teams.Skip((i - 1) * 16).Take(16).ToList();
+      foreach (var team in teamsForEvent)
+      {
+        @event.AddTeam(team);
+      }
+
+      var stadiumsForEvent = appDb.Stadiums.Skip((i - 1) * 3).Take(3).ToList();
+      foreach (var stadium in stadiumsForEvent)
+      {
+        @event.AddStadium(stadium);
+      }
+
+      appDb.Events.Add(@event);
+    }
+
+    appDb.SaveChanges(); //saving events
   }
 }
 

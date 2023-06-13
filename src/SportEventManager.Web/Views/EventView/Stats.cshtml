@@ -6,4 +6,119 @@
     Layout = "~/Views/EventView/_EventViewLayout.cshtml";
 }
 
-<p>Stats</p>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+
+
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48
+    }
+
+    .player-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+     .left-th, .left-td {
+        padding: 8px;
+        text-align: left;
+     }
+
+    .right-th, .right-td {
+        padding: 8px;
+        text-align: right;
+    }
+        
+    .player-table tr {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .number-input {
+        width: 30px;
+    }
+
+    .table-container {
+        display: flex;
+    }
+
+    .vertical-separator {
+        width: 1px;
+        background-color: #ccc;
+        margin: 0 10px;
+    }
+</style>
+
+
+
+<div class="table-container">
+    <table class="player-table">
+        <tr>
+            <th class="left-th">Name</th>
+            <th class="left-th">Surname</th>
+            <th class="left-th">Goals</th>
+            <th class="left-th">Assists</th>
+            <th class="left-th">
+                <span class="material-symbols-outlined" style="color:yellow">
+                    crop_portrait
+                </span>
+            </th>
+            <th class="left-th">
+                <span class="material-symbols-outlined" style="color:red">
+                    crop_portrait
+                </span>
+            </th>
+            <th class ="right-th">
+                <span class="material-symbols-outlined" style="color:red">
+                    crop_portrait
+                </span>
+            </th>
+            <th class="right-th">
+                <span class="material-symbols-outlined" style="color:yellow">
+                    crop_portrait
+                </span>
+            </th>
+            <th class="right-th">Assists</th>
+            <th class="right-th">Goals</th>
+            <th class="right-th">Name</th>
+            <th class="right-th">Surname</th>
+        </tr>
+        <tr>
+            <td class ="left-td">John</td>
+            <td class="left-td">Doe</td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class ="right-td"><input class="number-input" type="number" min="0"></td>
+            <td class="right-td"><input class="number-input" type="number" min="0"></td>
+            <td class="right-td"><input class="number-input" type="number" min="0"></td>
+            <td class ="right-td"><input class="number-input" type="number" min="0"></td>
+            <td class="right-td">Doe</td>
+            <td class="right-td">John</td>
+        </tr>
+        <tr>
+            <td class ="left-td">John</td>
+            <td class="left-td">Doe</td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class ="right-td"><input class="number-input" type="number" min="0"></td>
+            <td class="right-td"><input class="number-input" type="number" min="0"></td>
+            <td class="right-td"><input class="number-input" type="number" min="0"></td>
+            <td class ="right-td"><input class="number-input" type="number" min="0"></td>
+            <td class="right-td">Doe</td>
+            <td class="right-td">John</td>
+        </tr>
+        <tr>
+            <td class ="left-td">John</td>
+            <td class="left-td">Doe</td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+            <td class="left-td"><input class="number-input" type="number" min="0"></td>
+        </tr>
+    </table>
+</div>
+
