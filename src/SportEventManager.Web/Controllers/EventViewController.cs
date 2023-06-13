@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SportEventManager.Core.TeamAggregate.Specifications;
-using SportEventManager.Core.TeamAggregate;
-using SportEventManager.Web.ViewModels;
 using SportEventManager.Web.ViewModels.EventModel;
 using SportEventManager.SharedKernel.Interfaces;
 using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.EventAggregate.Specification;
 using SportEventManager.Core.StatisticsAggregate;
-using SportEventManager.Web.ViewModels.TeamModel;
 using SportEventManager.Web.ViewModels.TeamModel.Stats;
 
 namespace SportEventManager.Web.Controllers;
