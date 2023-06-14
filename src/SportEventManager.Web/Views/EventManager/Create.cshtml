@@ -44,8 +44,24 @@
                     <option value="16">16</option>
                     <option value="32">32</option>
                 </select>
-                <span class="text-danger"></span>
             </div>
+
+            <br style="margin-top: 20px;" />
+            <div class="form-group">
+                <label class="control-label">Minimal number of players in each team</label> <br />
+                <select asp-for="MinPlayersQuantityPerTeam" id="MinPlayersQuantityPerTeam" style="width: 40%;">
+                    <option value="7" selected>7</option>
+                    <option value="9">9</option>
+                    <option value="11">11</option>
+                </select>
+            </div>
+
+            <br style="margin-top: 20px;" />
+                <div class="form-group">
+                    <label asp-for="MatchDurationMinutes" class="control-label"></label>
+                    <input style ="width: 40%;" id="MatchDurationMinutes" asp-for="MatchDurationMinutes" class="form-control" />
+                    <span asp-validation-for="MatchDurationMinutes" class="text-danger"></span>
+                </div>
 
             <br style="margin-top: 20px;" />
             <div class="form-group" >
@@ -129,7 +145,7 @@
                             {
                               <tr>
                                 <td>
-                                   <select asp-for="@Model.ChosenTeamsNames[i]" class="form-control">
+                                   <select id="TeamSelect" asp-for="@Model.ChosenTeamsNames[i]" class="form-control">
                                         @foreach (var team in Model.AvailableTeamsNames)
                                         {
                                         <option value="@team">@team</option>
@@ -150,15 +166,6 @@
                 </div>
                 <input type="hidden" id="hdnLastIndexTeam" value="0" />
             </div>
-            @{
-                List<String> teamName = new();
-                foreach(string name in Model.ChosenTeamsNames)
-                {
-                    teamName.Add(name);
-                }
-                string serializedTeamName = Newtonsoft.Json.JsonConvert.SerializeObject(teamName);
-            }
-            <input type="hidden" id="teamsCount" value="@serializedTeamName" />
         </div>
     </div>
 

@@ -114,12 +114,16 @@ function showNextPage1() {
 
 function showNextPage2() {
 
-    var teamsCount = document.getElementById('teamsCount').value;
-    var teams = JSON.parse(teamsCount);
+    var chosenTeamsNames = document.querySelectorAll('#TeamSelect');
+    var chosenTeamsNamesCount = chosenTeamsNames.length;
+    var teams = [];
+    chosenTeamsNames.forEach(teamNameElement => {
+        teams.push(teamNameElement.value);
+    });
 
     var enterNumber = document.getElementById('NumberOfTeam').value;
 
-    if (teamsCount < enterNumber) {
+    if (chosenTeamsNamesCount < enterNumber) {
         alert("Invalid number of selected teams");
     }
     else {
@@ -130,9 +134,11 @@ function showNextPage2() {
                 uniqueTeams.push(teams[i]);
             }
         }
-
-        if (uniqueTeams === 0) {
-            alert("Wartoœci s¹ takie same");
+        console.log(uniqueTeams.length)
+        console.log(enterNumber)
+        if (uniqueTeams.length !== Number(enterNumber)) {
+            alert("Wybrano nieunikalne druzyny");
+            uniqueTeams = [];
         }
         else {
             document.getElementById("page-1").style.display = "none";
