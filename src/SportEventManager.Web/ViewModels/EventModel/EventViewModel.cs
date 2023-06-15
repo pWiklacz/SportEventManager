@@ -9,7 +9,6 @@ public class EventViewModel
   public int Id { get; set;}
   public string OwnerId { get; private set; } = string.Empty;
   public string Name { get; set;} = string.Empty;
-
   public List<MatchViewModel> Matches { get; set; } = new List<MatchViewModel>();
   public List<StadiumViewModel> Stadiums { get; set;} = new List<StadiumViewModel>();
   public List<TeamViewModel> Teams { get; set; } = new List<TeamViewModel>();
@@ -23,7 +22,8 @@ public class EventViewModel
   public DateTime EndTime { get; set; } = DateTime.Now;
   public bool IsArchived { get; set; } = false;
 
-  public bool IsInprogress { get; set; } = false;
+  [DisplayName("In Progress")]
+  public bool IsInProgress { get; set; } = false;
 
   public string BackendError { get; set; } = "";
 
@@ -35,7 +35,7 @@ public class EventViewModel
       OwnerId = @event.OwnerId,
       Name = @event.Name,
       IsArchived = @event.IsArchived,
-      IsInprogress = @event.IsInprogress,
+      IsInProgress = @event.IsInprogress,
       StartTime = @event.StartTime,
       EndTime = @event.EndTime,
       Matches = @event.Matches.Select(m => MatchViewModel.FromMatch(m)).ToList(),
@@ -47,7 +47,7 @@ public class EventViewModel
 
   public EventViewModel(string error = "")
   {
-    Stadiums.Add(new StadiumViewModel() { Id = 1 });
+    Stadiums.Add(new StadiumViewModel() { Id = "" });
     Matches.Add(new MatchViewModel() { Id = 1 });
     ChosenTeamsNames.Add("default");
     BackendError = error;

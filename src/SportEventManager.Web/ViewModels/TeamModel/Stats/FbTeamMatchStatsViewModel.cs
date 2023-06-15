@@ -1,4 +1,5 @@
-﻿using SportEventManager.Core.StatisticsAggregate;
+﻿using System.ComponentModel;
+using SportEventManager.Core.StatisticsAggregate;
 
 namespace SportEventManager.Web.ViewModels.TeamModel.Stats;
 
@@ -10,7 +11,13 @@ public class FbTeamMatchStatsViewModel : FootballStatsViewModel
 
   public int Fouls { get; set; } = 0;
 
-  public int Passes { get; set; } = 0; 
+  public int Passes { get; set; } = 0;
+
+  public bool Win { get; set; } = false;
+
+  public bool Loss { get; set; } = false;
+
+  public bool Draw { get; set; } = false;
 
   public int TeamId { get; set; }
 
@@ -29,11 +36,12 @@ public class FbTeamMatchStatsViewModel : FootballStatsViewModel
         Assists = fBTeamStats.Assists,
         RedCards = fBTeamStats.RedCards,
         YellowCards = fBTeamStats.YellowCards,
+        TeamId = fBTeamStats.TeamId,
+        Win = fBTeamStats.Win,
+        Draw = fBTeamStats.Draw,
+        Loss = fBTeamStats.Loss
       };
     }
-    else
-    {
-      return new FbTeamMatchStatsViewModel();
-    }
+    return new FbTeamMatchStatsViewModel();
   }
 }
