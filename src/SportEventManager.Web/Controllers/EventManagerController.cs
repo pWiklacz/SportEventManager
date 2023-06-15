@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SportEventManager.Core.EventAggregate;
+using SportEventManager.Core.EventAggregate.Specification;
 using SportEventManager.Core.EventAggregate.Specifications;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Core.TeamAggregate.Specifications;
 using SportEventManager.SharedKernel.Interfaces;
 using SportEventManager.Web.ViewModels.EventModel;
+using SportEventManager.Web.ViewModels.TeamModel;
 
 namespace SportEventManager.Web.Controllers;
 [Authorize(Roles = "Admin,EventManager")]
@@ -91,39 +93,41 @@ public class EventManagerController : Controller
       return RedirectToAction("Create", new { error = "Event must end AFTER it starts." });
     }
 
-    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    Event eventNew = new Event(userId, viewModel.Name, viewModel.StartTime, viewModel.EndTime);
-
-    foreach (StadiumViewModel newStadium in viewModel.Stadiums)
+    Event? eventNew = null;
+    try
     {
-      try
+      var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      eventNew = new Event(
+        userId,
+        viewModel.Name,
+        viewModel.StartTime,
+        viewModel.EndTime,
+        viewModel.MinPlayersQuantityPerTeam,
+        viewModel.MatchDurationMinutes
+      );
+
+      foreach (StadiumViewModel newStadium in viewModel.Stadiums)
       {
         eventNew.AddStadium(
           new Stadium(newStadium.Name, newStadium.City)
         );
       }
-      catch (Exception ex)
+
+      foreach (string teamName in viewModel.ChosenTeamsNames)
       {
-        return RedirectToAction("Create", new { error = ex.Message });
-      }
-    };
+        var spec = new TeamByNameSpec(teamName);
+        Team? team = await _teamRepository.FirstOrDefaultAsync(spec);
 
-    foreach (string teamName in viewModel.ChosenTeamsNames)
-    {
-      var spec = new TeamByNameSpec(teamName);
-      Team? team = await _teamRepository.FirstOrDefaultAsync(spec);
+        if (team == null) { return NotFound(); }
 
-      if (team == null) { return NotFound(); }
-
-      try
-      {
         eventNew.AddTeam(team);
       }
-      catch (Exception ex)
-      {
-        return RedirectToAction("Create", new { error = ex.Message });
-      }
     }
+    catch (Exception ex)
+    {
+      return RedirectToAction("Create", new { error = ex.Message });
+    }
+
 
     await _eventRepository.AddAsync(eventNew);
     await _eventRepository.SaveChangesAsync();
@@ -148,7 +152,7 @@ public class EventManagerController : Controller
   [HttpPost]
   public async Task<IActionResult> Delete(EventViewModel viewModel)
   {
-    EventByIdWithTeamsAndStadiumsSpec spec = new EventByIdWithTeamsAndStadiumsSpec(viewModel.Id);
+    EventsByIdWithItemsSpec spec = new EventsByIdWithItemsSpec(viewModel.Id);
     Event? eventToDelete = await _eventRepository.FirstOrDefaultAsync(spec);
 
     if (eventToDelete == null)
