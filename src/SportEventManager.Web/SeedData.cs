@@ -29,7 +29,7 @@ public static class SeedData
     using (var appDbContext = new AppDbContext(
         serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>(), null))
     {
-      if(appDbContext.Events.Count() >= 3)
+      if(appDbContext.Events.Where(Event => !Event.IsArchived).Count() >= 3)
       {
         return; //DB has been already seeded
       }
@@ -139,14 +139,14 @@ public static class SeedData
 
     appDb.SaveChanges();  //saving players and empty teams
 
-    foreach(Team team in teams)
+    foreach (Team team in teams)
     {
       int n = 1;
       for (int k = 0; k < team.TeamPlayers.Count; k++)
       {
         team.UpdateTeamPlayer(k, n++);
       }
-      appDb.Update(team);  
+      appDb.Update(team);
     }
     appDb.SaveChanges(); //saving updated teams with players
 
@@ -154,9 +154,8 @@ public static class SeedData
     {
       var eventName = $"Event {i}";
       var startTime = DateTime.Now.AddDays(i);
-      var endTime = startTime.AddHours(2);
-
-      var @event = new Event(eventManagerUser?.Id, eventName, startTime, endTime);
+      var endTime = startTime.AddDays(2).AddHours(2);
+      var @event = new Event(eventManagerUser?.Id, eventName, startTime, endTime, 9, 90);
 
       var teamsForEvent = appDb.Teams.Skip((i - 1) * 16).Take(16).ToList();
       foreach (var team in teamsForEvent)
@@ -172,7 +171,6 @@ public static class SeedData
 
       appDb.Events.Add(@event);
     }
-
     appDb.SaveChanges(); //saving events
   }
 }

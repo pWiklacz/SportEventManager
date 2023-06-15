@@ -70,17 +70,19 @@ public class MatchViewModel
       HomeTeamPlayersMatchStats = match.PlayersStats.Select(
                 ps => FbPlayerMatchStatsViewModel.FromPlayerMatchStats(ps)).ToList()
     };
+
+    if(match.PlayersStats.Count > 0)
      matchViewModel.GetTeamPlayersStats();
 
-     return matchViewModel;
+    return matchViewModel;
   }
 
   private void GetTeamPlayersStats()
   {
-    for (int i = 0; i < GuestTeam.Players.Count; i++)
+    for (int i = 0; i < GuestTeam.NumberOfPlayers; i++)
     {
-      GuestTeamPlayersMatchStats.Add(HomeTeamPlayersMatchStats[HomeTeam.Players.Count]);
-      HomeTeamPlayersMatchStats.RemoveAt(HomeTeam.Players.Count);
+      GuestTeamPlayersMatchStats.Add(HomeTeamPlayersMatchStats[HomeTeam.NumberOfPlayers]);
+      HomeTeamPlayersMatchStats.RemoveAt(HomeTeam.NumberOfPlayers);
     }
   }
 
