@@ -62,9 +62,15 @@ public class Team : EntityBase, IAggregateRoot
 
   public Team() { }
 
-  public void AddPlayer(Player newPlayer)
+  public void AddPlayer(Player newPlayer, List<string>? existingPeselsNumbers)
   {
     Guard.Against.Null(newPlayer, nameof(newPlayer));
+    if (existingPeselsNumbers != null) {
+      if (existingPeselsNumbers.Contains(newPlayer.Pesel))
+      {
+        throw new Exception("The number pesel: " + newPlayer.Pesel + " is already exist.");
+      }
+    }
     _players.Add(newPlayer);
   }
 
@@ -107,7 +113,7 @@ public class Team : EntityBase, IAggregateRoot
     NumberOfPlayers = Guard.Against.NegativeOrZero(numberOfPlayers, nameof(numberOfPlayers));
   }
 
-  public void UpsertPlayer(Player? player, string newName, string newSurname, string newPesel)
+  public void UpsertPlayer(Player? player, string newName, string newSurname, string newPesel, List<string>? existingPeselNumber)
   {
     if (player != null)
     {
@@ -115,7 +121,7 @@ public class Team : EntityBase, IAggregateRoot
     }
     else
     {
-      this.AddPlayer(new Player(newName, newSurname, newPesel));
+      this.AddPlayer(new Player(newName, newSurname, newPesel), existingPeselNumber);
     }
   }
 }
