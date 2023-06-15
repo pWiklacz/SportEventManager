@@ -1,6 +1,8 @@
-﻿using System.Security.Claims;
+﻿using System.Data;
+using System.Security.Claims;
 using Ardalis.Specification;
 using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -14,6 +16,7 @@ using SportEventManager.Web.ViewModels.TeamModel.Stats;
 
 namespace SportEventManager.Web.Controllers;
 
+[Authorize(Roles = "Admin,TeamManager")]
 public class TeamManagerController : Controller
 {
   private readonly IRepository<Team> _teamRepository;

@@ -5,61 +5,48 @@
 }
 
 <style>
-    /* Create four equal columns that floats next to eachother */
-    .column {
-        float: left;
-        width: 30%;
-        margin-left: 15px;
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: stretch;
+        gap: 15px;
     }
 
-    .match {
+    .column {
+        flex: 0 0 calc(30% - 15px);
+    }
+
+    .event {
         transition: 0.3s;
         border: 1px solid #AAA;
-        border-radius: 15px 15px 15px 15px;
+        border-radius: 15px;
+        padding: 10px;
+        margin-bottom: 15px;
+        background-color: #f9f9f9;
     }
 
-    .round {
-        min-width: 300px;
-        padding-left: 10px;
-        font-size: 24px;
-    }
-
-        .round .date {
-            display: inline;
-            float: right;
-            padding-left: 10px;
-            margin-right: 10px;
-            font-size: 18px;
+        .event:hover {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            background-color: rgba(0, 0, 0, 0.3);
+            cursor: pointer;
         }
 
-    .match:hover {
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        background-color: rgba(0, 0, 0, 0.3);
-        cursor: pointer;
+    .title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .info {
+        font-size: 18px;
+        margin-bottom: 5px;
     }
 
     .team {
-        min-width: 100px;
-        padding-left: 10px;
+        font-size: 20px;
+        margin-right: 10px;
     }
-
-        .team.top {
-            border-radius: 15px 15px 0 0;
-            font-size: 20px;
-        }
-
-        .team.bot {
-            border-radius: 0 0 15px 15px;
-            font-size: 20px;
-        }
-
-        .team .score {
-            display: inline;
-            float: right;
-            padding-left: 10px;
-            padding-right: 10px;
-            font-size: 20px;
-        }
 
     * {
         box-sizing: border-box;
@@ -73,46 +60,48 @@
         .default:hover {
             background: #e7e7e7;
         }
-
 </style>
 
-@if(Model != null)
+@if (Model != null && Model.Any())
 {
-    @for (int i = 0; i < Model.Count<EventViewModel>() ; i++)
-    {
-        int currentId = Model.ElementAt<EventViewModel>(i).Id;
-        <div class="column">
-            <a class="nav-link" asp-controller="EventView" asp-action="Matches" asp-route-id="@currentId">
-            <div class="match" id="matchDiv_@currentId">
-                    <div class="round">
-                        @Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).Name)
-                        <div class="date">
-                            @Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).StartTime)
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            int currentId = item.Id;
+            <div class="column">
+                <a class="nav-link" asp-controller="EventView" asp-action="ShowMatches" asp-route-id="@currentId">
+
+                    <div class="event">
+                        <div class="title">
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </div>
+                        <div class="info">
+                            <span>Start date:</span>
+                            <span>@item.StartTime.ToString("dd.MM.yyyy HH:mm")</span>
+                        </div>
+                        <div class="info">
+                            <span>End date:</span>
+                            <span>@item.EndTime.ToString("dd.MM.yyyy HH:mm")</span>
+                        </div>
+                        <div class="info">
+                            <span>Number of teams:</span>
+                            <span>@item.Teams.Count</span>
+                        </div>
+                        <div class="info">
+                            <span>Number of stadiums:</span>
+                            <span>@item.Stadiums.Count</span>
+                        </div>
+                        <div class="info">
+                            <span>Number of matches:</span>
+                            <span>@item.Matches.Count</span>
                         </div>
                     </div>
-                    <div class="team top">
-                        Number of teams
-                        <div class="score">
-                            @Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).Teams.Count)
-                        </div>
-                    </div>
-                    <div class="team top">
-                        Number of Stadiums
-                        <div class="score">
-                            @Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).Stadiums.Count)
-                        </div>
-                    </div>
-                    <div class="team bot">
-                        Number of HomeMatches
-                        <div class="score">
-                            @Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).Matches.Count)
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-    }
-} else
+                </a>
+            </div>
+        }
+    </div>
+}
+else
 {
-  <h1>No events are available now</h1>  
+    <h1>No events are available now</h1>
 }
