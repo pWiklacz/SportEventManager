@@ -23,7 +23,7 @@ public class EventViewModel
   public bool IsArchived { get; set; } = false;
 
   [DisplayName("Is in progress")]
-  public bool IsInprogress { get; set; } = false;
+  public bool IsInProgress { get; set; } = false;
 
   public string BackendError { get; set; } = "";
 
