@@ -96,14 +96,14 @@ public class Team : EntityBase, IAggregateRoot
     }
   }
 
-  public void DeletOldPlayers(List<Player> players)
+  public void DeleteOldPlayers(List<Player> players)
   {
-    foreach(var player in _players) {
-      if(!players.Contains(player)) 
-      {
-        _players.Remove(player);
-      }
-    }
+    for (int i = 0; i < _players.Count; i++)
+      for (int j = 0; j < players.Count; j++)
+        if (_players[i].Pesel != players[j].Pesel && j != players.Count)
+          continue;
+        else if(j == players.Count && _players[i].Pesel != players[j].Pesel)
+          _players.RemoveAt(i);
   }
 
   public void UpdateTeam(string name, string city, int numberOfPlayers)
