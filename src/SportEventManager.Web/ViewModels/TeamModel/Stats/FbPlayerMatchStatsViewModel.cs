@@ -7,6 +7,8 @@ public class FbPlayerMatchStatsViewModel : FootballStatsViewModel
 {
   public int PlayerId { get; set; }
 
+  public PlayerViewModel Player { get; set; } = null!;
+
   public static FbPlayerMatchStatsViewModel FromPlayerMatchStats(FbPlayerMatchStats? playerMatchStats)
   {
     if (playerMatchStats != null)
@@ -19,6 +21,7 @@ public class FbPlayerMatchStatsViewModel : FootballStatsViewModel
         Goals = playerMatchStats.Goals,
         RedCards = playerMatchStats.RedCards,
         YellowCards = playerMatchStats.YellowCards,
+        Player = PlayerViewModel.FromPlayer(playerMatchStats.Player)
       };
     }
     return new FbPlayerMatchStatsViewModel();
