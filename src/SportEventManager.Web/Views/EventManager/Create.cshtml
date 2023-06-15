@@ -5,17 +5,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var startDateInput = document.getElementById('EStartTime');
+        var endDateInput = document.getElementById('EEndTime');
+
+        var currentDate = new Date();
+
+        var timezoneOffset = currentDate.getTimezoneOffset() * 60000;
+        var currentDateTime = new Date(currentDate.getTime() - timezoneOffset);
+
+        startDateInput.value = currentDateTime.toISOString().slice(0, 16);
+        endDateInput.value = currentDateTime.toISOString().slice(0, 16);
+    });
+</script>
+
+
+
 <script src="~/js/EventManager/Create.js"></script>
 <h1>Create Event Form</h1>
 <span class="text-danger m-2 w-100" id="BackendErrorSpan">@Model.BackendError</span>
 <form id="EventForm" asp-action="Create">
     <div class="form-page" id="page-1">
-      <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-      <div class="event-card">
-          <h2>First Part</h2>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="event-card">
+            <h2>First Part</h2>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input type="text" class="form-control" style="width: 40%;" asp-for="Name" id="EName" placeholder="Event Name" size="20"/>
+                <input type="text" class="form-control" style="width: 40%;" asp-for="Name" id="EName" placeholder="Event Name" size="20" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
@@ -35,7 +52,7 @@
 
             <br style="margin-top: 20px;" />
             <div class="form-group">
-                <label class="control-label">Number of Teams</label> <br/>
+                <label class="control-label">Number of Teams</label> <br />
                 @*<input type="number" onkeydown="return false" min="0" class="form-control" style="width: 40%;" id="NumberOfTeam" placeholder="Number of teams" />*@
                 <select id="NumberOfTeam" style="width: 40%;">
                     <option value="2" selected>2</option>
@@ -64,8 +81,8 @@
                 </div>
 
             <br style="margin-top: 20px;" />
-            <div class="form-group" >
-            <label class="control-label" style="max-width: 200px;">Add Stadiums To Event</label>
+            <div class="form-group">
+                <label class="control-label" style="max-width: 200px;">Add Stadiums To Event</label>
                 <div class="col-md-8 p-0 m-0 bg-white">
                     <table id="StadiumsTable" class="table table-sm CodesTable">
                         <thead>
@@ -114,14 +131,14 @@
                 </div>
                 <input type="hidden" id="hdnLastIndexStadium" value="0" />
             </div>
-      </div>
+        </div>
     </div>
 
     <div class="form-page" id="page-2" style="display: none;">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="event-card">
             <h2>Second Part</h2>
-        <br style="margin-top: 20px;" />
+            <br style="margin-top: 20px;" />
             <div class="container col-8 me-1">
                 <div class="col-md-8 p-0 m-0 bg-white">
                     <table id="TeamTable" class="table table-bordered">
@@ -166,6 +183,15 @@
                 </div>
                 <input type="hidden" id="hdnLastIndexTeam" value="0" />
             </div>
+            @{
+                List<String> teamName = new();
+                foreach(string name in Model.ChosenTeamsNames)
+                {
+                    teamName.Add(name);
+                }
+                string serializedTeamName = Newtonsoft.Json.JsonConvert.SerializeObject(teamName);
+            }
+            <input type="hidden" id="teamsCount" value="@serializedTeamName" />
         </div>
     </div>
 
@@ -190,5 +216,4 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-
 

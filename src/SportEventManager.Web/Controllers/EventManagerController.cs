@@ -33,13 +33,13 @@ public class EventManagerController : Controller
     var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     var spec = new EventsByOwnerIdSpec(userId);
     var sportEvents = await _eventRepository.ListAsync(spec);
-    if(sportEvents.IsNullOrEmpty())
+    if (sportEvents.IsNullOrEmpty())
     {
       return View(new List<EventViewModel>());
     }
 
     var dto = new List<EventViewModel>();
-    foreach(Event @event in sportEvents)
+    foreach (Event @event in sportEvents)
     {
       dto.Add(
         EventViewModel.FromEvent(@event)
@@ -88,6 +88,11 @@ public class EventManagerController : Controller
   [HttpPost]
   public async Task<IActionResult> Create(EventViewModel viewModel)
   {
+    if (viewModel.StartTime > viewModel.EndTime)
+    {
+      return RedirectToAction("Create", new { error = "Event must end AFTER it starts." });
+    }
+
     Event? eventNew = null;
     try
     {
@@ -106,7 +111,7 @@ public class EventManagerController : Controller
         eventNew.AddStadium(
           new Stadium(newStadium.Name, newStadium.City)
         );
-      };
+      }
 
       foreach (string teamName in viewModel.ChosenTeamsNames)
       {
@@ -122,6 +127,8 @@ public class EventManagerController : Controller
     {
       return RedirectToAction("Create", new { error = ex.Message });
     }
+
+
     await _eventRepository.AddAsync(eventNew);
     await _eventRepository.SaveChangesAsync();
     return RedirectToAction("Index");
@@ -133,7 +140,7 @@ public class EventManagerController : Controller
     EventByIdSpec spec = new EventByIdSpec(id);
     Event? eventToDelete = await _eventRepository.FirstOrDefaultAsync(spec);
 
-    if(eventToDelete == null)
+    if (eventToDelete == null)
     {
       return NotFound();
     }
@@ -163,13 +170,13 @@ public class EventManagerController : Controller
   {
     EventByIdWithTeamsAndStadiumsSpec spec = new EventByIdWithTeamsAndStadiumsSpec(id);
     Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
-    if(ev == null)
+    if (ev == null)
     {
       return NotFound();
     }
 
     Dictionary<Team, Team> bracket = TournamentBracket.GenerateBracket_1stRound(ev.Teams.ToList());
-    foreach(var pair in bracket)
+    foreach (var pair in bracket)
     {
       Match match = new Match(ev.StartTime, DateTime.MaxValue,
         ev.Stadiums.ElementAt<Stadium>(0).Id,

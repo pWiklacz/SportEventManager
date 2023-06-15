@@ -44,7 +44,7 @@ public class EventViewModel
       OwnerId = @event.OwnerId,
       Name = @event.Name,
       IsArchived = @event.IsArchived,
-      IsInprogress = @event.IsInprogress,
+      IsInProgress = @event.IsInprogress,
       StartTime = @event.StartTime,
       EndTime = @event.EndTime,
       IsEnded = @event.IsEnded,
