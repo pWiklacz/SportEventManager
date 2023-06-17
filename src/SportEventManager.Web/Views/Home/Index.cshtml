@@ -5,11 +5,16 @@
 }
 
 <style>
-    /* Create four equal columns that floats next to each other */
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: stretch;
+        gap: 15px;
+    }
+
     .column {
-        float: left;
-        width: 30%;
-        margin-left: 15px;
+        flex: 0 0 calc(30% - 15px);
     }
 
     .event {
@@ -55,41 +60,39 @@
         .default:hover {
             background: #e7e7e7;
         }
-
 </style>
 
 @if (Model != null && Model.Any())
 {
     <div class="row">
-        @for (int i = 0; i < Model.Count<EventViewModel>(); i++)
+        @foreach (var item in Model)
         {
-            int currentId = Model.ElementAt<EventViewModel>(i).Id;
+            int currentId = item.Id;
             <div class="column">
                 <a class="nav-link" asp-controller="EventView" asp-action="Matches" asp-route-id="@currentId">
-
                     <div class="event">
                         <div class="title">
-                            @Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).Name)
+                            @Html.DisplayFor(modelItem => item.Name)
                         </div>
                         <div class="info">
                             <span>Start date:</span>
-                            <span>@Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).StartTime)</span>
+                            <span>@item.StartTime.ToString("dd.MM.yyyy HH:mm")</span>
                         </div>
                         <div class="info">
                             <span>End date:</span>
-                            <span>@Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).EndTime)</span>
+                            <span>@item.EndTime.ToString("dd.MM.yyyy HH:mm")</span>
                         </div>
                         <div class="info">
                             <span>Number of teams:</span>
-                            <span>@Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).Teams.Count)</span>
+                            <span>@item.Teams.Count</span>
                         </div>
                         <div class="info">
                             <span>Number of stadiums:</span>
-                            <span>@Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).Stadiums.Count)</span>
+                            <span>@item.Stadiums.Count</span>
                         </div>
                         <div class="info">
                             <span>Number of matches:</span>
-                            <span>@Html.DisplayFor(modelItem => Model.ElementAt<EventViewModel>(i).Matches.Count)</span>
+                            <span>@item.Matches.Count</span>
                         </div>
                     </div>
                 </a>
@@ -99,5 +102,5 @@
 }
 else
 {
-<h1>No events are available now</h1>
+    <h1>No events are available now</h1>
 }
