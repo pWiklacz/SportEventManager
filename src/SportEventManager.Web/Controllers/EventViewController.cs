@@ -8,16 +8,16 @@ using SportEventManager.Web.ViewModels.TeamModel.Stats;
 
 namespace SportEventManager.Web.Controllers;
 
+
 public class EventViewController : Controller
 {
 
   private readonly IRepository<Event> _eventRepository;
-  private readonly IRepository<Statistics> _statisticsRepository;
+ 
 
-  public EventViewController(IRepository<Event> eventRepository, IRepository<Statistics> statisticsRepository)
+  public EventViewController(IRepository<Event> eventRepository)
   {
-    _eventRepository = eventRepository; 
-    _statisticsRepository = statisticsRepository;
+    _eventRepository = eventRepository;
   }
 
   [HttpGet]
@@ -41,13 +41,13 @@ public class EventViewController : Controller
 
     if (ev == null) { return NotFound(); }
 
-    for (int i = 0; i < ev.Matches.Count; ++i)
+    foreach (var match in viewModel.Matches)
     {
-      var hTeamStats = TeamStatsFromViewModel(viewModel.Matches[i].HomeTeamStats);
-      var gTeamStats = TeamStatsFromViewModel(viewModel.Matches[i].GuestTeamStats);
-      var playerStats = PlayersStatsFromViewModel(viewModel.Matches[i].HomeTeamPlayersMatchStats,
-        viewModel.Matches[i].GuestTeamPlayersMatchStats);
-      ev.UpdateMatchStats(i, hTeamStats, gTeamStats, playerStats);
+      var hTeamStats = TeamStatsFromViewModel(match.HomeTeamStats);
+      var gTeamStats = TeamStatsFromViewModel(match.GuestTeamStats);
+      var playerStats = PlayersStatsFromViewModel(match.HomeTeamPlayersMatchStats,
+        match.GuestTeamPlayersMatchStats);
+      ev.UpdateMatchStats(match.Id, hTeamStats, gTeamStats, playerStats);
     }
 
     await _eventRepository.UpdateAsync(ev);

@@ -175,14 +175,17 @@ public class EventManagerController : Controller
       return NotFound();
     }
 
+    var minutes = 0;
     Dictionary<Team, Team> bracket = TournamentBracket.GenerateBracket_1stRound(ev.Teams.ToList());
     foreach (var pair in bracket)
     {
-      Match match = new Match(ev.StartTime, DateTime.MaxValue,
+      Match match = new Match(ev.StartTime.AddMinutes(minutes), ev.StartTime.AddMinutes(minutes + ev.MatchDurationMinutes),
         ev.Stadiums.ElementAt<Stadium>(0).Id,
         pair.Key, pair.Value
       );
       ev.AddMatch(match);
+
+      minutes += 15;
     }
 
     await _eventRepository.UpdateAsync(ev);

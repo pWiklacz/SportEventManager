@@ -69,35 +69,35 @@ public class Event : EntityBase, IAggregateRoot
     Guard.Against.InvalidInput(
       minPlayersQuantityPerTeam,
       nameof(minPlayersQuantityPerTeam),
-      (minPlayersQuantityPerTeam => 
-        minPlayersQuantityPerTeam == 7 || minPlayersQuantityPerTeam == 9 || minPlayersQuantityPerTeam == 11),
+      (minPlayerQuantity => 
+        minPlayerQuantity is 7 or 9 or 11),
       "Players quantity per team must be 7, 9 or 11!"
       );
     MinPlayersQuantityPerTeam = Guard.Against.NegativeOrZero(minPlayersQuantityPerTeam, nameof(minPlayersQuantityPerTeam));
     Guard.Against.InvalidInput(
       matchDurationMinutes,
       nameof(matchDurationMinutes),
-      matchDurationMinutes => matchDurationMinutes < 150 && matchDurationMinutes > 15,
+      mdr => mdr is <= 150 and >= 15,
       "Match duration must be between 15 and 150 minutes"
     );
     MatchDurationMinutes = Guard.Against.NegativeOrZero(matchDurationMinutes, nameof(matchDurationMinutes));
     IsArchived = false;
   }
 
-  public void UpdateMatchStats(int i, FbTeamMatchStats homeStats, FbTeamMatchStats guestStats, List<FbPlayerMatchStats> playerStats)
+  public void UpdateMatchStats(int id, FbTeamMatchStats homeStats, FbTeamMatchStats guestStats, List<FbPlayerMatchStats> playerStats)
   {
-    _matches[i].EndMatch(homeStats, guestStats, playerStats);
+    foreach (var match in _matches.Where(match => match.Id == id))
+    {
+      match.EndMatch(homeStats, guestStats, playerStats);
+    }
   }
 
   public void AddStadium(Stadium newStadium)
   {
     Guard.Against.Null(newStadium, nameof(newStadium));
-    foreach(Stadium stad in _stadiums)
+    if (_stadiums.Any(stadium => stadium.Id == newStadium.Id))
     {
-      if(stad.Id == newStadium.Id)
-      {
-        throw new Exception("The stadium " + newStadium.Name + " was chosen more than once.");
-      }
+      throw new Exception("The stadium " + newStadium.Name + " was chosen more than once.");
     }
     _stadiums.Add(newStadium); //TODO: fix the problem with adding a stadium that exists in the db
   }
@@ -111,7 +111,7 @@ public class Event : EntityBase, IAggregateRoot
     Guard.Against.Negative(
       newTeam.NumberOfPlayers - MinPlayersQuantityPerTeam,
       null,
-      "Number of players in team " + newTeam.Name + " is too low. Miniumum is " + MinPlayersQuantityPerTeam
+      "Number of players in team " + newTeam.Name + " is too low. Minikmum is " + MinPlayersQuantityPerTeam
       );
     _teams.Add(newTeam);
   }

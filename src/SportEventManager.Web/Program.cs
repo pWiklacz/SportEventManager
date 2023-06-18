@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using SportEventManager.Core.UserAggregate;
 using Microsoft.AspNetCore.Identity;
+using Autofac.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,10 @@ builder.Services.Configure<ServiceConfig>(config =>
   config.Path = "/listservices";
 });
 
+//builder.Services.Configure<IISServerOptions>(options =>
+//{
+//  options.MaxRequestBodySize = 10 * 1024 * 1024; // 10 MB
+//});
 
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {

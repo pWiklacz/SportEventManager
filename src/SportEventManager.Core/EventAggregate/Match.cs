@@ -119,14 +119,14 @@ public class Match : EntityBase
     {
       _playersStats[i].Update(playerStats[i]);
     }
-    HomeTeamStats.Update(homeStats);
-    GuestTeamStats.Update(guestStats);
+    HomeTeamStats.Update(homeStats, guestStats);
+    GuestTeamStats.Update(guestStats, homeStats);
 
-    if (HomeTeamStats.Win)
+    if (HomeTeamStats.Win && GuestTeamStats.Loss)
       WinnerName = HomeTeam.Name;
-    else if (HomeTeamStats.Draw)
-      WinnerName = "DRAW";
-    else WinnerName = GuestTeam.Name;
+    else if (HomeTeamStats.Loss && GuestTeamStats.Win)
+      WinnerName = GuestTeam.Name;
+    else WinnerName = "DRAW";
   }
 
   public void Archive()

@@ -35,7 +35,7 @@ public class FbTeamMatchStats : FootballStatsBase
 
   public FbTeamMatchStats() : base() { }
 
-  public void Update(FbTeamMatchStats stats)
+  public void Update(FbTeamMatchStats stats, FbTeamMatchStats enemyStats)
   {
    Guard.Against.Null(stats, nameof(stats)); 
 
@@ -53,9 +53,9 @@ public class FbTeamMatchStats : FootballStatsBase
     RedCards = stats.RedCards;
     YellowCards = stats.YellowCards;
 
-    if (this.Goals < stats.Goals)
+    if (this.Goals > enemyStats.Goals)
       Win = true;
-    else if (this.Goals == stats.Goals)
+    else if (this.Goals == enemyStats.Goals)
       Draw = true;
     else Loss = true;
   }

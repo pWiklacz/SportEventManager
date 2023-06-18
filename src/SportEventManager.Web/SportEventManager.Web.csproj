@@ -10,13 +10,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   
-  <ItemGroup>
+  <!--<ItemGroup>
     <Content Remove="compilerconfig.json" />
   </ItemGroup>
   
   <ItemGroup>
     <None Include="compilerconfig.json" />
-  </ItemGroup>
+  </ItemGroup>-->
   
   <ItemGroup>
     <PackageReference Include="Ardalis.ListStartupServices" />

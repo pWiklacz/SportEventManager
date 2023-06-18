@@ -151,9 +151,9 @@ public static class SeedData
     for (int i = 1; i <= 3; i++)
     {
       var eventName = $"Event {i}";
-      var startTime = DateTime.Now.AddDays(i);
+      var startTime = DateTime.Now.AddDays(i - 1);
       var endTime = startTime.AddDays(2).AddHours(2);
-      var @event = new Event(eventManagerUser?.Id, eventName, startTime, endTime, 9, 90);
+      var @event = new Event(eventManagerUser?.Id, eventName, startTime, endTime, 9, 15);
 
       var teamsForEvent = appDb.Teams.Skip((i - 1) * 16).Take(16).ToList();
       foreach (var team in teamsForEvent)
