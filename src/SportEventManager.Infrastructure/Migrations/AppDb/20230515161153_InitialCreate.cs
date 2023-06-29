@@ -108,13 +108,13 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb;
                       name: "FK_EventStadium_Events_EventsId",
                       column: x => x.EventsId,
                       principalTable: "Events",
-                      principalColumn: "Id",
+                      principalColumn: "ID",
                       onDelete: ReferentialAction.Cascade);
                   table.ForeignKey(
                       name: "FK_EventStadium_Stadiums_StadiumsId",
                       column: x => x.StadiumsId,
                       principalTable: "Stadiums",
-                      principalColumn: "Id",
+                      principalColumn: "ID",
                       onDelete: ReferentialAction.Cascade);
               });
 
@@ -135,7 +135,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb;
                       name: "FK_FbTeamMatchStats_Stats_Id",
                       column: x => x.Id,
                       principalTable: "Stats",
-                      principalColumn: "Id",
+                      principalColumn: "ID",
                       onDelete: ReferentialAction.Cascade);
               });
 
@@ -153,13 +153,13 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb;
                       name: "FK_PlayerStats_Players_PlayerId",
                       column: x => x.PlayerId,
                       principalTable: "Players",
-                      principalColumn: "Id",
+                      principalColumn: "ID",
                       onDelete: ReferentialAction.Cascade);
                   table.ForeignKey(
                       name: "FK_PlayerStats_Stats_Id",
                       column: x => x.Id,
                       principalTable: "Stats",
-                      principalColumn: "Id",
+                      principalColumn: "ID",
                       onDelete: ReferentialAction.Cascade);
               });
 
@@ -177,13 +177,13 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb;
                       name: "FK_EventTeam_Events_EventsId",
                       column: x => x.EventsId,
                       principalTable: "Events",
-                      principalColumn: "Id",
+                      principalColumn: "ID",
                       onDelete: ReferentialAction.Cascade);
                   table.ForeignKey(
                       name: "FK_EventTeam_Teams_TeamsId",
                       column: x => x.TeamsId,
                       principalTable: "Teams",
-                      principalColumn: "Id",
+                      principalColumn: "ID",
                       onDelete: ReferentialAction.Cascade);
               });
 
@@ -204,13 +204,13 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb;
                       name: "FK_TeamPlayer_Players_PlayerId",
                       column: x => x.PlayerId,
                       principalTable: "Players",
-                      principalColumn: "Id",
+                      principalColumn: "ID",
                       onDelete: ReferentialAction.Cascade);
                   table.ForeignKey(
                       name: "FK_TeamPlayer_Teams_TeamId",
                       column: x => x.TeamId,
                       principalTable: "Teams",
-                      principalColumn: "Id",
+                      principalColumn: "ID",
                       onDelete: ReferentialAction.Cascade);
               });
 
@@ -235,13 +235,13 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb;
                       name: "FK_TeamStats_Stats_Id",
                       column: x => x.Id,
                       principalTable: "Stats",
-                      principalColumn: "Id",
+                      principalColumn: "ID",
                       onDelete: ReferentialAction.Cascade);
                   table.ForeignKey(
                       name: "FK_TeamStats_Teams_TeamId",
                       column: x => x.TeamId,
                       principalTable: "Teams",
-                      principalColumn: "Id",
+                      principalColumn: "ID",
                       onDelete: ReferentialAction.Cascade);
               });
 
@@ -270,35 +270,35 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb;
                       name: "FK_Matches_Events_EventId",
                       column: x => x.EventId,
                       principalTable: "Events",
-                      principalColumn: "Id",
+                      principalColumn: "ID",
                       onDelete: ReferentialAction.Cascade);
                   table.ForeignKey(
                       name: "FK_Matches_FbTeamMatchStats_GuestTeamStatsId",
                       column: x => x.GuestTeamStatsId,
                       principalTable: "FbTeamMatchStats",
-                      principalColumn: "Id");
+                      principalColumn: "ID");
                   table.ForeignKey(
                       name: "FK_Matches_FbTeamMatchStats_HomeTeamStatsId",
                       column: x => x.HomeTeamStatsId,
                       principalTable: "FbTeamMatchStats",
-                      principalColumn: "Id");
+                      principalColumn: "ID");
                   table.ForeignKey(
                       name: "FK_Matches_Stadiums_StadiumId",
                       column: x => x.StadiumId,
                       principalTable: "Stadiums",
-                      principalColumn: "Id",
+                      principalColumn: "ID",
                       onDelete: ReferentialAction.Cascade);
                   table.ForeignKey(
                       name: "FK_Matches_Teams_GuestTeamId",
                       column: x => x.GuestTeamId,
                       principalTable: "Teams",
-                      principalColumn: "Id",
+                      principalColumn: "ID",
                       onDelete: ReferentialAction.Restrict);
                   table.ForeignKey(
                       name: "FK_Matches_Teams_HomeTeamId",
                       column: x => x.HomeTeamId,
                       principalTable: "Teams",
-                      principalColumn: "Id",
+                      principalColumn: "ID",
                       onDelete: ReferentialAction.Restrict);
               });
 

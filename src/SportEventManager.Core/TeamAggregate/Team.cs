@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Numerics;
 using Ardalis.GuardClauses;
 using SportEventManager.Core.EventAggregate;
-using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.SharedKernel;
 using SportEventManager.SharedKernel.Interfaces;
 
@@ -31,10 +29,6 @@ public class Team : EntityBase, IAggregateRoot
   [DefaultValue(false)]
   public bool IsArchived { get; private set; } = false;
 
-  [DefaultValue(null)]
-  [NotMapped]
-  public Statistics? FbTeamWholeStats { get; set; }
-
   private List<Player> _players = new();
   private List<Event> _events = new();
   private List<Match> _homeMatches = new();
@@ -57,14 +51,19 @@ public class Team : EntityBase, IAggregateRoot
     City = Guard.Against.NullOrEmpty(city, nameof(city));
     NumberOfPlayers = Guard.Against.NegativeOrZero(numberOfPlayers, nameof(numberOfPlayers));
     _players = new List<Player>(numberOfPlayers);
-    FbTeamWholeStats = null;
   }
 
   public Team() { }
 
-  public void AddPlayer(Player newPlayer)
+  public void AddPlayer(Player newPlayer, List<string>? existingPeselsNumbers)
   {
     Guard.Against.Null(newPlayer, nameof(newPlayer));
+    if (existingPeselsNumbers != null) {
+      if (existingPeselsNumbers.Contains(newPlayer.Pesel))
+      {
+        throw new Exception("The number pesel: " + newPlayer.Pesel + " is already exist.");
+      }
+    }
     _players.Add(newPlayer);
   }
 
@@ -107,7 +106,7 @@ public class Team : EntityBase, IAggregateRoot
     NumberOfPlayers = Guard.Against.NegativeOrZero(numberOfPlayers, nameof(numberOfPlayers));
   }
 
-  public void UpsertPlayer(Player? player, string newName, string newSurname, string newPesel)
+  public void UpsertPlayer(Player? player, string newName, string newSurname, string newPesel, List<string>? existingPeselNumber)
   {
     if (player != null)
     {
@@ -115,7 +114,7 @@ public class Team : EntityBase, IAggregateRoot
     }
     else
     {
-      this.AddPlayer(new Player(newName, newSurname, newPesel));
+      this.AddPlayer(new Player(newName, newSurname, newPesel), existingPeselNumber);
     }
   }
 }

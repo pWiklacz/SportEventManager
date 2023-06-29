@@ -57,11 +57,11 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
             modelBuilder.Entity("SportEventManager.Core.EventAggregate.Event", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
@@ -89,18 +89,18 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("Events");
                 });
 
             modelBuilder.Entity("SportEventManager.Core.EventAggregate.Match", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
@@ -143,7 +143,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.HasIndex("EventId");
 
@@ -162,11 +162,11 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
             modelBuilder.Entity("SportEventManager.Core.EventAggregate.Stadium", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -183,18 +183,18 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("Stadiums");
                 });
 
             modelBuilder.Entity("SportEventManager.Core.StatisticsAggregate.FootballStatsBase", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<int>("Assists")
                         .ValueGeneratedOnAdd()
@@ -221,7 +221,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("Stats");
 
@@ -230,11 +230,11 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
             modelBuilder.Entity("SportEventManager.Core.StatisticsAggregate.Statistics", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.ToTable((string)null);
 
@@ -243,11 +243,11 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
             modelBuilder.Entity("SportEventManager.Core.TeamAggregate.Player", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<bool>("IsArchived")
                         .ValueGeneratedOnAdd()
@@ -269,18 +269,18 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("Players");
                 });
 
             modelBuilder.Entity("SportEventManager.Core.TeamAggregate.Team", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -305,18 +305,18 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("SportEventManager.Core.TeamAggregate.TeamPlayer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<DateTime>("JoinOn")
                         .ValueGeneratedOnAdd()
@@ -335,7 +335,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                     b.Property<int>("TeamId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.HasIndex("PlayerId");
 
@@ -346,7 +346,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
             modelBuilder.Entity("SportEventManager.Core.UserAggregate.User", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("ID")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
@@ -407,7 +407,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("AspNetUsers", null, t =>
                         {
@@ -601,7 +601,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                 {
                     b.HasOne("SportEventManager.Core.StatisticsAggregate.FootballStatsBase", null)
                         .WithOne()
-                        .HasForeignKey("SportEventManager.Core.StatisticsAggregate.FbPlayerStats", "Id")
+                        .HasForeignKey("SportEventManager.Core.StatisticsAggregate.FbPlayerStats", "ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -618,7 +618,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                 {
                     b.HasOne("SportEventManager.Core.StatisticsAggregate.FootballStatsBase", null)
                         .WithOne()
-                        .HasForeignKey("SportEventManager.Core.StatisticsAggregate.FbTeamMatchStats", "Id")
+                        .HasForeignKey("SportEventManager.Core.StatisticsAggregate.FbTeamMatchStats", "ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -627,7 +627,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                 {
                     b.HasOne("SportEventManager.Core.StatisticsAggregate.FootballStatsBase", null)
                         .WithOne()
-                        .HasForeignKey("SportEventManager.Core.StatisticsAggregate.FbTeamStats", "Id")
+                        .HasForeignKey("SportEventManager.Core.StatisticsAggregate.FbTeamStats", "ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
