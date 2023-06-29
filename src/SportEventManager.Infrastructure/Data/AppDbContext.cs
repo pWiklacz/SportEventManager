@@ -57,6 +57,10 @@ public class AppDbContext : DbContext
     modelBuilder.Entity<FbPlayerStats>().ToTable("PlayerStats");
 
     modelBuilder.Entity<Team>()
+      .HasIndex(t => t.Tag)
+      .IsUnique();
+      
+    modelBuilder.Entity<Team>()
       .HasMany(t => t.Players)
       .WithMany(p => p.Teams)
       .UsingEntity<TeamPlayer>(

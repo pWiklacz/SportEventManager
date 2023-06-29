@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportEventManager.Infrastructure.Data;
 
@@ -11,13 +12,15 @@ using SportEventManager.Infrastructure.Data;
 namespace SportEventManager.Infrastructure.Migrations.AppDb
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230616015741_TagPropertyUniqueness")]
+    partial class TagPropertyUniqueness
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.1")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -27,14 +30,14 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                     b.Property<int>("EventsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StadiumsId")
-                        .HasColumnType("int");
+                    b.Property<string>("StadiumsId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("EventsId", "StadiumsId");
 
                     b.HasIndex("StadiumsId");
 
-                    b.ToTable("EventStadium", (string)null);
+                    b.ToTable("EventStadium");
                 });
 
             modelBuilder.Entity("EventTeam", b =>
@@ -49,7 +52,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasIndex("TeamsId");
 
-                    b.ToTable("EventTeam", (string)null);
+                    b.ToTable("EventTeam");
                 });
 
             modelBuilder.Entity("SportEventManager.Core.EventAggregate.Event", b =>
@@ -88,7 +91,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events", (string)null);
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("SportEventManager.Core.EventAggregate.Match", b =>
@@ -109,13 +112,13 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                     b.Property<int>("GuestTeamId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("GuestTeamStatsId")
+                    b.Property<int>("GuestTeamStatsId")
                         .HasColumnType("int");
 
                     b.Property<int>("HomeTeamId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("HomeTeamStatsId")
+                    b.Property<int>("HomeTeamStatsId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsArchived")
@@ -128,15 +131,15 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<int>("StadiumId")
-                        .HasColumnType("int")
+                    b.Property<string>("StadiumId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
                         .HasAnnotation("ForeignKey", "Stadium");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("WinnerName")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -146,24 +149,23 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasIndex("GuestTeamId");
 
-                    b.HasIndex("GuestTeamStatsId");
+                    b.HasIndex("GuestTeamStatsId")
+                        .IsUnique();
 
                     b.HasIndex("HomeTeamId");
 
-                    b.HasIndex("HomeTeamStatsId");
+                    b.HasIndex("HomeTeamStatsId")
+                        .IsUnique();
 
                     b.HasIndex("StadiumId");
 
-                    b.ToTable("Matches", (string)null);
+                    b.ToTable("Matches");
                 });
 
             modelBuilder.Entity("SportEventManager.Core.EventAggregate.Stadium", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -182,7 +184,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stadiums", (string)null);
+                    b.ToTable("Stadiums");
                 });
 
             modelBuilder.Entity("SportEventManager.Core.StatisticsAggregate.FootballStatsBase", b =>
@@ -220,7 +222,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stats", (string)null);
+                    b.ToTable("Stats");
 
                     b.UseTptMappingStrategy();
                 });
@@ -268,7 +270,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Players", (string)null);
+                    b.ToTable("Players");
                 });
 
             modelBuilder.Entity("SportEventManager.Core.TeamAggregate.Team", b =>
@@ -346,7 +348,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("TeamPlayer", (string)null);
+                    b.ToTable("TeamPlayer");
                 });
 
             modelBuilder.Entity("SportEventManager.Core.UserAggregate.User", b =>
@@ -417,66 +419,37 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         });
                 });
 
-            modelBuilder.Entity("SportEventManager.Core.StatisticsAggregate.FbPlayerStats", b =>
+            modelBuilder.Entity("SportEventManager.Core.StatisticsAggregate.FbPlayerMatchStats", b =>
                 {
                     b.HasBaseType("SportEventManager.Core.StatisticsAggregate.FootballStatsBase");
 
+                    b.Property<int?>("MatchId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PlayerId")
-                        .HasColumnType("int")
-                        .HasAnnotation("ForeignKey", "Player");
+                        .HasColumnType("int");
 
-                    b.HasIndex("PlayerId")
-                        .IsUnique()
-                        .HasFilter("[PlayerId] IS NOT NULL");
+                    b.HasIndex("MatchId");
 
-                    b.ToTable("PlayerStats", (string)null);
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("PlayerMatchStats", (string)null);
                 });
 
             modelBuilder.Entity("SportEventManager.Core.StatisticsAggregate.FbTeamMatchStats", b =>
                 {
                     b.HasBaseType("SportEventManager.Core.StatisticsAggregate.FootballStatsBase");
 
-                    b.Property<int>("Fouls")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("Passes")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("Shoots")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("ShootsOnTarget")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.ToTable("FbTeamMatchStats", (string)null);
-                });
-
-            modelBuilder.Entity("SportEventManager.Core.StatisticsAggregate.FbTeamStats", b =>
-                {
-                    b.HasBaseType("SportEventManager.Core.StatisticsAggregate.FootballStatsBase");
-
-                    b.Property<int>("Draws")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                    b.Property<bool>("Draw")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Fouls")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
-                    b.Property<int>("Losses")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                    b.Property<bool>("Loss")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Passes")
                         .ValueGeneratedOnAdd()
@@ -494,17 +467,12 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         .HasDefaultValue(0);
 
                     b.Property<int>("TeamId")
-                        .HasColumnType("int")
-                        .HasAnnotation("ForeignKey", "Team");
+                        .HasColumnType("int");
 
-                    b.Property<int>("Wins")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                    b.Property<bool>("Win")
+                        .HasColumnType("bit");
 
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("TeamStats", (string)null);
+                    b.ToTable("FbTeamMatchStats", (string)null);
                 });
 
             modelBuilder.Entity("EventStadium", b =>
@@ -552,8 +520,10 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         .IsRequired();
 
                     b.HasOne("SportEventManager.Core.StatisticsAggregate.FbTeamMatchStats", "GuestTeamStats")
-                        .WithMany()
-                        .HasForeignKey("GuestTeamStatsId");
+                        .WithOne()
+                        .HasForeignKey("SportEventManager.Core.EventAggregate.Match", "GuestTeamStatsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SportEventManager.Core.TeamAggregate.Team", "HomeTeam")
                         .WithMany("HomeMatches")
@@ -562,8 +532,10 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         .IsRequired();
 
                     b.HasOne("SportEventManager.Core.StatisticsAggregate.FbTeamMatchStats", "HomeTeamStats")
-                        .WithMany()
-                        .HasForeignKey("HomeTeamStatsId");
+                        .WithOne()
+                        .HasForeignKey("SportEventManager.Core.EventAggregate.Match", "HomeTeamStatsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SportEventManager.Core.EventAggregate.Stadium", "Stadium")
                         .WithMany("Matches")
@@ -587,7 +559,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
             modelBuilder.Entity("SportEventManager.Core.TeamAggregate.TeamPlayer", b =>
                 {
                     b.HasOne("SportEventManager.Core.TeamAggregate.Player", null)
-                        .WithMany()
+                        .WithMany("TeamPlayers")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -599,17 +571,21 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SportEventManager.Core.StatisticsAggregate.FbPlayerStats", b =>
+            modelBuilder.Entity("SportEventManager.Core.StatisticsAggregate.FbPlayerMatchStats", b =>
                 {
                     b.HasOne("SportEventManager.Core.StatisticsAggregate.FootballStatsBase", null)
                         .WithOne()
-                        .HasForeignKey("SportEventManager.Core.StatisticsAggregate.FbPlayerStats", "Id")
+                        .HasForeignKey("SportEventManager.Core.StatisticsAggregate.FbPlayerMatchStats", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SportEventManager.Core.EventAggregate.Match", null)
+                        .WithMany("PlayersStats")
+                        .HasForeignKey("MatchId");
+
                     b.HasOne("SportEventManager.Core.TeamAggregate.Player", "Player")
-                        .WithOne("FbPlayerStats")
-                        .HasForeignKey("SportEventManager.Core.StatisticsAggregate.FbPlayerStats", "PlayerId")
+                        .WithMany()
+                        .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -625,26 +601,14 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SportEventManager.Core.StatisticsAggregate.FbTeamStats", b =>
-                {
-                    b.HasOne("SportEventManager.Core.StatisticsAggregate.FootballStatsBase", null)
-                        .WithOne()
-                        .HasForeignKey("SportEventManager.Core.StatisticsAggregate.FbTeamStats", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SportEventManager.Core.TeamAggregate.Team", "Team")
-                        .WithMany()
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Team");
-                });
-
             modelBuilder.Entity("SportEventManager.Core.EventAggregate.Event", b =>
                 {
                     b.Navigation("Matches");
+                });
+
+            modelBuilder.Entity("SportEventManager.Core.EventAggregate.Match", b =>
+                {
+                    b.Navigation("PlayersStats");
                 });
 
             modelBuilder.Entity("SportEventManager.Core.EventAggregate.Stadium", b =>
@@ -654,7 +618,7 @@ namespace SportEventManager.Infrastructure.Migrations.AppDb
 
             modelBuilder.Entity("SportEventManager.Core.TeamAggregate.Player", b =>
                 {
-                    b.Navigation("FbPlayerStats");
+                    b.Navigation("TeamPlayers");
                 });
 
             modelBuilder.Entity("SportEventManager.Core.TeamAggregate.Team", b =>

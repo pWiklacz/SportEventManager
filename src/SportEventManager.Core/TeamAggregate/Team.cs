@@ -21,6 +21,10 @@ public class Team : EntityBase, IAggregateRoot
   public String Name { get; set; } = string.Empty;
 
   [Required]
+  [MaxLength(3)]
+  public String Tag { get; set; } = string.Empty;
+
+  [Required]
   [MaxLength(100)]
   public String City { get; set; } = string.Empty;
 
@@ -50,10 +54,11 @@ public class Team : EntityBase, IAggregateRoot
   public ICollection<Player> Players => _players.AsReadOnly();
   public ICollection<TeamPlayer> TeamPlayers => _teamPlayers.AsReadOnly();
 
-  public Team(string ownerId, string name, string city, int numberOfPlayers)
+  public Team(string ownerId, string name, string tag, string city, int numberOfPlayers)
   {
     OwnerId = Guard.Against.NullOrEmpty(ownerId, nameof(ownerId));
     Name = Guard.Against.NullOrEmpty(name, nameof(name));
+    Tag = Guard.Against.NullOrEmpty(tag, nameof(tag));
     City = Guard.Against.NullOrEmpty(city, nameof(city));
     NumberOfPlayers = Guard.Against.NegativeOrZero(numberOfPlayers, nameof(numberOfPlayers));
     _players = new List<Player>(numberOfPlayers);
@@ -62,14 +67,12 @@ public class Team : EntityBase, IAggregateRoot
 
   public Team() { }
 
-  public void AddPlayer(Player newPlayer, List<string>? existingPeselsNumbers)
+  public void AddPlayer(Player newPlayer, List<string>? existingPeselNumbers)
   {
     Guard.Against.Null(newPlayer, nameof(newPlayer));
-    if (existingPeselsNumbers != null) {
-      if (existingPeselsNumbers.Contains(newPlayer.Pesel))
-      {
-        throw new Exception("The number pesel: " + newPlayer.Pesel + " is already exist.");
-      }
+    if (PeselExists(newPlayer.Pesel, existingPeselNumbers))
+    {
+      throw new Exception("The player with pesel: " + newPlayer.Pesel + " already exists.");
     }
     _players.Add(newPlayer);
   }
@@ -106,22 +109,32 @@ public class Team : EntityBase, IAggregateRoot
           _players.RemoveAt(i);
   }
 
-  public void UpdateTeam(string name, string city, int numberOfPlayers)
+  public void UpdateTeam(string name, string tag, string city, int numberOfPlayers)
   {
     Name = Guard.Against.NullOrEmpty(name, nameof(name));
+    Tag = Guard.Against.NullOrEmpty(tag, nameof(tag));
     City = Guard.Against.NullOrEmpty(city, nameof(city));
     NumberOfPlayers = Guard.Against.NegativeOrZero(numberOfPlayers, nameof(numberOfPlayers));
   }
 
-  public void UpsertPlayer(Player? player, string newName, string newSurname, string newPesel, List<string>? existingPeselNumber)
+  public void UpsertPlayer(Player? player, string newName, string newSurname, string newPesel, List<string>? existingPeselNumbers)
   {
+    if (PeselExists(newPesel, existingPeselNumbers))
+    {
+      throw new Exception("The player with pesel: " + newPesel + " already exists.");
+    }
     if (player != null)
     {
       this.UpdatePlayer(player.Id, newName, newSurname, newPesel);
     }
     else
     {
-      this.AddPlayer(new Player(newName, newSurname, newPesel), existingPeselNumber);
+      this.AddPlayer(new Player(newName, newSurname, newPesel), existingPeselNumbers);
     }
+  }
+
+  private bool PeselExists(string peselToCheck, List<string>? existingPeselNumbers)
+  {
+    return (existingPeselNumbers != null && existingPeselNumbers.Count != 0 && existingPeselNumbers.Contains(peselToCheck));
   }
 }

@@ -9,6 +9,7 @@
 <script src="~/js/TeamManager/CreateEdit.js"></script>
 <h1>Create your team</h1>
 <div class="container-fluid col-12 mx-auto pt-0 p-0">
+    <span class="text-danger m-2 w-100" id="BackendErrorSpan">@Model.BackendError</span>
     <div class="card">
         <div class="card-header bg-secondary text-white text-center p-1" style="height:35px;">
             <h5>Create Team</h5>
@@ -29,6 +30,14 @@
 
                         <div class="col">
                             <div class="form-group">
+                                <label asp-for="Tag" class="control-label"></label>
+                                <input asp-for="Tag" class="form-control" />
+                                <span asp-validation-for="Tag" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-group">
                                 <label asp-for="City" class="control-label"></label>
                                 <input asp-for="City" class="form-control" />
                                 <span asp-validation-for="City" class="text-danger"></span>
@@ -38,7 +47,11 @@
                         <div class="col">
                             <div class="form-group">
                                 <label asp-for="NumberOfPlayers" class="control-label"></label>
-                                <input id="NumberOfPlayers" asp-for="NumberOfPlayers" class="form-control" />
+                                <input id="NumberOfPlayers"
+                                       asp-for="NumberOfPlayers"
+                                       class="form-control disable-pointer-events"
+                                       min="1"
+                                       onchange="adjustPlayersRows()" />
                                 <span asp-validation-for="NumberOfPlayers" class="text-danger"></span>
                             </div>
                         </div>
@@ -49,7 +62,6 @@
             <div class="p-1 mt-5" style="height:50px;">
                 <h4>Add team members</h4>
             </div>
-            @Html.HiddenFor(model => model.ExistingPeselNumbers, new { id = "existingPeselNumbers" })
             <div class="container col-12">
                 <div class="col-md-12 p-0 m-0 bg-white">
                     <table id="PlayersTable" class="table table-sm CodesTable">
@@ -67,24 +79,24 @@
                                 <th>
                                     Pesel
                                 </th>
-                                <th style="width:75px;">
-                                    <button
-                                        id="btnAddPlayer"
-                                        type="button"
-                                        class="btn btn-sm btn-secondary visible"
-                                        onclick="AddItem(this)"
-                                    >
+                                @*<th style="width:75px;">
+                                    <button id="btnAddPlayer"
+                                            type="button"
+                                            class="btn btn-sm btn-secondary visible"
+                                            onclick="AddItem(this)">
                                         Add
                                     </button>
-                                </th>
+                                </th>*@
                             </tr>
                         </thead>
                         <tbody>
-                            @for (int i = 0; i < Model.Players.Count; i++) @*Why cannot use foreach here??*@
+                            @for (int i = 0; i < Model.Players.Count; i++)
                             {
                                 <tr>
                                     <td>
+                                        <label asp-for="@Model.Players[i].Name" class="control-label"></label>
                                         <input asp-for="@Model.Players[i].Name" class="form-control" />
+                                        <span asp-validation-for="@Model.Players[i].Name" class="text-danger"></span>
                                     </td>
                                     <td>
                                         <input asp-for="@Model.Players[i].Surname" class="form-control" />
@@ -93,13 +105,13 @@
                                         <input asp-for="@Model.TeamPlayers[i].Number" class="form-control" />
                                     </td>
                                     <td>
-                                        <input asp-for="@Model.Players[i].Pesel" class="form-control" oninput="checkPesel(this)"/>
+                                        <input asp-for="@Model.Players[i].Pesel" class="form-control" id="pesel-input" />
                                     </td>
                                     <td style="width:60px;">
                                         <input type="hidden" asp-for="@Model.Players[i].IsArchived" />
-                                        <button id="btnremove-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteItem(this)">
+                                        @*<button id="btnremove-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteItem(this)">
                                             Delete
-                                        </button>
+                                    </button>*@
                                     </td>
                                 </tr>
                             }
@@ -112,7 +124,8 @@
                         <a asp-action="Index" class="btn btn-secondary">&nbsp;Back&nbsp;</a>
                     </div>
                     <div class="col form-group text-left p-0 mb-2">
-                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <input id="submit-button" type="submit" value="Create" class="btn btn-primary visible"
+                               onclick="checkAllPeselNumbers()" />
                     </div>
                 </div>
             </div>

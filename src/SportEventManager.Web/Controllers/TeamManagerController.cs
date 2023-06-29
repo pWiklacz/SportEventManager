@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SportEventManager.Core.TeamAggregate;
@@ -8,6 +9,7 @@ using SportEventManager.Web.ViewModels.TeamModel;
 
 namespace SportEventManager.Web.Controllers;
 
+[Authorize(Roles = "Admin,TeamManager")]
 public class TeamManagerController : Controller
 {
   private readonly IRepository<Team> _teamRepository;
@@ -48,7 +50,7 @@ public class TeamManagerController : Controller
   [HttpGet]
   public IActionResult Create(string error = "")
   {
-    TeamViewModel team = new TeamViewModel();
+    TeamViewModel team = new TeamViewModel(error);
     team.Players.Add(new PlayerViewModel() { Id = 1 });
     team.TeamPlayers.Add(new TeamPlayerViewModel() { });
 
@@ -59,40 +61,41 @@ public class TeamManagerController : Controller
   public async Task<IActionResult> Create(TeamViewModel viewModel)
   {
     string? currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    List<string> _existingPeselsNumbers = new List<string> { };
+    List<string>? _existingPeselNumbers = null;
 
     if (currentUserId != null)
     {
       var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersByOwnerIdSpec(currentUserId));
       if (teamsWithPlayers != null)
       {
-        var existingPeselNumbers = teamsWithPlayers
+        _existingPeselNumbers = teamsWithPlayers
         .SelectMany(t => t.TeamPlayers)
         .Join(teamsWithPlayers.SelectMany(t => t.Players),
           tp => tp.PlayerId,
           p => p.Id,
           (tp, p) => p.Pesel)
         .ToList();
-
-        _existingPeselsNumbers = existingPeselNumbers;
       }
 
-      Team team = new Team(currentUserId, viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
+      Team team = new Team(currentUserId, viewModel.Name, viewModel.Tag, viewModel.City, viewModel.NumberOfPlayers);
       foreach (PlayerViewModel newPlayer in viewModel.Players)
       {
         try
         {
           team.AddPlayer(
-            new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel), _existingPeselsNumbers
+            new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel), _existingPeselNumbers
           );
         }
         catch (Exception ex)
         {
+          //w tym momencie nie ma być przekierowanie do create jeszcze raz tylko automatyczne użycie istniejącego zawodnika
           return RedirectToAction("Create", new { error = ex.Message });
+          //Jak to zrobić, żeby nie rozwalać agregacji? Czy entity framework wziąłby mi go z db sam jeśli podałbym mu pesel
+          //który wcześniej zrobiłbym jako ID tej tabeli? Raczej wywaliłby FK Violation
         }
       }
 
-      await _teamRepository.AddAsync(team);
+      await _teamRepository.AddAsync(team);//wywala się, że nie ma id playera, a wcześniej samo brało do TeamPlayer :(
 
       for (int i = 0; i < viewModel.TeamPlayers.Count; i++)
       {
@@ -106,7 +109,7 @@ public class TeamManagerController : Controller
   }
 
   [HttpGet]
-  public async Task<IActionResult> Edit(int id, string eror = "")
+  public async Task<IActionResult> Edit(int id, string error = "")
   {
     TeamByIdWithPlayersSpec spec = new TeamByIdWithPlayersSpec(id);
     Team? team = await _teamRepository.FirstOrDefaultAsync(spec);
@@ -116,6 +119,7 @@ public class TeamManagerController : Controller
       return NotFound();
     }
     var dto = TeamViewModel.FromTeam(team);
+    dto.BackendError = error;
 
     return View(dto);
   }
@@ -131,33 +135,31 @@ public class TeamManagerController : Controller
     }
 
     string? currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    List<string> _existingPeselsNumbers = new List<string> { };
+    List<string>? _existingPeselNumbers = null;
 
     if (currentUserId != null)
     {
       var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersByOwnerIdSpec(currentUserId));
       if (teamsWithPlayers != null)
       {
-        var existingPeselNumbers = teamsWithPlayers
+        _existingPeselNumbers = teamsWithPlayers
         .SelectMany(t => t.TeamPlayers)
         .Join(teamsWithPlayers.SelectMany(t => t.Players),
           tp => tp.PlayerId,
           p => p.Id,
           (tp, p) => p.Pesel)
         .ToList();
-
-        _existingPeselsNumbers = existingPeselNumbers;
       }
     }
 
-    team.UpdateTeam(viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
+    team.UpdateTeam(viewModel.Name, viewModel.Tag, viewModel.City, viewModel.NumberOfPlayers);
 
     foreach (PlayerViewModel playerViewModel in viewModel.Players)
     {
       try
       {
         Player? player = team.Players.FirstOrDefault(p => p.Id == playerViewModel.Id);
-        team.UpsertPlayer(player, playerViewModel.Name, playerViewModel.Surname, playerViewModel.Pesel, _existingPeselsNumbers);
+        team.UpsertPlayer(player, playerViewModel.Name, playerViewModel.Surname, playerViewModel.Pesel, _existingPeselNumbers);
       }
       catch (Exception ex)
       {
@@ -175,7 +177,6 @@ public class TeamManagerController : Controller
     }
 
     await _teamRepository.UpdateAsync(team);
-
     await _teamRepository.SaveChangesAsync();
 
     return RedirectToAction("Index");
