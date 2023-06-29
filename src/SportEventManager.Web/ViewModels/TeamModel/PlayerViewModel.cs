@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.Core.TeamAggregate;
-using SportEventManager.Web.ViewModels.TeamModel.Stats;
 
 namespace SportEventManager.Web.ViewModels.TeamModel;
 

@@ -1,7 +1,8 @@
-﻿using SportEventManager.Core.StatisticsAggregate;
+﻿using SportEventManager.Core.MatchAggregate;
 using SportEventManager.Core.TeamAggregate;
+using SportEventManager.Web.ViewModels.TeamModel;
 
-namespace SportEventManager.Web.ViewModels.TeamModel.Stats;
+namespace SportEventManager.Web.ViewModels.MatchModel.Stats;
 
 public class FbPlayerMatchStatsViewModel : FootballStatsViewModel
 {

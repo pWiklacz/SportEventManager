@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using SportEventManager.Core.EventAggregate;
 
-namespace SportEventManager.Core.StatisticsAggregate;
- 
+namespace SportEventManager.Core.MatchAggregate;
+
 public class FbTeamMatchStats : FootballStatsBase
 {
   [DefaultValue(0)] public int Shoots { get; set; } = 0;
@@ -37,9 +37,9 @@ public class FbTeamMatchStats : FootballStatsBase
 
   public void Update(FbTeamMatchStats stats, FbTeamMatchStats enemyStats)
   {
-   Guard.Against.Null(stats, nameof(stats)); 
+    Guard.Against.Null(stats, nameof(stats));
 
-    if (this.Id != stats.Id && this.TeamId != stats.TeamId)
+    if (Id != stats.Id && TeamId != stats.TeamId)
     {
       throw new Exception("Try to update wrong entity of statistics.");
     }
@@ -53,9 +53,9 @@ public class FbTeamMatchStats : FootballStatsBase
     RedCards = stats.RedCards;
     YellowCards = stats.YellowCards;
 
-    if (this.Goals > enemyStats.Goals)
+    if (Goals > enemyStats.Goals)
       Win = true;
-    else if (this.Goals == enemyStats.Goals)
+    else if (Goals == enemyStats.Goals)
       Draw = true;
     else Loss = true;
   }

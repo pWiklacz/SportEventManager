@@ -16,11 +16,8 @@ public class EventsByIdWithItemsSpec : Specification<Event>, ISingleResultSpecif
       .ThenInclude(match => match.HomeTeamStats)
       .Include(selectEven => selectEven.Matches)
       .ThenInclude(match => match.PlayersStats)
-    .ThenInclude(ps => ps.Player);
-    //.Include(selectEven => selectEven.Matches)
-    //.ThenInclude(match => match.HomeTeam.Players)
-    //.Include(selectEven => selectEven.Matches)
-    //.ThenInclude(match => match.GuestTeam.Players)
+      .ThenInclude(ps => ps.Player);
+ 
 
   }
 }

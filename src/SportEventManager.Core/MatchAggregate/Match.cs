@@ -2,13 +2,14 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
-using SportEventManager.Core.StatisticsAggregate;
+using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.SharedKernel;
+using SportEventManager.SharedKernel.Interfaces;
 
-namespace SportEventManager.Core.EventAggregate;
+namespace SportEventManager.Core.MatchAggregate;
 
-public class Match : EntityBase
+public class Match : EntityBase, IAggregateRoot
 {
   [Required]
   public DateTime StartTime { get; set; }

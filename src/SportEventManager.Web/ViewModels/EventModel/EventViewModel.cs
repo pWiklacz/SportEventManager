@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using SportEventManager.Core.EventAggregate;
+using SportEventManager.Web.ViewModels.MatchModel;
 using SportEventManager.Web.ViewModels.TeamModel;
 
 namespace SportEventManager.Web.ViewModels.EventModel;

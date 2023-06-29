@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
 using SportEventManager.Core.EventAggregate;
+using SportEventManager.Core.MatchAggregate;
 using SportEventManager.SharedKernel;
 
 namespace SportEventManager.Core.EventAggregate;

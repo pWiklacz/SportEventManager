@@ -1,0 +1,231 @@
+﻿@model SportEventManager.Web.ViewModels.MatchModel.MatchViewModel
+
+@{
+    Layout = null;
+}
+
+
+
+<div class="stats">
+    <div class="stats-content">
+        <div class="stats-header">
+            <div class="inTeam1">
+                @Html.DisplayFor(item => Model.HomeTeam.Name)
+                <div class="score">
+                    @Html.DisplayFor(item => Model.HomeTeamStats.Goals)
+                </div>
+            </div>
+            <div class="inTeam2">
+                @Html.DisplayFor(item => Model.GuestTeam.Name)
+                <div class="score">
+                    @Html.DisplayFor(item => Model.GuestTeamStats.Goals)
+                </div>
+            </div>
+        </div>
+        <div class="stats-body">
+            <div class="row">
+                <div class="column">
+                    <div class="stat1">
+                        @Html.DisplayFor(item => Model.HomeTeamStats.Goals)
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="statName">
+                        GOALS
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="stat2">
+                        @Html.DisplayFor(item => Model.GuestTeamStats.Goals)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div class="stat1">
+                        @Html.DisplayFor(item => Model.HomeTeamStats.Assists)
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="statName">
+                        ASSIST
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="stat2">
+                        @Html.DisplayFor(item => Model.GuestTeamStats.Assists)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div class="stat1">
+                        @Html.DisplayFor(item => Model.HomeTeamStats.Shoots)
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="statName">
+                        SHOOTS
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="stat2">
+                        @Html.DisplayFor(item => Model.GuestTeamStats.Shoots)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div class="stat1">
+                        @Html.DisplayFor(item => Model.HomeTeamStats.ShootsOnTarget)
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="statName">
+                        SHOOTS ON TARGET
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="stat2">
+                        @Html.DisplayFor(item => Model.GuestTeamStats.ShootsOnTarget)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div class="stat1">
+                        @Html.DisplayFor(item => Model.HomeTeamStats.Passes)
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="statName">
+                        PASSES
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="stat2">
+                        @Html.DisplayFor(item => Model.GuestTeamStats.Passes)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div class="stat1">
+                        @Html.DisplayFor(item => Model.HomeTeamStats.Fouls)
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="statName">
+                        FOULS
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="stat2">
+                        @Html.DisplayFor(item => Model.GuestTeamStats.Fouls)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div class="stat1">
+                        @Html.DisplayFor(item => Model.HomeTeamStats.YellowCards)
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="statName">
+                        YELLOW CARDS
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="stat2">
+                        @Html.DisplayFor(item => Model.GuestTeamStats.YellowCards)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div class="stat1">
+                        @Html.DisplayFor(item => Model.HomeTeamStats.RedCards)
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="statName">
+                        RED CARDS
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="stat2">
+                        @Html.DisplayFor(item => Model.GuestTeamStats.RedCards)
+                    </div>
+                </div>
+            </div>
+            @{
+                int x = Model.HomeTeamPlayersMatchStats.Count > Model.GuestTeamPlayersMatchStats.Count
+                ? Model.HomeTeamPlayersMatchStats.Count : Model.GuestTeamPlayersMatchStats.Count;
+            }
+            <div class="table-container">
+                <table class="player-table">
+                    <tr>
+                        <th class="left-th"></th>
+                        <th class="left-th"></th>
+                        <th class="left-th">Goals</th>
+                        <th class="left-th">Assists</th>
+                        <th class="left-th">
+                            <span class="material-symbols-outlined" style="color:yellow">
+                                crop_portrait
+                            </span>
+                        </th>
+                        <th class="left-th">
+                            <span class="material-symbols-outlined" style="color:red">
+                                crop_portrait
+                            </span>
+                        </th>
+                        <th class="right-th">
+                            <span class="material-symbols-outlined" style="color:red">
+                                crop_portrait
+                            </span>
+                        </th>
+                        <th class="right-th">
+                            <span class="material-symbols-outlined" style="color:yellow">
+                                crop_portrait
+                            </span>
+                        </th>
+                        <th class="right-th">Assists</th>
+                        <th class="right-th">Goals</th>
+                        <th class="right-th"></th>
+                        <th class="right-th"></th>
+                    </tr>
+                    @for (int j = 0; j < x; j++)
+                    {
+                        <tr>
+                            @if (j < Model.HomeTeamPlayersMatchStats.Count)
+                            {
+                                <td class="left-td-name">@Html.DisplayFor(item => Model.HomeTeamPlayersMatchStats[j].Player.Name)</td>
+                                <td class="left-td-name">@Html.DisplayFor(item => Model.HomeTeamPlayersMatchStats[j].Player.Surname)</td>
+                                <td class="left-td">@Html.DisplayFor(item => Model.HomeTeamPlayersMatchStats[j].Goals)</td>
+                                <td class="left-td">@Html.DisplayFor(item => Model.HomeTeamPlayersMatchStats[j].Assists)</td>
+                                <td class="left-td">@Html.DisplayFor(item => Model.HomeTeamPlayersMatchStats[j].YellowCards)</td>
+                                <td class="left-td">@Html.DisplayFor(item => Model.HomeTeamPlayersMatchStats[j].RedCards)</td>
+                            }
+                            @if (j < Model.GuestTeamPlayersMatchStats.Count)
+                            {
+                                <td class="right-td">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].RedCards)</td>
+                                <td class="right-td">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].YellowCards)</td>
+                                <td class="right-td">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].Assists)</td>
+                                <td class="right-td">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].Goals)</td>
+                                <td class="right-td-name">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].Player.Name)</td>
+                                <td class="right-td-name">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].Player.Surname)</td>
+                            }
+                        </tr>
+                    }
+                </table>
+            </div>
+            @if (User.IsInRole("EventManager") || User.IsInRole("Admin"))
+            {
+                <div class="stats-footer">
+                    <button type="button" class="btn default" onclick="openModal2()">Match Ended</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

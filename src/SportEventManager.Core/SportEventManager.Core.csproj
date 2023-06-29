@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Enums\" />
+    <Folder Include="MatchAggregate\Specifications\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

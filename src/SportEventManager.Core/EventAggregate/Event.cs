@@ -4,7 +4,7 @@ using SportEventManager.Core.TeamAggregate;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using Ardalis.GuardClauses;
-using SportEventManager.Core.StatisticsAggregate;
+using SportEventManager.Core.MatchAggregate;
 
 namespace SportEventManager.Core.EventAggregate;
 public class Event : EntityBase, IAggregateRoot

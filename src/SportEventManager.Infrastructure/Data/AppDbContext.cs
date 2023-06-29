@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using SportEventManager.Core.UserAggregate;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Core.EventAggregate;
-using SportEventManager.Core.StatisticsAggregate;
+using SportEventManager.Core.MatchAggregate;
 
 namespace SportEventManager.Infrastructure.Data;
 
@@ -37,8 +37,6 @@ public class AppDbContext : DbContext
 
     modelBuilder.Entity<User>()
       .ToTable("AspNetUsers", t => t.ExcludeFromMigrations());
-
-    modelBuilder.Entity<Statistics>().ToView("Statistics").HasNoKey();
 
     modelBuilder.Entity<FbTeamMatchStats>().ToTable("FbTeamMatchStats");
     modelBuilder.Entity<FbPlayerMatchStats>().ToTable("PlayerMatchStats");

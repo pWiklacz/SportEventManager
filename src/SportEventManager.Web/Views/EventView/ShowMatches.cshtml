@@ -20,7 +20,7 @@
         <style>
             .match-status {
                 background-color: @(Model.Matches[i].IsLive ? "#fdeaec" : "#fff");
-                color: @(Model.Matches[i].IsLive ? "#d72641" : "#8A8F98");
+                color: @(Model.Matches[i].IsLive ? "#d72641" : "#8A8F98");  
             }
         </style>
 
@@ -286,11 +286,15 @@
                         }
                     </table>
                 </div>
-                @if (!User.IsInRole("EventManager") && !User.IsInRole("Admin"))
+                @if (User.IsInRole("EventManager") || User.IsInRole("Admin"))
                 {
-                    <div class="modal-footer">
-                        <button type="button" class="btn default" onclick="openModal2(@i)">Match Ended</button>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn default" onclick="openModal2(@i)">Match Ended</button>
+
+                            <form id="matchStatsForm" asp-controller="MatchView" asp-action="Stats" asp-route-id="@Model.Matches[i].Id" method="get">
+                                <button id="matchStatsBtn" type="submit" class="btn default">Match Ended</button>
+                            </form>
+                        </div>
                 }
                 </div>
             </div>
@@ -559,9 +563,9 @@
                     <input type="hidden" asp-for="@Model.Matches[i].HomeTeamStats.TeamId" />
                     <input type="hidden" asp-for="@Model.Matches[i].GuestTeamStats.TeamId" />
 
-                    <div class="modal-footer">
-                        <button type="submit" value="ShowMatches" class="btn default">Save Stats</button>
-                    </div>
+                <div class="modal-footer">
+                    <button type="submit" value="ShowMatches" class="btn default">Save Stats</button>
+                </div>
                 </div>
             </div>
         </div>
@@ -590,4 +594,6 @@
     function closeModal2(a) {
         document.getElementById("myModal2-" + a.toString()).style.display = "none";
     }
+    
+
 </script>

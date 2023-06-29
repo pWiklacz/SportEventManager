@@ -2,41 +2,9 @@
 @using Microsoft.CodeAnalysis.Scripting
 @model EventViewModel
 
+
 @{
     ViewData["Title"] = "Stats";
     Layout = "~/Views/EventView/_EventViewLayout.cshtml";
 }
 
-
-<link rel="stylesheet" type="text/css" href="~/css/EventView/Bracket.css" />
-
-
-
-<div class="spinner-border" role="status">
-    <span class="visually-hidden">Loading...</span>
-</div>
-
-<div class="container mt-3">
-    <h2>Justified Tabs/Pills</h2>
-    <p>To justify tabs/pills (equal width), use the .nav-justified class:</p>
-    <ul class="nav nav-pills nav-justified">
-        <li class="nav-item">
-            <a class="nav-link active" href="#">Active</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
-        </li>
-    </ul><br>
-</div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

@@ -3,8 +3,8 @@ using SportEventManager.Web.ViewModels.EventModel;
 using SportEventManager.SharedKernel.Interfaces;
 using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.EventAggregate.Specification;
-using SportEventManager.Core.StatisticsAggregate;
-using SportEventManager.Web.ViewModels.TeamModel.Stats;
+using SportEventManager.Core.MatchAggregate;
+using SportEventManager.Web.ViewModels.MatchModel.Stats;
 
 namespace SportEventManager.Web.Controllers;
 

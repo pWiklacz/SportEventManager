@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
 using SportEventManager.Core.EventAggregate;
-using SportEventManager.Core.TeamAggregate; 
+using SportEventManager.Core.TeamAggregate;
 
-namespace SportEventManager.Core.StatisticsAggregate;
+namespace SportEventManager.Core.MatchAggregate;
 
 public class FbPlayerMatchStats : FootballStatsBase
 {
@@ -13,7 +13,7 @@ public class FbPlayerMatchStats : FootballStatsBase
   [ForeignKey("Player")]
   public int PlayerId { get; set; }
 
-  [Required] 
+  [Required]
   public Player Player { get; set; } = null!;
 
   public FbPlayerMatchStats(int playerId) : base()
@@ -26,7 +26,7 @@ public class FbPlayerMatchStats : FootballStatsBase
   {
     Guard.Against.Null(stats, nameof(stats));
 
-    if (this.Id != stats.Id && this.PlayerId != stats.PlayerId)
+    if (Id != stats.Id && PlayerId != stats.PlayerId)
     {
       throw new Exception("Try to update wrong entity of statistics.");
     }

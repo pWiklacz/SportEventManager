@@ -2,9 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.TeamAggregate;
-using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.Web.ViewModels.EventModel;
-using SportEventManager.Web.ViewModels.TeamModel.Stats;
 
 namespace SportEventManager.Web.ViewModels.TeamModel;
 

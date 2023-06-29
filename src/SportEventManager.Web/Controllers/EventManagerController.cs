@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.EventAggregate.Specification;
 using SportEventManager.Core.EventAggregate.Specifications;
+using SportEventManager.Core.MatchAggregate;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Core.TeamAggregate.Specifications;
 using SportEventManager.SharedKernel.Interfaces;
