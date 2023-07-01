@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SportEventManager.Core.TeamAggregate;
@@ -89,9 +90,8 @@ public class TeamManagerController : Controller
         catch (Exception ex)
         {
           //w tym momencie nie ma być przekierowanie do create jeszcze raz tylko automatyczne użycie istniejącego zawodnika
-          return RedirectToAction("Create", new { error = ex.Message });
-          //Jak to zrobić, żeby nie rozwalać agregacji? Czy entity framework wziąłby mi go z db sam jeśli podałbym mu pesel
-          //który wcześniej zrobiłbym jako ID tej tabeli? Raczej wywaliłby FK Violation
+          //wyciągnąć gościa o tym peslu z teamWithPlayers
+          return RedirectToAction("Create", new { error = ex.Message }); 
         }
       }
 
@@ -149,6 +149,8 @@ public class TeamManagerController : Controller
           p => p.Id,
           (tp, p) => p.Pesel)
         .ToList();
+
+        //zrobić to samo dla tagów, żeby były unikalne i te slect many wywalić do osobnych metod ;)
       }
     }
 

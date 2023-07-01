@@ -8,7 +8,8 @@ public class TeamViewModel
   public int Id { get; set; }
   public string OwnerId { get; private set; } = string.Empty;
   public string Name { get; set; } = string.Empty;
-  [MaxLength(4)]
+
+  [MaxLength(3)]
   public string Tag { get; set; } = string.Empty;
   public string City { get; set; } = string.Empty;
   public bool IsArchived { get; set; } = false;
