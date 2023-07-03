@@ -22,7 +22,7 @@ public class Team : EntityBase, IAggregateRoot
 
   [Required]
   [MaxLength(3)]
-  public String Tag { get; set; } = string.Empty;
+  public string Tag { get; set; } = string.Empty;
 
   [Required]
   [MaxLength(100)]
@@ -54,10 +54,14 @@ public class Team : EntityBase, IAggregateRoot
   public ICollection<Player> Players => _players.AsReadOnly();
   public ICollection<TeamPlayer> TeamPlayers => _teamPlayers.AsReadOnly();
 
-  public Team(string ownerId, string name, string tag, string city, int numberOfPlayers)
+  public Team(string ownerId, string name, string tag, string city, int numberOfPlayers, List<string>? existingTags)
   {
     OwnerId = Guard.Against.NullOrEmpty(ownerId, nameof(ownerId));
     Name = Guard.Against.NullOrEmpty(name, nameof(name));
+    if (PropertyExistsInDb(tag, existingTags))
+    {
+      throw new Exception("The team with tag: " + tag + " already exists.");
+    }
     Tag = Guard.Against.NullOrEmpty(tag, nameof(tag));
     City = Guard.Against.NullOrEmpty(city, nameof(city));
     NumberOfPlayers = Guard.Against.NegativeOrZero(numberOfPlayers, nameof(numberOfPlayers));
@@ -70,7 +74,7 @@ public class Team : EntityBase, IAggregateRoot
   public void AddPlayer(Player newPlayer, List<string>? existingPeselNumbers)
   {
     Guard.Against.Null(newPlayer, nameof(newPlayer));
-    if (PeselExists(newPlayer.Pesel, existingPeselNumbers))
+    if (PropertyExistsInDb(newPlayer.Pesel, existingPeselNumbers))
     {
       throw new Exception("The player with pesel: " + newPlayer.Pesel + " already exists.");
     }
@@ -99,19 +103,25 @@ public class Team : EntityBase, IAggregateRoot
     }
   }
 
+  //searching for _players in viewModel.players - if we got to the last player from viewModel
+  //and it's still not the one from _players then the latter was deleted by user and is "removed" from a team
   public void DeleteOldPlayers(List<Player> players)
   {
     for (int i = 0; i < _players.Count; i++)
       for (int j = 0; j < players.Count; j++)
-        if (_players[i].Pesel != players[j].Pesel && j != players.Count)
+        if (_players[i].Pesel != players[j].Pesel && j != players.Count - 1)
           continue;
-        else if(j == players.Count && _players[i].Pesel != players[j].Pesel)
-          _players.RemoveAt(i);
-  }
+        else if(j == players.Count - 1 && _players[i].Pesel != players[j].Pesel)
+          _teamPlayers[i].LeaveOn = DateTime.Now;
+  }//check if ok
 
-  public void UpdateTeam(string name, string tag, string city, int numberOfPlayers)
+  public void UpdateTeam(string name, string tag, string city, int numberOfPlayers, List<string>? existingTags)
   {
     Name = Guard.Against.NullOrEmpty(name, nameof(name));
+    if (PropertyExistsInDb(tag, existingTags))
+    {
+      throw new Exception("The team with tag: " + tag + " already exists.");
+    }
     Tag = Guard.Against.NullOrEmpty(tag, nameof(tag));
     City = Guard.Against.NullOrEmpty(city, nameof(city));
     NumberOfPlayers = Guard.Against.NegativeOrZero(numberOfPlayers, nameof(numberOfPlayers));
@@ -119,7 +129,7 @@ public class Team : EntityBase, IAggregateRoot
 
   public void UpsertPlayer(Player? player, string newName, string newSurname, string newPesel, List<string>? existingPeselNumbers)
   {
-    if (PeselExists(newPesel, existingPeselNumbers))
+    if (PropertyExistsInDb(newPesel, existingPeselNumbers))
     {
       throw new Exception("The player with pesel: " + newPesel + " already exists.");
     }
@@ -133,8 +143,8 @@ public class Team : EntityBase, IAggregateRoot
     }
   }
 
-  private bool PeselExists(string peselToCheck, List<string>? existingPeselNumbers)
+  private bool PropertyExistsInDb(string propertyToCheck, List<string>? existingPropertyValues)
   {
-    return (existingPeselNumbers != null && existingPeselNumbers.Count != 0 && existingPeselNumbers.Contains(peselToCheck));
+    return (existingPropertyValues != null && existingPropertyValues.Count != 0 && existingPropertyValues.Contains(propertyToCheck));
   }
 }
