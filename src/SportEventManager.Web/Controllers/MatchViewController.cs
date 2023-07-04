@@ -17,7 +17,7 @@ public class MatchViewController : Controller
   }
 
   [HttpGet]
-  public async Task<IActionResult> Stats(int id)
+  public async Task<IActionResult> Index(int id)
   {
     var spec = new MatchByIdWithItemsSpec(id);
 
@@ -30,6 +30,18 @@ public class MatchViewController : Controller
     return View(viewModel);
   }
 
+  [HttpGet]
+  public async Task<IActionResult> Update(int id)
+  {
+    var spec = new MatchByIdWithItemsSpec(id);
 
+    Match? match = await _matchRepository.FirstOrDefaultAsync(spec);
+
+    if (match == null) { return NotFound(); }
+
+    var viewModel = MatchViewModel.FromMatch(match);
+
+    return View(viewModel);
+  }
 
 }

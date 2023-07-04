@@ -39,12 +39,4 @@
     <ProjectReference Include="..\SportEventManager.Infrastructure\SportEventManager.Infrastructure.csproj" />
   </ItemGroup>
   
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\MatchView\Page1.cshtml" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Views\MatchView\Page1.cshtml" />
-  </ItemGroup>
-  
 </Project>

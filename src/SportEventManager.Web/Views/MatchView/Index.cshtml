@@ -133,27 +133,26 @@
     int x = Model.HomeTeamPlayersMatchStats.Count > Model.GuestTeamPlayersMatchStats.Count
         ? Model.HomeTeamPlayersMatchStats.Count : Model.GuestTeamPlayersMatchStats.Count;
 }
+<br style="margin-top: 40px;" />
 
 <div class="table-container">
     <table class="player-table">
-        <thead>
-            <tr>
-                <th scope="col" class="left-th"></th>
-                <th scope="col" class="left-th"></th>
-                <th scope="col" class="left-th">Goals</th>
-                <th scope="col" class="left-th">Assists</th>
-                <th scope="col" class="left-th">
-                    <span class="material-symbols-outlined" style="color: yellow">
-                        crop_portrait
-                    </span>
-                </th>
-                <th scope="col" class="left-th">
-                    <span class="material-symbols-outlined" style="color: red">
-                        crop_portrait
-                    </span>
-                </th>
-            </tr>
-        </thead>
+        <tr>
+            <th scope="col" class="left-th"></th>
+            <th scope="col" class="left-th"></th>
+            <th scope="col" class="left-th">Goals</th>
+            <th scope="col" class="left-th">Assists</th>
+            <th scope="col" class="left-th">
+                <span class="material-symbols-outlined" style="color: yellow">
+                    crop_portrait
+                </span>
+            </th>
+            <th scope="col" class="left-th">
+                <span class="material-symbols-outlined" style="color: red">
+                    crop_portrait
+                </span>
+            </th>
+        </tr>
         @for (int j = 0; j < x; j++)
         {
             <tr>
@@ -169,36 +168,41 @@
             </tr>
         }
     </table>
-    @* <table class="player-table">
-    <tr>
-    <th class="right-th">
-    <span class="material-symbols-outlined" style="color:red">
-    crop_portrait
-    </span>
-    </th>
-    <th class="right-th">
-    <span class="material-symbols-outlined" style="color:yellow">
-    crop_portrait
-    </span>
-    </th>
-    <th class="right-th">Assists</th>
-    <th class="right-th">Goals</th>
-    <th class="right-th"></th>
-    <th class="right-th"></th>
-    </tr>
-    @for (int j = 0; j < x; j++)
-    {
-    <tr>
-    @if (j < Model.GuestTeamPlayersMatchStats.Count)
-    {
-    <td class="right-td">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].RedCards)</td>
-    <td class="right-td">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].YellowCards)</td>
-    <td class="right-td">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].Assists)</td>
-    <td class="right-td">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].Goals)</td>
-    <td class="right-td-name">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].Player.Name)</td>
-    <td class="right-td-name">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].Player.Surname)</td>
-    }
-    </tr>
-    }
-    </table>*@
+    <table class="player-table">
+
+        <tr>
+            <th class="right-th">
+                <span class="material-symbols-outlined" style="color: red">
+                    crop_portrait
+                </span>
+            </th>
+            <th class="right-th">
+                <span class="material-symbols-outlined" style="color: yellow">
+                    crop_portrait
+                </span>
+            </th>
+            <th class="right-th">Assists</th>
+            <th class="right-th">Goals</th>
+            <th class="right-th"></th>
+            <th class="right-th"></th>
+        </tr>
+
+
+        @for (int j = 0; j < x; j++)
+        {
+            <tr>
+                @if (j < Model.GuestTeamPlayersMatchStats.Count)
+                {
+                    <td class="right-td">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].RedCards)</td>
+                    <td class="right-td">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].YellowCards)</td>
+                    <td data-cell="Assists" class="right-td">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].Assists)</td>
+                    <td data-cell="Goals" class="right-td">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].Goals)</td>
+                    <td class="right-td-name">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].Player.Name)</td>
+                    <td class="right-td-name">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].Player.Surname)</td>
+                }
+            </tr>
+        }
+    </table>
 </div>
+
+<a asp-action="Update" asp-route-id="@Model.Id" method="get">Update statistics</a>

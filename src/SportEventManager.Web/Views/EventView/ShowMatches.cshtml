@@ -20,7 +20,7 @@
         <style>
             .match-status {
                 background-color: @(Model.Matches[i].IsLive ? "#fdeaec" : "#fff");
-                color: @(Model.Matches[i].IsLive ? "#d72641" : "#8A8F98");  
+                color: @(Model.Matches[i].IsLive ? "#d72641" : "#8A8F98");
             }
         </style>
 
@@ -229,73 +229,15 @@
                         int x = Model.Matches[i].HomeTeamPlayersMatchStats.Count > Model.Matches[i].GuestTeamPlayersMatchStats.Count
                         ? Model.Matches[i].HomeTeamPlayersMatchStats.Count : Model.Matches[i].GuestTeamPlayersMatchStats.Count;
                     }
-                <div class="table-container">
-                    <table class="player-table">
-                        <tr>
-                            <th class="left-th"></th>
-                            <th class="left-th"></th>
-                            <th class="left-th">Goals</th>
-                            <th class="left-th">Assists</th>
-                            <th class="left-th">
-                                <span class="material-symbols-outlined" style="color:yellow">
-                                    crop_portrait
-                                </span>
-                            </th>
-                            <th class="left-th">
-                                <span class="material-symbols-outlined" style="color:red">
-                                    crop_portrait
-                                </span>
-                            </th>
-                            <th class="right-th">
-                                <span class="material-symbols-outlined" style="color:red">
-                                    crop_portrait
-                                </span>
-                            </th>
-                            <th class="right-th">
-                                <span class="material-symbols-outlined" style="color:yellow">
-                                    crop_portrait
-                                </span>
-                            </th>
-                            <th class="right-th">Assists</th>
-                            <th class="right-th">Goals</th>
-                            <th class="right-th"></th>
-                            <th class="right-th"></th>
-                        </tr>
-                        @for (int j = 0; j < x; j++)
-                        {
-                            <tr>
-                                @if (j < Model.Matches[i].HomeTeamPlayersMatchStats.Count)
-                                {
-                                    <td class="left-td-name">@Html.DisplayFor(item => Model.Matches[i].HomeTeamPlayersMatchStats[j].Player.Name)</td>
-                                    <td class="left-td-name">@Html.DisplayFor(item => Model.Matches[i].HomeTeamPlayersMatchStats[j].Player.Surname)</td>
-                                    <td class="left-td">@Html.DisplayFor(item => Model.Matches[i].HomeTeamPlayersMatchStats[j].Goals)</td>
-                                    <td class="left-td">@Html.DisplayFor(item => Model.Matches[i].HomeTeamPlayersMatchStats[j].Assists)</td>
-                                    <td class="left-td">@Html.DisplayFor(item => Model.Matches[i].HomeTeamPlayersMatchStats[j].YellowCards)</td>
-                                    <td class="left-td">@Html.DisplayFor(item => Model.Matches[i].HomeTeamPlayersMatchStats[j].RedCards)</td>
-                                }
-                                @if (j < Model.Matches[i].GuestTeamPlayersMatchStats.Count)
-                                {
-                                    <td class="right-td">@Html.DisplayFor(item => Model.Matches[i].GuestTeamPlayersMatchStats[j].RedCards)</td>
-                                    <td class="right-td">@Html.DisplayFor(item => Model.Matches[i].GuestTeamPlayersMatchStats[j].YellowCards)</td>
-                                    <td class="right-td">@Html.DisplayFor(item => Model.Matches[i].GuestTeamPlayersMatchStats[j].Assists)</td>
-                                    <td class="right-td">@Html.DisplayFor(item => Model.Matches[i].GuestTeamPlayersMatchStats[j].Goals)</td>
-                                    <td class="right-td-name">@Html.DisplayFor(item => Model.Matches[i].GuestTeamPlayersMatchStats[j].Player.Name)</td>
-                                    <td class="right-td-name">@Html.DisplayFor(item => Model.Matches[i].GuestTeamPlayersMatchStats[j].Player.Surname)</td>
-                                }
-                            </tr>
-                        }
-                    </table>
-                </div>
-                @if (User.IsInRole("EventManager") || User.IsInRole("Admin"))
-                {
-                        <div class="modal-footer">
-                            <button type="button" class="btn default" onclick="openModal2(@i)">Match Ended</button>
+                    @if (User.IsInRole("EventManager") || User.IsInRole("Admin"))
+                    {
+                        <p>
+                            <a id="matchStatsForm" asp-controller="MatchView" asp-action="Index" asp-route-id="@Model.Matches[i].Id" method="get">
+                                Show more..
+                            </a>
+                        </p>
 
-                            <form id="matchStatsForm" asp-controller="MatchView" asp-action="Stats" asp-route-id="@Model.Matches[i].Id" method="get">
-                                <button id="matchStatsBtn" type="submit" class="btn default">Match Ended</button>
-                            </form>
-                        </div>
-                }
+                    }
                 </div>
             </div>
         </div>
@@ -563,9 +505,9 @@
                     <input type="hidden" asp-for="@Model.Matches[i].HomeTeamStats.TeamId" />
                     <input type="hidden" asp-for="@Model.Matches[i].GuestTeamStats.TeamId" />
 
-                <div class="modal-footer">
-                    <button type="submit" value="ShowMatches" class="btn default">Save Stats</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="submit" value="ShowMatches" class="btn default">Save Stats</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -594,6 +536,6 @@
     function closeModal2(a) {
         document.getElementById("myModal2-" + a.toString()).style.display = "none";
     }
-    
+
 
 </script>

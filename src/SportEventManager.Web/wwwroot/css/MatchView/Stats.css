@@ -8,10 +8,6 @@
         text-align: left;
     }
 
-    table.table-teamStats th {
-        background-color: #f2f2f2;
-    }
-
     table.table-teamStats tr:first-child td:nth-child(1),
     table.table-teamStats tr:first-child td:nth-child(2),
     table.table-teamStats tr:first-child td:nth-child(3),
@@ -22,6 +18,15 @@
         font-weight: bold;
         font-size: 25px;
         padding-bottom: 40px;
+    }
+
+    table.table-teamStats tr:first-child {
+        background-color: #073642;
+    }
+
+
+    table.table-teamStats tr:nth-of-type(2n + 1) {
+        background-color: #073642;
     }
 
     table.table-teamStats tr:first-child td:nth-child(1),
@@ -41,8 +46,8 @@
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48
 }
 
-.player-table {
-    width: 100%;
+table.player-table {
+    flex: 50%;
     border-collapse: collapse;
 }
 
@@ -50,6 +55,14 @@
     padding: 8px;
     text-align: center;
     max-width: 60px;
+}
+
+table.player-table tr:first-child {
+    background-color: #002b36;
+}
+
+table.player-table tr:nth-of-type(2n) {
+    background-color: #073642;
 }
 
 .right-th, .right-td {
@@ -70,9 +83,6 @@
     max-width: 60px;
 }
 
-.player-table tr {
-    border-bottom: 1px solid #ddd;
-}
 
 .number-input {
     width: 40px;
@@ -80,63 +90,133 @@
 
 .table-container {
     display: flex;
+    flex-wrap: wrap;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
 
     .player-table {
         border: 0;
+        flex: 100%;
     }
 
-        .player-table thead {
-            border: none;
-            clip: rect(0 0 0 0);
-            height: 1px;
-            margin: -1px;
-            overflow: hidden;
-            padding: 0;
-            position: absolute;
-            width: 1px;
-        }
-
-
-        .player-table .left-th {
-            display: none;
-        }
-
-        .player-table .left-td {
-            display: grid;
-            grid-template-columns: 15ch auto;
-        }
-
-            .player-table .left-td::before {
-                content: attr(data-cell);
-            }
-
-            .player-table .left-td:nth-of-type(5)::before {
-                content: "\e3c5";
-                font-family: "Material Icons";
-                display: inline-block;
-                font-size: 16px;
-                margin-right: 5px;
-                color: yellow;
-
-            }
-  
-
-            .player-table .left-td:nth-of-type(6)::before {
-                content: "\e3c5";
-                font-family: "Material Icons";
-                display: inline-block;
-                font-size: 16px; 
-                margin-right: 5px;
-                color: red;
-            }
+    .nr-input {
+        width: 40px;
+    }
 }
-/* .player-table .left-th::before .left-td::before {
-                content: attr(data-label);
-                float: left;
-                font-weight: bold;
-                text-transform: uppercase;
-            }*/
+
+.addstat1 {
+    text-align: center;
+    font-size: 20px;
 }
+
+
+.addstat2 {
+    text-align: center;
+    font-size: 20px;
+}
+
+
+.btnUpdate {
+    border: 1px solid #3c8664;
+    background: none;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 10px;
+    color: #3c8664;
+    transition: 0.8s;
+    position: relative;
+    overflow: hidden;
+}
+
+.btnUpdate:hover {
+    color: #fff;
+}
+
+    .btnUpdate::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 0%;
+        background: #3c8664;
+        z-index: -1;
+        transition: 0.8s;
+        bottom: 0;
+        border-radius: 50% 50% 0 0;
+    }
+
+.btnUpdate:hover::before {
+        height: 100%
+    }
+
+.btnReset {
+    border: 1px solid #3498db;
+    background: none;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 10px;
+    color: #3498db;
+    transition: 0.8s;
+    position: relative;
+    overflow: hidden;
+}
+
+.btnReset:hover {
+        color: #fff;
+    }
+
+.btnReset::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 0%;
+        background: #3498db;
+        z-index: -1;
+        transition: 0.8s;
+        bottom: 0;
+        border-radius: 50% 50% 0 0;
+    }
+
+.btnReset:hover::before {
+        height: 100%
+    }
+
+.btnBack {
+    border: 1px solid #FF8C00;
+    background: none;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 10px;
+    color: #FF8C00;
+    transition: 0.8s;
+    position: relative;
+    overflow: hidden;
+}
+
+
+.btnBack:hover {
+        color: #fff;
+    }
+
+    .btnBack::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 0%;
+        background: #FF8C00;
+        z-index: -1;
+        transition: 0.8s;
+        bottom: 0;
+        border-radius: 50% 50% 0 0;
+    }
+
+
+.btnBack:hover::before {
+        height: 100%
+    }
