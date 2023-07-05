@@ -5,10 +5,12 @@
 @{
     ViewData["Title"] = "Stats";
 }
+
+<script src="~/js/MatchView/Update.js"></script>
 <link rel="stylesheet" type="text/css" href="~/css/MatchView/Stats.css" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-
+<form method="post" id="MathchesForm" asp-controller="MatchView" asp-action="Update">
 <table class="table-teamStats">
     <tr>
         <td>
@@ -284,7 +286,9 @@
 
 <div class="button-row">
     <br style="margin-top: 40px;" />
-    <button type="submit" class="btnBack" id="btnBackt" onclick="resetDetails()">Back</button>
-    <button type="submit" class="btnReset" id="btnReset" onclick="resetDetails()">Reset</button>
-    <button type="submit" class="btnUpdate" id="btnUpdate" onclick="showNextPage1()">Update</button>
+    <button type="button" class="btnBack" id="btnBackt" onclick="backToIndex(@Model.Id)">Back</button>
+    <button type="button" class="btnReset" id="btnReset" onclick="resetDetails()">Reset</button>
+    <button type="submit" class="btnUpdate" id="btnUpdate">Update</button>
 </div>
+</form>
+
