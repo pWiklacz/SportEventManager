@@ -1,44 +1,79 @@
 ﻿@page
 @model RegisterModel
 @{
-	ViewData["Title"] = "Register";
-	Layout = "~/Areas/Identity/Pages/_AuthLayout.cshtml";
+    ViewData["Title"] = "Register";
+    Layout = "~/Areas/Identity/Pages/_AuthLayout.cshtml";
 }
 
+<style>
+    .form-control {
+        background-color: #F0F0F0;
+        color: #333;
+        border-color: #CCC;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .text-danger {
+        color: #FF0000;
+    }
+
+    .form-check-input {
+        margin-right: 5px;
+    }
+
+    .btn-primary {
+        background-color: #007BFF;
+        border-color: #007BFF;
+        margin-top: 10px;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            margin-top: 10px;
+        }
+
+    #registerForm .form-floating input.form-control {
+        width: 100%;
+    }
+</style>
+
+
 <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-	<div class="row">
-		<div class="col-md-6">
-			<div class="form-floating">
-				<input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" />
-				<label asp-for="Input.FirstName"></label>
-				<span asp-validation-for="Input.FirstName" class="text-danger"></span>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="form-floating">
-				<input asp-for="Input.LastName" class="form-control" autocomplete="lastname" aria-required="true" />
-				<label asp-for="Input.LastName"></label>
-				<span asp-validation-for="Input.LastName" class="text-danger"></span>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-6">
-			<div class="form-floating">
-				<input asp-for="Input.Email" class="form-control" autocomplete="email" aria-required="true" />
-				<label asp-for="Input.Email"></label>
-				<span asp-validation-for="Input.Email" class="text-danger"></span>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="form-floating">
-				<input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" />
-				<label asp-for="Input.UserName"></label>
-				<span asp-validation-for="Input.UserName" class="text-danger"></span>
-			</div>
-		</div>
-	</div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-floating">
+                <input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" />
+                <label asp-for="Input.FirstName"></label>
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                <input asp-for="Input.LastName" class="form-control" autocomplete="lastname" aria-required="true" />
+                <label asp-for="Input.LastName"></label>
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-floating">
+                <input asp-for="Input.Email" class="form-control" autocomplete="email" aria-required="true" />
+                <label asp-for="Input.Email"></label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                <input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" />
+                <label asp-for="Input.UserName"></label>
+                <span asp-validation-for="Input.UserName" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-6">
             <div class="form-floating">
@@ -75,14 +110,12 @@
         <span asp-validation-for="Input.Role" class="text-danger"></span>
     </div>
     <div class="row">
-	<div class ="col-md-12 text-md-center">
-	<button id="registerSubmit" type="submit" class="w-50 btn btn-lg btn-primary">Register</button>
-	</div>
-	</div>
+        <div class="col-md-12 text-md-center">
+            <button id="registerSubmit" type="submit" class="w-50 btn btn-lg btn-primary">Register</button>
+        </div>
+    </div>
 </form>
 
 @section Scripts {
-<partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
 }
-
-                

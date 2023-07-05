@@ -861,3 +861,60 @@ div#button-row {
     margin-top: 20px;
     margin-bottom: 30px;
 }
+
+.tournament-headers {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.round {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 25px;
+}
+
+.matchPair {
+    margin-bottom: 10px;
+}
+
+.matchTable {
+    display: flex;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #F0F0F0;
+    border-radius: 5px;
+}
+
+.matchPair:first-child .matchTable {
+    margin-bottom: 5px;
+}
+
+.team-nameTable {
+    width: 75%;
+    text-align: left;
+    border-right: 1px solid black;
+    padding-right: 10px;
+    flex-grow: 1;
+}
+
+.team-scoreTable {
+    width: 25%;
+    text-align: right;
+    padding-left: 10px;
+    flex-grow: 1;
+}
+
+.round.round-1 {
+    margin-bottom: 50px;
+}
+
+.round.round-2 {
+    margin-bottom: 140px;
+}
+
+.round.round-3 {
+    margin-bottom: 320px;
+}

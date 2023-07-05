@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using SportEventManager.SharedKernel;
 
-namespace SportEventManager.Web.ViewModels.TeamModel.Stats;
-public abstract class FootballStatsViewModel 
+namespace SportEventManager.Web.ViewModels.MatchModel.Stats;
+public abstract class FootballStatsViewModel
 {
   public int Id { get; set; }
   public int Goals { get; set; } = 0;

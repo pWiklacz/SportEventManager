@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using SportEventManager.SharedKernel;
 
-namespace SportEventManager.Core.StatisticsAggregate;
+namespace SportEventManager.Core.MatchAggregate;
 public abstract class FootballStatsBase : EntityBase
 {
   [DefaultValue(0)]

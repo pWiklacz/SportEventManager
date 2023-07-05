@@ -12,7 +12,7 @@
     }
 </style>
 
-<h1>Your Event</h1>
+<h1>Your Events</h1>
 
 <p>
     <a asp-action="Create">Create New Event</a>
@@ -32,6 +32,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.IsInProgress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsEnded)
         </th>
         <th>Options</th>
     </tr>
@@ -55,8 +58,11 @@
                     @Html.DisplayFor(modelItem => item.IsInProgress)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.IsEnded)
+                </td>
+                <td>
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
                     <a asp-action="Generate" asp-route-id="@item.Id">Generate</a>
                 </td>
             </tr>

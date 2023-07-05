@@ -11,6 +11,14 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <PackageReference Include="Ardalis.ListStartupServices" />
     <PackageReference Include="Ardalis.Result" />
     <PackageReference Include="Ardalis.Result.AspNetCore" />

@@ -1,11 +1,21 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
+using Microsoft.EntityFrameworkCore;
+using SportEventManager.Core.EventAggregate;
+using SportEventManager.Core.MatchAggregate;
 using SportEventManager.SharedKernel;
 
 namespace SportEventManager.Core.EventAggregate;
+
 public class Stadium : EntityBase
 {
+  [Key]
+  [Required]
+  [DatabaseGenerated(DatabaseGeneratedOption.None)]
+  public new string Id { get; set; } = string.Empty;
+
   [Required]
   [MaxLength(50)]
   public String Name { get; set; } = string.Empty;
@@ -34,6 +44,7 @@ public class Stadium : EntityBase
   {
     City = Guard.Against.NullOrEmpty(city, nameof(city));
     Name = Guard.Against.NullOrEmpty(name, nameof(name));
+    Id = City + Name;
     IsArchived = false;
   }
 
