@@ -7,37 +7,39 @@
     int currentId = Model.Id;
 }
 
+<link rel="stylesheet" type="text/css" href="~/css/EventView/_eventLayout.css" />
+
 <div class="row">
     <div class="col-md-12 offset-md-0">
-    <div class="event-name">@Model.Name</div>
+        <div class="event-name">@Model.Name</div>
     </div>
-	<div class="col-md-12 offset-md-0">
+    <div class="col-md-12">
         <div class="card event-view-tab">
-			<div class="card-header">
-				<ul class="nav nav-tabs card-header-tabs">
-					<li class="nav-item">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item">
                         <a class="nav-link" asp-controller="EventView" asp-action="ShowMatches" asp-route-id="@currentId">MATCHES</a>
-					</li>
-					<li class="nav-item">
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" asp-controller="EventView" asp-action="Bracket" asp-route-id="@currentId">BRACKET</a>
-					</li>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="EventView" asp-action="Stats" asp-route-id="@currentId">STATS</a>
                     </li>                  
                     @*<li class="nav-item">
                         <a class="nav-link" asp-controller="EventView" asp-action="Standings" asp-route-id="@currentID">STANDINGS</a>
                     </li>*@
-				</ul>
-			</div>
-			<div class="card-content">
-				<div class="row">
+                </ul>
+            </div>
+            <div class="card-content">
+                <div class="row">
                     <div class="col-md-12">
-						@RenderBody()
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts{

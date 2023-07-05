@@ -120,6 +120,7 @@ public class Match : EntityBase, IAggregateRoot
     {
       _playersStats[i].Update(playerStats[i]);
     }
+
     HomeTeamStats.Update(homeStats, guestStats);
     GuestTeamStats.Update(guestStats, homeStats);
 

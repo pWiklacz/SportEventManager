@@ -33,7 +33,7 @@ public class Event : EntityBase, IAggregateRoot
 
   [Required]
   [DefaultValue(false)]
-  public bool IsEnded{ get; private set; } = false;
+  public bool IsEnded { get; private set; } = false;
 
   [Required]
   public int MinPlayersQuantityPerTeam { get; set; } = 0;
@@ -43,7 +43,7 @@ public class Event : EntityBase, IAggregateRoot
 
   //navigation properties
 
-  private List<Stadium> _stadiums  = new();
+  private List<Stadium> _stadiums = new();
   private List<Team> _teams = new();
   private List<Match> _matches = new();
   public ICollection<Match> Matches => _matches.AsReadOnly();
@@ -69,7 +69,7 @@ public class Event : EntityBase, IAggregateRoot
     Guard.Against.InvalidInput(
       minPlayersQuantityPerTeam,
       nameof(minPlayersQuantityPerTeam),
-      (minPlayerQuantity => 
+      (minPlayerQuantity =>
         minPlayerQuantity is 7 or 9 or 11),
       "Players quantity per team must be 7, 9 or 11!"
       );
@@ -82,14 +82,6 @@ public class Event : EntityBase, IAggregateRoot
     );
     MatchDurationMinutes = Guard.Against.NegativeOrZero(matchDurationMinutes, nameof(matchDurationMinutes));
     IsArchived = false;
-  }
-
-  public void UpdateMatchStats(int id, FbTeamMatchStats homeStats, FbTeamMatchStats guestStats, List<FbPlayerMatchStats> playerStats)
-  {
-    foreach (var match in _matches.Where(match => match.Id == id))
-    {
-      match.EndMatch(homeStats, guestStats, playerStats);
-    }
   }
 
   public void AddStadium(Stadium newStadium)
@@ -105,7 +97,8 @@ public class Event : EntityBase, IAggregateRoot
   public void AddTeam(Team newTeam)
   {
     Guard.Against.Null(newTeam, nameof(newTeam));
-    if(_teams.Contains(newTeam)) {
+    if (_teams.Contains(newTeam))
+    {
       throw new Exception("The team " + newTeam.Name + " was chosen more than once.");
     }
     Guard.Against.Negative(
@@ -125,7 +118,7 @@ public class Event : EntityBase, IAggregateRoot
   {
     this.IsArchived = true;
     this._teams.Clear();
-    foreach(Match match in _matches)
+    foreach (Match match in _matches)
     {
       match.Archive();
     }
