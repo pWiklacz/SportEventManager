@@ -18,12 +18,10 @@ namespace SportEventManager.Web.Controllers;
 public class TeamManagerController : Controller
 {
   private readonly IRepository<Team> _teamRepository;
-  private string _existingPeselsNumbers;
   
   public TeamManagerController(IRepository<Team> teamRepository)
   {
     _teamRepository = teamRepository;
-    _existingPeselsNumbers = " ";
   }
 
   public async Task<IActionResult> Index()
@@ -36,19 +34,8 @@ public class TeamManagerController : Controller
 
       if (teamsWithPlayers == null)
       {
-        _existingPeselsNumbers = "";
         return View();
       }
-
-      var existingPeselNumbers = teamsWithPlayers
-        .SelectMany(t => t.TeamPlayers)
-        .Join(teamsWithPlayers.SelectMany(t => t.Players),
-          tp => tp.PlayerId,
-          p => p.Id,
-          (tp, p) => p.Pesel)
-        .ToList();
-
-      _existingPeselsNumbers = string.Join(",", existingPeselNumbers);
 
       var dto = new List<TeamViewModel>();
 
@@ -71,7 +58,6 @@ public class TeamManagerController : Controller
     TeamViewModel team = new TeamViewModel();
     team.Players.Add(new PlayerViewModel() { Id = 1 });
     team.TeamPlayers.Add(new TeamPlayerViewModel() { });
-    team.ExistingPeselNumbers = _existingPeselsNumbers;
 
     return View(team);
   }
@@ -80,23 +66,46 @@ public class TeamManagerController : Controller
   public async Task<IActionResult> Create(TeamViewModel viewModel)
   {
     string? currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    List<string> _existingPeselsNumbers = new List<string> { };
 
     if (currentUserId != null)
     {
+      var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersByOwnerIdSpec(currentUserId));
+      if(teamsWithPlayers != null)
+      {
+        var existingPeselNumbers = teamsWithPlayers
+        .SelectMany(t => t.TeamPlayers)
+        .Join(teamsWithPlayers.SelectMany(t => t.Players),
+          tp => tp.PlayerId,
+          p => p.Id,
+          (tp, p) => p.Pesel)
+        .ToList();
+
+        _existingPeselsNumbers = existingPeselNumbers;
+      }
+
       Team team = new Team(currentUserId, viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
       foreach (PlayerViewModel newPlayer in viewModel.Players)
       {
         //add a pesel validation here and if it exists in viewModel.ExistingPeselNumbers then redirect to Create again
         //but with an error (see EventManagerController there is an example there when i catch the exception and do the redirect
-        //showing exceptions message in the front)
-        team.AddPlayer(
-            new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel)
+        //showing exceptions message in the front) - done
+        try
+        {
+          team.AddPlayer(
+            new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel), _existingPeselsNumbers
           );
+        }
+        catch (Exception ex)
+        {
+          return RedirectToAction("Create", new { error = ex.Message });
+        }
+
       }
 
       await _teamRepository.AddAsync(team);
 
-      //i'm not sure if the indexes of viewModel.TeamPlayer will always be the same as in _teamPlayers, test it
+      //i'm not sure if the indexes of viewModel.TeamPlayer will always be the same as in _teamPlayers, test it - jest ok
       for (int i = 0; i < viewModel.TeamPlayers.Count; i++)
       {
         team.UpdateTeamPlayer(i, viewModel.TeamPlayers[i].Number);
@@ -105,7 +114,6 @@ public class TeamManagerController : Controller
       await _teamRepository.UpdateAsync(team);
       await _teamRepository.SaveChangesAsync();
     }
-
     return RedirectToAction("Index");
   }
 
@@ -119,9 +127,7 @@ public class TeamManagerController : Controller
     {
       return NotFound();
     }
-
     var dto = TeamViewModel.FromTeam(team);
-    dto.ExistingPeselNumbers = _existingPeselsNumbers;
 
     return View(dto);
   }
@@ -136,12 +142,32 @@ public class TeamManagerController : Controller
       return NotFound();
     }
 
+    string? currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    List<string> _existingPeselsNumbers = new List<string> { };
+
+    if (currentUserId != null)
+    {
+      var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersByOwnerIdSpec(currentUserId));
+      if (teamsWithPlayers != null)
+      {
+        var existingPeselNumbers = teamsWithPlayers
+        .SelectMany(t => t.TeamPlayers)
+        .Join(teamsWithPlayers.SelectMany(t => t.Players),
+          tp => tp.PlayerId,
+          p => p.Id,
+          (tp, p) => p.Pesel)
+        .ToList();
+
+        _existingPeselsNumbers = existingPeselNumbers;
+      }
+    }
+
     team.UpdateTeam(viewModel.Name, viewModel.City, viewModel.NumberOfPlayers);
 
     foreach(PlayerViewModel playerViewModel in viewModel.Players)
     {
       Player? player = team.Players.FirstOrDefault(p => p.Id == playerViewModel.Id);
-      team.UpsertPlayer(player, playerViewModel.Name, playerViewModel.Surname, playerViewModel.Pesel);
+      team.UpsertPlayer(player, playerViewModel.Name, playerViewModel.Surname, playerViewModel.Pesel, _existingPeselsNumbers);
     }
 
     //tu się psuje, bo nie może rozpoznać gracza, że istnieje na podstawie danych innych niż ID, moze trzeba zmienić
@@ -150,7 +176,7 @@ public class TeamManagerController : Controller
       
     await _teamRepository.UpdateAsync(team);
 
-    //i'm not sure if the indexes of viewModel.TeamPlayer will always be the same as in _teamPlayers, test it
+    //i'm not sure if the indexes of viewModel.TeamPlayer will always be the same as in _teamPlayers, test it - jest ok
     for (int i = 0; i < viewModel.TeamPlayers.Count; i++)
     {
       team.UpdateTeamPlayer(i, viewModel.TeamPlayers[i].Number);

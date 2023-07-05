@@ -122,6 +122,7 @@ public static class SeedData
     appDb.SaveChanges();
 
     List<Team> teams = new List<Team>(48);
+    List<string> existingPeselNumbers = new List<string>(11 * 48);
     for (int i = 1; i <= 48; i++)
     {
       var team = new Team($"{teamManagerUser?.Id}", $"Drużyna {i}", $"Miasto {i}", 11);
@@ -130,7 +131,8 @@ public static class SeedData
       {
         var player = new Player($"Imię {j} - {team.Name}", $"Nazwisko {j} - {team.Name}", $"{90030501900 + j}");
         appDb.Players.Add(player);
-        team.AddPlayer(player);
+        existingPeselNumbers.Add(player.Pesel);
+        team.AddPlayer(player, existingPeselNumbers);
       }
       teams.Add(team);
     }
