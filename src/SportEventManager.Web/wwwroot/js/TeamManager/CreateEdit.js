@@ -1,5 +1,6 @@
 
-function checkAllPeselNumbers() {
+function checkAllPeselNumbers(event) {
+    event.preventDefault();
     var peselInputs = document.querySelectorAll('#pesel-input');
     var postedPeselNumbersList = [];
     peselInputs.forEach(input => {
@@ -11,6 +12,11 @@ function checkAllPeselNumbers() {
         alert('You can\'t post two players with the same pesel numbers!');
     }
 }
+
+//nie dzia³a to gówno jebane ani z click ani z niczym - nie da siê zatrzymaæ wejœcia do kontrolera
+//bo wywo³aæ inaczej sam¹ metodê to akurat luz, ale jak z html to nie podajesz eventu do preventDefault()
+//jak sie uda zrobiæ coœ z tym peslem to trzeba to samo zrobiæ z tagiem i numerami na koszulkach
+('#TeamsForm').addEventListener("submit", checkAllPeselNumbers);
 
 function adjustPlayersRows() {
     var table = document.getElementById('PlayersTable');

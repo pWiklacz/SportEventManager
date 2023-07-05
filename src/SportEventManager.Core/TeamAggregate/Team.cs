@@ -71,12 +71,13 @@ public class Team : EntityBase, IAggregateRoot
 
   public Team() { }
 
-  public void AddPlayer(Player newPlayer, List<string>? existingPeselNumbers)
+  public void AddPlayer(Player newPlayer, List<string>? existingPeselNumbers, bool peselIsValidatedAlready = false)
   {
     Guard.Against.Null(newPlayer, nameof(newPlayer));
-    if (PropertyExistsInDb(newPlayer.Pesel, existingPeselNumbers))
+    if (PropertyExistsInDb(newPlayer.Pesel, existingPeselNumbers) && !peselIsValidatedAlready)
     {
-      throw new Exception("The player with pesel: " + newPlayer.Pesel + " already exists.");
+      throw new Exception("The player with pesel: " + newPlayer.Pesel + " is already in use!" +
+        " Please inform your player he needs to be removed from his current team first!");
     }
     _players.Add(newPlayer);
   }
@@ -111,14 +112,16 @@ public class Team : EntityBase, IAggregateRoot
       for (int j = 0; j < players.Count; j++)
         if (_players[i].Pesel != players[j].Pesel && j != players.Count - 1)
           continue;
-        else if(j == players.Count - 1 && _players[i].Pesel != players[j].Pesel)
+        else if (_players[i].Pesel == players[j].Pesel)
+          break;
+        else if (j == players.Count - 1 && _players[i].Pesel != players[j].Pesel)
           _teamPlayers[i].LeaveOn = DateTime.Now;
-  }//check if ok
+  }
 
   public void UpdateTeam(string name, string tag, string city, int numberOfPlayers, List<string>? existingTags)
   {
     Name = Guard.Against.NullOrEmpty(name, nameof(name));
-    if (PropertyExistsInDb(tag, existingTags))
+    if (PropertyExistsInDb(tag, existingTags) && tag != this.Tag)
     {
       throw new Exception("The team with tag: " + tag + " already exists.");
     }
@@ -127,19 +130,31 @@ public class Team : EntityBase, IAggregateRoot
     NumberOfPlayers = Guard.Against.NegativeOrZero(numberOfPlayers, nameof(numberOfPlayers));
   }
 
-  public void UpsertPlayer(Player? player, string newName, string newSurname, string newPesel, List<string>? existingPeselNumbers)
+  public void UpsertPlayer(
+    Player? player,
+    string newName,
+    string newSurname,
+    string newPesel,
+    List<string>? existingPeselNumbers,
+    bool peselIsValidatedAlready = false
+    )
   {
-    if (PropertyExistsInDb(newPesel, existingPeselNumbers))
-    {
-      throw new Exception("The player with pesel: " + newPesel + " already exists.");
-    }
     if (player != null)
     {
+      if (
+        player.Pesel != newPesel &&
+        PropertyExistsInDb(newPesel, existingPeselNumbers) && 
+        !peselIsValidatedAlready
+        )
+      {
+        throw new Exception("The player with pesel: " + newPesel + " is already in use!" +
+          " Please inform your player he needs to be removed from his current team first!");
+      }
       this.UpdatePlayer(player.Id, newName, newSurname, newPesel);
     }
     else
     {
-      this.AddPlayer(new Player(newName, newSurname, newPesel), existingPeselNumbers);
+      this.AddPlayer(new Player(newName, newSurname, newPesel), existingPeselNumbers, peselIsValidatedAlready);
     }
   }
 

@@ -1,4 +1,7 @@
-﻿using System.Security.Claims;
+﻿using System.Data;
+using System.Linq;
+using System.Numerics;
+using System.Security.Claims;
 using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +30,8 @@ public class TeamManagerController : Controller
     if (currentUserId != null)
     {
       var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersByOwnerIdSpec(currentUserId));
-
+      teamsWithPlayers = RemoveOldPlayers(teamsWithPlayers);
+     
       if (teamsWithPlayers == null)
       {
         return View();
@@ -64,14 +68,18 @@ public class TeamManagerController : Controller
     string? currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     List<string>? existingPeselNumbers = null;
     List<string>? existingTeamsTags = null;
+    List<string>? freePeselNumbersList = null;
 
     if (currentUserId != null)
     {
       var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersByOwnerIdSpec(currentUserId));
+      //teamsWithPlayers = RemoveOldPlayers(teamsWithPlayers);
+
       if (teamsWithPlayers != null)
       {
-        existingPeselNumbers = GetPeselNumbersFromExistingTeams(teamsWithPlayers);
-        existingTeamsTags = GetTagsFromExistingTeams(teamsWithPlayers);
+        existingPeselNumbers = GetPeselNumbersFromExistingTeams(teamsWithPlayers)!;
+        existingTeamsTags = GetTagsFromExistingTeams(teamsWithPlayers)!;
+        freePeselNumbersList = GetFreePeselList(teamsWithPlayers)!;
       }
 
       Team team;
@@ -80,7 +88,7 @@ public class TeamManagerController : Controller
         team = new Team(
           currentUserId,
           viewModel.Name,
-          viewModel.Tag,
+          viewModel.Tag.ToUpper(),
           viewModel.City,
           viewModel.NumberOfPlayers,
           existingTeamsTags
@@ -88,6 +96,8 @@ public class TeamManagerController : Controller
       } catch (Exception ex) {
         return RedirectToAction("Create", new { error = ex.Message });
       }
+
+      await _teamRepository.AddAsync(team);
 
       foreach (PlayerViewModel newPlayer in viewModel.Players)
       {
@@ -97,26 +107,29 @@ public class TeamManagerController : Controller
             new Player(newPlayer.Name, newPlayer.Surname, newPlayer.Pesel), existingPeselNumbers
           );
         }
-        catch (Exception ex)
+        catch (Exception ex) //player's pesel exists
         {
-          //extract FreePeselToAnExternal list
-          if(teamsWithPlayers != null && GetFreePeselList(teamsWithPlayers)!.Contains(newPlayer.Pesel)) {
+          //add existing player to team if he's free
+          if (freePeselNumbersList!.Contains(newPlayer.Pesel))
+          {
             team.AddPlayer(
               newPlayer: GetExistingPlayerByPesel(teamsWithPlayers!, newPlayer.Pesel)!,
-              existingPeselNumbers: existingPeselNumbers
+              existingPeselNumbers: existingPeselNumbers,
+              peselIsValidatedAlready: true
             );
-          } else {
+          }
+          else
+          { //show a communicate that the player is already in use
             return RedirectToAction("Create", new { error = ex.Message });
           }
         }
       }
 
-      //check if ok
-      await _teamRepository.AddAsync(team);//wywala się, że nie ma id playera, a wcześniej samo brało do TeamPlayer :(
+      await _teamRepository.UpdateAsync(team);
 
       for (int i = 0; i < viewModel.TeamPlayers.Count; i++)
       {
-        team.UpdateTeamPlayer(i, viewModel.TeamPlayers[i].Number);
+        team.UpdateTeamPlayer(i, viewModel.TeamPlayers[i].Number); //check if ok
       }
 
       await _teamRepository.UpdateAsync(team);
@@ -130,12 +143,15 @@ public class TeamManagerController : Controller
   {
     TeamByIdWithPlayersSpec spec = new TeamByIdWithPlayersSpec(id);
     Team? team = await _teamRepository.FirstOrDefaultAsync(spec);
-
+    
     if (team == null)
     {
       return NotFound();
     }
-    var dto = TeamViewModel.FromTeam(team);
+
+    team = RemoveOldPlayersFromTeam(team);
+
+    var dto = TeamViewModel.FromTeam(team!);
     dto.BackendError = error;
 
     return View(dto);
@@ -154,21 +170,23 @@ public class TeamManagerController : Controller
     string? currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     List<string>? existingPeselNumbers = null;
     List<string>? existingTeamsTags = null;
+    List<string>? freePeselNumbersList = null;
 
     if (currentUserId != null)
     {
       var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersByOwnerIdSpec(currentUserId));
       if (teamsWithPlayers != null)
       {
-        existingPeselNumbers = GetPeselNumbersFromExistingTeams(teamsWithPlayers);
-        existingTeamsTags = GetTagsFromExistingTeams(teamsWithPlayers);
+        existingPeselNumbers = GetPeselNumbersFromExistingTeams(teamsWithPlayers)!;
+        existingTeamsTags = GetTagsFromExistingTeams(teamsWithPlayers)!;
+        freePeselNumbersList = GetFreePeselList(teamsWithPlayers)!;
       }
 
       try
       {
         team.UpdateTeam(
           viewModel.Name,
-          viewModel.Tag,
+          viewModel.Tag.ToUpper(),
           viewModel.City,
           viewModel.NumberOfPlayers,
           existingTeamsTags
@@ -192,21 +210,28 @@ public class TeamManagerController : Controller
             existingPeselNumbers
           );
         }
-        catch (Exception ex)
+        catch (Exception ex) //player's pesel exists
         {
-          if (teamsWithPlayers != null && GetFreePeselList(teamsWithPlayers)!.Contains(playerViewModel.Pesel))
+          //use existing player to team if he's free
+          if (freePeselNumbersList!.Contains(playerViewModel.Pesel))
           {
-            team.AddPlayer(
-              newPlayer: GetExistingPlayerByPesel(teamsWithPlayers!, playerViewModel.Pesel)!,
-              existingPeselNumbers: existingPeselNumbers
+            team.UpsertPlayer(
+              GetExistingPlayerByPesel(teamsWithPlayers!, playerViewModel.Pesel)!,
+              playerViewModel.Name,
+              playerViewModel.Surname,
+              playerViewModel.Pesel,
+              existingPeselNumbers,
+              peselIsValidatedAlready: true
             );
-          } else {
+          }
+          else
+          { //show a communicate that the player is already in use
             return RedirectToAction("Edit", new { id = viewModel.Id, error = ex.Message });
           }
         }
       }
 
-      team.DeleteOldPlayers(viewModel.getPlayersList());
+      team.DeleteOldPlayers(viewModel.getPlayersList());//check if ok
 
       await _teamRepository.UpdateAsync(team);  //check if ok
 
@@ -248,7 +273,9 @@ public class TeamManagerController : Controller
       return NotFound();
     }
 
-    team.Archive();
+    team = RemoveOldPlayersFromTeam(team);
+
+    team!.Archive();
     await _teamRepository.UpdateAsync(team);
 
     return RedirectToAction("Index");
@@ -283,9 +310,15 @@ public class TeamManagerController : Controller
 
   private List<string>? GetTagsFromExistingTeams(List<Team> existingTeams)
   {
-    return (List<string>?)existingTeams
-      .SelectMany(t => t.Tag)
-      .Cast<string>();  //don't know why the .ToList() method suggest the type is <char> and compiler say it's an error
+    List<string> tags = new List<string>();
+    foreach(var team in existingTeams)
+    {
+      if(!tags.Contains(team.Tag.ToUpper()))
+      {
+        tags.Add(team.Tag.ToUpper());
+      }
+    }
+    return tags;
   }
 
   private Player? GetExistingPlayerByPesel(List<Team> existingTeams, string pesel)
@@ -293,14 +326,64 @@ public class TeamManagerController : Controller
       return (Player?)existingTeams
         .Select(
           t => t.Players.FirstOrDefault(
-            p => p.Pesel == pesel
+              p => p.Pesel == pesel
             )
           );
   }
 
+  /**
+   * Get the list of Player.Pesel numbers which has the TeamPlayer.LeaveOn date earlier than today
+   */
   private List<string>? GetFreePeselList(List<Team> existingTeams)
+  {  
+    return existingTeams
+    .SelectMany(t => t.TeamPlayers)
+    .Join(existingTeams.SelectMany(t => t.Players),
+        tp => tp.PlayerId,
+        p => p.Id,
+        (tp, p) => new { TeamPlayer = tp, Player = p }) // Include both TeamPlayer and Player objects
+      .Where(tpp => tpp.TeamPlayer.LeaveOn != null &&
+          tpp.TeamPlayer.LeaveOn < DateTime.Now)
+      .Select(tpp => tpp.Player.Pesel)
+      .ToList();
+  }
+
+  //this should change the list of teams to remove the players which are 
+  //no longer in the team due to TeamPlayer.LeaveOn property filled
+  //i was trying to remove it from here or from migration but none of this works
+  private List<Team>? RemoveOldPlayers(List<Team> existingTeams)
   {
-    //get the list of pesel numbers which has the leavOn date earlier than today
-    return new List<string>();
+    foreach(Team team in existingTeams)
+    {
+      for(int i = 0; i < team.TeamPlayers.Count; i++)
+      {
+        if (team.TeamPlayers.ElementAt(i).LeaveOn != null &&
+          team.TeamPlayers.ElementAt(i).LeaveOn < DateTime.Now)
+        {
+          //some exceptions cause it's broken
+         // team.Players.Remove(team.Players.ElementAt(i));
+          //team.TeamPlayers.Remove(team.TeamPlayers.ElementAt(i));
+        }
+      }
+    }
+    return existingTeams;
+  }
+
+  //this should change the team to remove the players which are 
+  //no longer in the team due to TeamPlayer.LeaveOn property filled
+  //i was trying to remove it from here or from migration but none of this works
+  private Team? RemoveOldPlayersFromTeam(Team team)
+  {
+    for (int i = 0; i < team.TeamPlayers.Count; i++)
+    {
+      if (team.TeamPlayers.ElementAt(i).LeaveOn != null &&
+        team.TeamPlayers.ElementAt(i).LeaveOn < DateTime.Now)
+      {
+        //some exceptions cause it's broken
+        //team.Players.Remove(team.Players.ElementAt(i));
+        //team.TeamPlayers.Remove(team.TeamPlayers.ElementAt(i));
+      }
+    }
+    return team;
   }
 }
