@@ -115,7 +115,7 @@
                                             <input asp-for="@Model.Players[i].Pesel" class="form-control" id="pesel-input" />
                                             <span asp-validation-for="@Model.Players[i].Pesel" class="text-danger"></span>
                                         </td>
-                                        <td style="width:60px;">
+                                          <td style="width:60px;">
                                             <input type="hidden" asp-for="@Model.Players[i].IsArchived" />
                                             @*<button id="btnremove-@i" type="button" class="btn btn-sm btn-danger visible" onclick="DeleteItem(this)">
                                                 Delete

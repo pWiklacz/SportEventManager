@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Numerics;
 using Ardalis.GuardClauses;
 using SportEventManager.Core.EventAggregate;
-using SportEventManager.Core.StatisticsAggregate;
+using SportEventManager.Core.MatchAggregate;
 using SportEventManager.SharedKernel;
 using SportEventManager.SharedKernel.Interfaces;
 
@@ -35,10 +34,6 @@ public class Team : EntityBase, IAggregateRoot
   [DefaultValue(false)]
   public bool IsArchived { get; private set; } = false;
 
-  [DefaultValue(null)]
-  [NotMapped]
-  public Statistics? FbTeamWholeStats { get; set; }
-
   private List<Player> _players = new();
   private List<Event> _events = new();
   private List<Match> _homeMatches = new();
@@ -66,7 +61,6 @@ public class Team : EntityBase, IAggregateRoot
     City = Guard.Against.NullOrEmpty(city, nameof(city));
     NumberOfPlayers = Guard.Against.NegativeOrZero(numberOfPlayers, nameof(numberOfPlayers));
     _players = new List<Player>(numberOfPlayers);
-    FbTeamWholeStats = null;
   }
 
   public Team() { }

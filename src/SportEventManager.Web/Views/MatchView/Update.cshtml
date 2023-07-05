@@ -1,0 +1,294 @@
+﻿@using SportEventManager.Web.ViewModels.MatchModel
+
+@model MatchViewModel
+
+@{
+    ViewData["Title"] = "Stats";
+}
+
+<script src="~/js/MatchView/Update.js"></script>
+<link rel="stylesheet" type="text/css" href="~/css/MatchView/Stats.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+<form method="post" id="MathchesForm" asp-controller="MatchView" asp-action="Update">
+<table class="table-teamStats">
+    <tr>
+        <td>
+            @Html.DisplayFor(item => Model.HomeTeam.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(item => Model.HomeTeamStats.Goals)
+        </td>
+        <td>
+            VS
+        </td>
+        <td>
+            @Html.DisplayFor(item => Model.GuestTeamStats.Goals)
+        </td>
+        <td>
+            @Html.DisplayFor(item => Model.GuestTeam.Name)
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2">
+            <div class="addstat1">
+                <input type="number" class="nr-input" asp-for="@Model.HomeTeamStats.Goals" id="goals1" min="0" value="0">
+                <span asp-validation-for="@Model.HomeTeamStats.Goals" class="text-danger"></span>
+            </div>
+        </td>
+        <td>
+            GOALS
+        </td>
+        <td colspan="2">
+            <div class="addstat2">
+                <input type="number" class="nr-input" asp-for="@Model.GuestTeamStats.Goals" id="goals2" min="0" value="0">
+                <span asp-validation-for="@Model.GuestTeamStats.Goals" class="text-danger"></span>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2">
+            <div class="addstat1">
+                <input type="number" class="nr-input" asp-for="@Model.HomeTeamStats.Assists" id="assist1" min="0" value="0">
+                <span asp-validation-for="@Model.HomeTeamStats.Assists" class="text-danger"></span>
+            </div>
+        </td>
+        <td>
+            ASSIST
+        </td>
+        <td colspan="2">
+            <div class="addstat2">
+                <input type="number" class="nr-input" asp-for="@Model.GuestTeamStats.Assists" id="assist2" min="0" value="0">
+                <span asp-validation-for="@Model.GuestTeamStats.Assists" class="text-danger"></span>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2">
+            <div class="addstat1">
+                <input type="number" class="nr-input" asp-for="@Model.HomeTeamStats.Shoots" id="shoots1" min="0" value="0">
+                <span asp-validation-for="@Model.HomeTeamStats.Shoots" class="text-danger"></span>
+            </div>
+        </td>
+        <td>
+            SHOOTS
+        </td>
+        <td colspan="2">
+            <div class="addstat2">
+                <input type="number" class="nr-input" asp-for="@Model.GuestTeamStats.Shoots" id="shoots2" min="0" value="0">
+                <span asp-validation-for="@Model.GuestTeamStats.Shoots" class="text-danger"></span>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2">
+            <div class="addstat1">
+                <input type="number" class="nr-input" asp-for="@Model.HomeTeamStats.ShootsOnTarget" id="shootsontarget1" min="0" value="0">
+                <span asp-validation-for="@Model.HomeTeamStats.ShootsOnTarget" class="text-danger"></span>
+            </div>
+        </td>
+        <td>
+            SHOOTS ON TARGET
+        </td>
+        <td colspan="2">
+            <div class="addstat2">
+                <input type="number" class="nr-input" asp-for="@Model.GuestTeamStats.ShootsOnTarget" id="shootsontarget2" min="0" value="0">
+                <span asp-validation-for="@Model.GuestTeamStats.ShootsOnTarget" class="text-danger"></span>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2">
+            <div class="addstat1">
+                <input type="number" class="nr-input" asp-for="@Model.HomeTeamStats.Passes" id="passes1" min="0" value="0">
+                <span asp-validation-for="@Model.HomeTeamStats.Passes" class="text-danger"></span>
+            </div>
+        </td>
+        <td>
+            PASSES
+        </td>
+        <td colspan="2">
+            <div class="addstat2">
+                <input type="number" class="nr-input" asp-for="@Model.GuestTeamStats.Passes" id="passes2" min="0" value="0">
+                <span asp-validation-for="@Model.GuestTeamStats.Passes" class="text-danger"></span>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2">
+            <div class="addstat1">
+                <input type="number" class="nr-input" asp-for="@Model.HomeTeamStats.Fouls" id="fouls1" min="0" value="0">
+                <span asp-validation-for="@Model.HomeTeamStats.Fouls" class="text-danger"></span>
+            </div>
+        </td>
+        <td>
+            FOULS
+        </td>
+        <td colspan="2">
+            <div class="addstat2">
+                <input type="number" class="nr-input" asp-for="@Model.GuestTeamStats.Fouls" id="fouls2" min="0" value="0">
+                <span asp-validation-for="@Model.GuestTeamStats.Fouls" class="text-danger"></span>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2">
+            <div class="addstat1">
+                <input type="number" class="nr-input" asp-for="@Model.HomeTeamStats.YellowCards" id="ycards1" min="0" value="0">
+                <span asp-validation-for="@Model.HomeTeamStats.YellowCards" class="text-danger"></span>
+            </div>
+        </td>
+        <td>
+            YELLOW CARDS
+        </td>
+        <td colspan="2">
+            <div class="addstat2">
+                <input type="number" class="nr-input" asp-for="@Model.GuestTeamStats.YellowCards" id="ycards2" min="0" value="0">
+                <span asp-validation-for="@Model.GuestTeamStats.YellowCards" class="text-danger"></span>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2">
+            <div class="addstat1">
+                <input type="number" class="nr-input" asp-for="@Model.HomeTeamStats.RedCards" id="rcards1" min="0" value="0">
+                <span asp-validation-for="@Model.HomeTeamStats.RedCards" class="text-danger"></span>
+            </div>
+        </td>
+        <td>
+            RED CARDS
+        </td>
+        <td colspan="2">
+            <div class="addstat2">
+                <input type="number" class="nr-input" asp-for="@Model.GuestTeamStats.RedCards" id="rcards2" min="0" value="0">
+                <span asp-validation-for="@Model.GuestTeamStats.RedCards" class="text-danger"></span>
+            </div>
+        </td>
+    </tr>
+
+</table>
+
+@{
+    int x = Model.HomeTeamPlayersMatchStats.Count > Model.GuestTeamPlayersMatchStats.Count
+        ? Model.HomeTeamPlayersMatchStats.Count : Model.GuestTeamPlayersMatchStats.Count;
+}
+
+<div class="table-container">
+    <table class="player-table">
+        <tr>
+            <th scope="col" class="left-th"></th>
+            <th scope="col" class="left-th"></th>
+            <th scope="col" class="left-th">Goals</th>
+            <th scope="col" class="left-th">Assists</th>
+            <th scope="col" class="left-th">
+                <span class="material-symbols-outlined" style="color: yellow">
+                    crop_portrait
+                </span>
+            </th>
+            <th scope="col" class="left-th">
+                <span class="material-symbols-outlined" style="color: red">
+                    crop_portrait
+                </span>
+            </th>
+        </tr>
+        @for (int j = 0; j < x; j++)
+        {
+            <tr>
+                @if (j < Model.HomeTeamPlayersMatchStats.Count)
+                {
+                    <td class="left-td-name">@Html.DisplayFor(item => Model.HomeTeamPlayersMatchStats[j].Player.Name)</td>
+                    <td class="left-td-name">@Html.DisplayFor(item => Model.HomeTeamPlayersMatchStats[j].Player.Surname)</td>
+                    <td class="left-td">
+                        <input type="number" asp-for="@Model.HomeTeamPlayersMatchStats[j].Goals" class="number-input" id="playerGoals1" min="0" value="0">
+                        <span asp-validation-for="@Model.HomeTeamPlayersMatchStats[j].Goals" class="text-danger"></span>
+                    </td>
+                    <td class="left-td">
+                        <input type="number" asp-for="@Model.HomeTeamPlayersMatchStats[j].Assists" class="number-input" id="playerAssists1" min="0" value="0">
+                        <span asp-validation-for="@Model.HomeTeamPlayersMatchStats[j].Assists" class="text-danger"></span>
+                    </td>
+                    <td class="left-td">
+                        <input type="number" asp-for="@Model.HomeTeamPlayersMatchStats[j].YellowCards" class="number-input" id="playerYellowCards1" min="0" max="2" value="0">
+                        <span asp-validation-for="@Model.HomeTeamPlayersMatchStats[j].YellowCards" class="text-danger"></span>
+                    </td>
+                    <td class="left-td">
+                        <input type="number" asp-for="@Model.HomeTeamPlayersMatchStats[j].RedCards" class="number-input" id="playerRedCards1" min="0" max="1" value="0">
+                        <span asp-validation-for="@Model.HomeTeamPlayersMatchStats[j].RedCards" class="text-danger"></span>
+                    </td>
+                    <input type="hidden" asp-for="@Model.HomeTeamPlayersMatchStats[j].Id" />
+                    <input type="hidden" asp-for="@Model.HomeTeamPlayersMatchStats[j].PlayerId" />
+                }
+            </tr>
+        }
+    </table>
+    <table class="player-table">
+
+        <tr>
+            <th class="right-th">
+                <span class="material-symbols-outlined" style="color: red">
+                    crop_portrait
+                </span>
+            </th>
+            <th class="right-th">
+                <span class="material-symbols-outlined" style="color: yellow">
+                    crop_portrait
+                </span>
+            </th>
+            <th class="right-th">Assists</th>
+            <th class="right-th">Goals</th>
+            <th class="right-th"></th>
+            <th class="right-th"></th>
+        </tr>
+
+
+        @for (int j = 0; j < x; j++)
+        {
+            <tr>
+                @if (j < Model.GuestTeamPlayersMatchStats.Count)
+                {
+                    <td class="right-td">
+                        <input type="number" asp-for="@Model.GuestTeamPlayersMatchStats[j].RedCards" class="number-input" id="playerRedCards2" min="0" max="1" value="0">
+                        <span asp-validation-for="@Model.GuestTeamPlayersMatchStats[j].RedCards" class="text-danger"></span>
+                    </td>
+                    <td class="right-td">
+                        <input type="number" asp-for="@Model.GuestTeamPlayersMatchStats[j].YellowCards" class="number-input" id="playerYellowCards2" min="0" max="2" value="0">
+                        <span asp-validation-for="@Model.GuestTeamPlayersMatchStats[j].YellowCards" class="text-danger"></span>
+                    </td>
+                    <td class="right-td">
+                        <input type="number" asp-for="@Model.GuestTeamPlayersMatchStats[j].Assists" class="number-input" id="playerAssists2" min="0" value="0">
+                        <span asp-validation-for="@Model.GuestTeamPlayersMatchStats[j].Assists" class="text-danger"></span>
+                    </td>
+                    <td class="right-td">
+                        <input type="number" asp-for="@Model.GuestTeamPlayersMatchStats[j].Goals" class="number-input" id="playerGoals2" min="0" value="0">
+                        <span asp-validation-for="@Model.GuestTeamPlayersMatchStats[j].Goals" class="text-danger"></span>
+                    </td>
+                    <td class="right-td-name">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].Player.Name)</td>
+                    <td class="right-td-name">@Html.DisplayFor(item => Model.GuestTeamPlayersMatchStats[j].Player.Surname)</td>
+                    <input type="hidden" asp-for="@Model.GuestTeamPlayersMatchStats[j].Id" />
+                    <input type="hidden" asp-for="@Model.GuestTeamPlayersMatchStats[j].PlayerId" />
+                }
+            </tr>
+        }
+        <input type="hidden" asp-for="@Model.Id" />
+        <input type="hidden" asp-for="@Model.HomeTeamStats.Id" />
+        <input type="hidden" asp-for="@Model.GuestTeamStats.Id" />
+        <input type="hidden" asp-for="@Model.HomeTeamStats.TeamId" />
+        <input type="hidden" asp-for="@Model.GuestTeamStats.TeamId" />
+    </table>
+</div>
+
+<div class="button-row">
+    <br style="margin-top: 40px;" />
+    <button type="button" class="btnBack" id="btnBackt" onclick="backToIndex(@Model.Id)">Back</button>
+    <button type="button" class="btnReset" id="btnReset" onclick="resetDetails()">Reset</button>
+    <button type="submit" class="btnUpdate" id="btnUpdate">Update</button>
+</div>
+</form>
+

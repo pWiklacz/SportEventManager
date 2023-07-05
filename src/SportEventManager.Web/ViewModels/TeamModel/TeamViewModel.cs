@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.TeamAggregate;
+using SportEventManager.Web.ViewModels.EventModel;
 
 namespace SportEventManager.Web.ViewModels.TeamModel;
 

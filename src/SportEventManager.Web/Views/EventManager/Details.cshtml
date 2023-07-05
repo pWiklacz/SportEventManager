@@ -24,14 +24,48 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StartTime)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EndTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EndTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsInProgress)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsInProgress)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsEnded)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsEnded)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MinPlayersQuantityPerTeam)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MinPlayersQuantityPerTeam)
+        </dd>
+        <dd class="h-25"></dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MatchDurationMinutes)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MatchDurationMinutes) min
+        </dd>
     </dl>
 </div>
 <div class="p-1 mt-4" style="height:50px;">
     <h4>These are event members</h4>
 </div>
+<div class="p-1 mt-4" style="height:50px;">
+    <h3>Teams</h3>
+</div>
 <div class="container col-12">
     <div class="col-md-12 p-0 m-0 bg-white">
-        <table id="PlayerTable" class="table table-sm CodesTable">
+        <table id="TeamsTable" class="table table-sm CodesTable">
             <thead>
                 <tr>
                     <th>
@@ -67,11 +101,17 @@
         </table>
     </div>
 </div>
+<div class="p-1 mt-4" style="height:50px;">
+    <h3>Stadiums</h3>
+</div>
 <div class="container col-12">
     <div class="col-md-12 p-0 m-0 bg-white">
-        <table id="PlayersTable" class="table table-sm CodesTable">
+        <table id="StadiumsTable" class="table table-sm CodesTable">
             <thead>
                 <tr>
+                    <th>
+                        Name
+                    </th>
                     <th>
                         City
                     </th>
@@ -81,6 +121,9 @@
                 @foreach (var Stadium in Model.Stadiums)
                 {
                    <tr>
+                        <td class="team-col-colors">
+                            @Stadium.Name
+                        </td>
                        <td class="team-col-colors">
                           @Stadium.City
                        </td>

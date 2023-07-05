@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SportEventManager.Core.EventAggregate;
+using SportEventManager.Core.MatchAggregate;
 
 namespace SportEventManager.Infrastructure.Data.Config.EventAggregate;
 public class MatchConfiguration : IEntityTypeConfiguration<Match>

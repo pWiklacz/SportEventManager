@@ -5,7 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Your Event</h1>
+<style>
+    th, td {
+        flex: 1;
+        text-align: center;
+    }
+</style>
+
+<h1>Your Events</h1>
 
 <p>
     <a asp-action="Create">Create New Event</a>
@@ -14,12 +21,22 @@
 <table class="table mx-auto" style="width: 75%;">
 <thead >
     <tr style="display: flex;">
-        <th style="flex: 1; text-align: center;">
+        <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
-        <th style="flex: 1; text-align: center;">
+        <th>
             @Html.DisplayNameFor(model => model.StartTime)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsInProgress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsEnded)
+        </th>
+        <th>Options</th>
     </tr>
 </thead>
 <tbody>
@@ -27,7 +44,7 @@
     {
         @if (!item.IsArchived)
         {
-            <tr>
+                <tr style="display: flex;">
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
@@ -35,8 +52,17 @@
                     @Html.DisplayFor(modelItem => item.StartTime)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsInProgress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsEnded)
+                </td>
+                <td>
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
                     <a asp-action="Generate" asp-route-id="@item.Id">Generate</a>
                 </td>
             </tr>

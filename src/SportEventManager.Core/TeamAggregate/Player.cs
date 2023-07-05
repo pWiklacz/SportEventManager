@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Identity;
-using SportEventManager.Core.StatisticsAggregate;
 using SportEventManager.SharedKernel;
 
 namespace SportEventManager.Core.TeamAggregate;
@@ -27,7 +26,6 @@ public class Player : EntityBase
   [MaxLength(11)]
   public string Pesel { get; set; }
 
-  public FbPlayerStats? FbPlayerStats { get; set; }
   private List<Team> _teams = new();
   public ICollection<Team> Teams => _teams.AsReadOnly();
 
