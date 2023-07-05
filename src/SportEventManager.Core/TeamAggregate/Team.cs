@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
 using SportEventManager.Core.EventAggregate;
-susing SportEventManager.Core.MatchAggregate;
+using SportEventManager.Core.MatchAggregate;
 using SportEventManager.SharedKernel;
 using SportEventManager.SharedKernel.Interfaces;
 
