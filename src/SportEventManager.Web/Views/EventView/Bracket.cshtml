@@ -22,17 +22,17 @@
     @for (int i = 0; i <= numRounds; i++)
     {
         <div class="round @(i > 0 ? $"round-{i}" : "")">
-            <h3>@roundNames[(roundNames.Length - 1) - numRounds + i]</h3>
+            <h3 class="full-width">@roundNames[(roundNames.Length - 1) - numRounds + i]</h3>
             @for (int j = 0; j < startNumberMatches; j++ )
             {
                 <div class="matchPair">
                     <div class="matchTable">
                         <div class="team-nameTable">@((iterationTeam <= startNumberMatches) ? Matches[iterationTeam].HomeTeam.Name : "Oczekujący")</div>
-                        <div class="team-scoreTable">0</div>
+                        <div class="team-scoreTable">@((iterationTeam <= startNumberMatches) ? Matches[iterationTeam].HomeTeamStats.Goals : "0")</div>
                     </div>
                     <div class="matchTable">
                         <div class="team-nameTable">@((iterationTeam <= startNumberMatches) ? Matches[iterationTeam].GuestTeam.Name : "Oczekujący")</div>
-                        <div class="team-scoreTable">0</div>
+                        <div class="team-scoreTable">@((iterationTeam <= startNumberMatches) ? Matches[iterationTeam].GuestTeamStats.Goals : "0")</div>
                     </div>
                 </div>
                 iterationTeam++;
