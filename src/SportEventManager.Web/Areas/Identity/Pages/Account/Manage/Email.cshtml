@@ -5,6 +5,135 @@
     ViewData["ActivePage"] = ManageNavPages.Email;
 }
 
+<style>
+    #email-form .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    #email-form .col-md-6 {
+        flex: 0 0 calc(50% - 15px);
+    }
+
+    #email-form .form-floating {
+        position: relative;
+        margin-bottom: 1rem;
+    }
+
+        #email-form .form-floating label {
+            font-weight: bold;
+        }
+
+        #email-form .form-floating input.form-control,
+        #email-form .form-floating select.form-control {
+            width: 100%;
+            height: calc(1.5em + 0.75rem + 2px);
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+            #email-form .form-floating input.form-control:focus,
+            #email-form .form-floating select.form-control:focus {
+                border-color: #80bdff;
+                outline: 0;
+                box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+            }
+
+        #email-form .form-floating span.text-danger {
+            color: #dc3545;
+            font-size: 0.875rem;
+        }
+
+    #email-form button[type="submit"] {
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 0.25rem;
+        transition: background-color 0.15s ease-in-out;
+        cursor: pointer;
+    }
+
+        #email-form button[type="submit"]:hover,
+        #email-form button[type="submit"]:focus {
+            background-color: #0056b3;
+        }
+
+    #email-form .input-group {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+        width: 100%;
+    }
+
+        #email-form .input-group .input-group-text {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+            width: 2.5rem;
+            height: calc(1.5em + 0.75rem + 2px);
+            padding: 0.375rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            line-height: 1.5;
+            color: #155724;
+            text-align: center;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-right: none;
+            border-radius: 0.25rem 0 0 0.25rem;
+        }
+
+            #email-form .input-group .input-group-text.text-success {
+                color: #155724;
+                background-color: #d4edda;
+                border-color: #c3e6cb;
+            }
+
+        #email-form .input-group input.form-control {
+            position: relative;
+            z-index: 1;
+            flex: 1 1 0%;
+            margin-bottom: 0;
+            padding-left: 2.5rem;
+        }
+
+    #email-form .btn.btn-link {
+        color: #007bff;
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        font-weight: bold;
+        text-decoration: underline;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+        cursor: pointer;
+    }
+
+        #email-form .btn.btn-link:hover,
+        #email-form .btn.btn-link:focus {
+            color: #0056b3;
+            background-color: transparent;
+            border-color: transparent;
+        }
+</style>
+
 <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
@@ -15,9 +144,9 @@
             {
                 <div class="form-floating input-group">
                     <input asp-for="Email" class="form-control" disabled />
-                        <div class="input-group-append">
-                            <span class="h-100 input-group-text text-success font-weight-bold">✓</span>
-                        </div>
+                    <div class="input-group-append">
+                        <span class="h-100 input-group-text text-success font-weight-bold">✓</span>
+                    </div>
                     <label asp-for="Email" class="form-label"></label>
                 </div>
             }
@@ -31,7 +160,7 @@
             }
             <div class="form-floating">
                 <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" />
-                <label asp-for="Input.NewEmail" class="form-label"></label>
+                <label asp-for="Input.NewEmail" class="form-label">New email</label>
                 <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
             </div>
             <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="w-100 btn btn-lg btn-primary">Change email</button>
