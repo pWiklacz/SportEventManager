@@ -10,7 +10,6 @@ using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Core.TeamAggregate.Specifications;
 using SportEventManager.SharedKernel.Interfaces;
 using SportEventManager.Web.ViewModels.EventModel;
-using SportEventManager.Web.ViewModels.TeamModel;
 
 namespace SportEventManager.Web.Controllers;
 [Authorize(Roles = "Admin,EventManager")]

@@ -1,8 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.TeamAggregate;
-using SportEventManager.Web.ViewModels.EventModel;
 
 namespace SportEventManager.Web.ViewModels.TeamModel;
 
@@ -10,6 +7,9 @@ public class TeamViewModel
 {
   public int Id { get; set; }
   public string OwnerId { get; private set; } = string.Empty;
+
+  [Required]
+  [MaxLength(100)]
   public string Name { get; set; } = string.Empty;
 
   [MaxLength(3)]

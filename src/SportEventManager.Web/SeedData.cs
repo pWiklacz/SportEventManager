@@ -123,16 +123,21 @@ public static class SeedData
 
     List<Team> teams = new List<Team>(48);
     List<string> existingPeselNumbers = new List<string>(11 * 48);
+    List<string> existingTeamsTags = new List<string>(48);
+    int uniquePeselModifier = 0;
     for (int i = 1; i <= 48; i++)
     {
-      var team = new Team($"{teamManagerUser?.Id}", $"Drużyna {i}", $"Miasto {i}", 11);
+      var team = new Team($"{teamManagerUser?.Id}", $"Drużyna {i}", $"D{i}", $"Miasto {i}", 11, existingTeamsTags);
       await appDb.Teams.AddAsync(team);
+      existingTeamsTags.Add(team.Tag);
       for (int j = 1; j <= 11; j++)
       {
-        var player = new Player($"Imię {j} - {team.Name}", $"Nazwisko {j} - {team.Name}", $"{90030501900 + j}");
+        var player = new Player($"Imię {j} - {team.Name}", $"Nazwisko {j} - {team.Name}", $"{90030501900 + uniquePeselModifier}");
         appDb.Players.Add(player);
-        existingPeselNumbers.Add(player.Pesel);
         team.AddPlayer(player, existingPeselNumbers);
+        uniquePeselModifier++;
+        existingPeselNumbers.Add(player.Pesel);
+        
       }
       teams.Add(team);
     }
