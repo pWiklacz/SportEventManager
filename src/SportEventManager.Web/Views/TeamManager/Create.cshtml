@@ -100,7 +100,7 @@
                                         <span asp-validation-for="@Model.TeamPlayers[i].Number" class="text-danger"></span>
                                     </td>
                                     <td>
-                                        <input asp-for="@Model.Players[i].Pesel" class="form-control" id="pesel-input" />
+                                        <input asp-for="@Model.Players[i].Pesel" class="form-control" id="pesel-input" onblur="checkAllPeselNumbers(this)" />
                                         <span asp-validation-for="@Model.Players[i].Pesel" class="text-danger"></span>
                                     </td>
                                     <td style="width:60px;">

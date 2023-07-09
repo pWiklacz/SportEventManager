@@ -1,6 +1,10 @@
 
 function checkAllPeselNumbers(event) {
-    event.preventDefault();
+    try {
+        event.preventDefault();
+    }catch (e) {
+        console.log(e);
+    }
     var peselInputs = document.querySelectorAll('#pesel-input');
     var postedPeselNumbersList = [];
     peselInputs.forEach(input => {
