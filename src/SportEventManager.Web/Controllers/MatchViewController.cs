@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.MatchAggregate;
 using SportEventManager.Core.MatchAggregate.Specifications;
 using SportEventManager.SharedKernel.Interfaces;

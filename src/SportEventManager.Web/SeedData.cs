@@ -4,7 +4,6 @@ using SportEventManager.Infrastructure.Data;
 using SportEventManager.Core.UserAggregate;
 using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.TeamAggregate;
-using System;
 
 namespace SportEventManager.Web;
 
@@ -99,7 +98,7 @@ public static class SeedData
     appDb.RemoveRange(appDb.Players);
     appDb.RemoveRange(appDb.TeamsMatchesStats);
     appDb.RemoveRange(appDb.Teams);
-    appDb.RemoveRange(appDb.Stats);
+    //appDb.RemoveRange(appDb.Stats);
     appDb.RemoveRange(appDb.Stadiums);
     appDb.RemoveRange(appDb.Matches);
     appDb.RemoveRange(appDb.Events);

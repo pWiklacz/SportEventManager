@@ -73,7 +73,8 @@ public class TeamManagerController : Controller
 
     if (currentUserId != null)
     {
-      var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersByOwnerIdSpec(currentUserId));
+      //think about using without OwnersId here,because it doesn't make sense for unique tags probably
+      var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersAllSpec(currentUserId));
       //teamsWithPlayers = RemoveOldPlayers(teamsWithPlayers);
 
       if (teamsWithPlayers != null)
@@ -175,7 +176,7 @@ public class TeamManagerController : Controller
 
     if (currentUserId != null)
     {
-      var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersByOwnerIdSpec(currentUserId));
+      var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersAllSpec(currentUserId));
       if (teamsWithPlayers != null)
       {
         existingPeselNumbers = GetPeselNumbersFromExistingTeams(teamsWithPlayers)!;

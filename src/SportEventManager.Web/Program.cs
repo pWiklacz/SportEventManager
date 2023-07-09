@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using SportEventManager.Core.UserAggregate;
 using Microsoft.AspNetCore.Identity;
-using Autofac.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 

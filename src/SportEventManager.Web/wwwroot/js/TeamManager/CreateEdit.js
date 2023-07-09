@@ -13,10 +13,10 @@ function checkAllPeselNumbers(event) {
     }
 }
 
-//nie dzia³a to gówno jebane ani z click ani z niczym - nie da siê zatrzymaæ wejœcia do kontrolera
+//nie dzia³a to - nie da siê zatrzymaæ wejœcia do kontrolera
 //bo wywo³aæ inaczej sam¹ metodê to akurat luz, ale jak z html to nie podajesz eventu do preventDefault()
 //jak sie uda zrobiæ coœ z tym peslem to trzeba to samo zrobiæ z tagiem i numerami na koszulkach
-('#TeamsForm').addEventListener("submit", checkAllPeselNumbers);
+//('#TeamsForm').addEventListener("submit", checkAllPeselNumbers);
 
 function adjustPlayersRows() {
     var table = document.getElementById('PlayersTable');
