@@ -5,22 +5,77 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
+<style>
+    #profile-form .form-row {
+        margin-bottom: 1rem;
+    }
+
+        #profile-form .form-row label {
+            font-weight: bold;
+        }
+
+        #profile-form .form-row input.form-control,
+        #profile-form .form-row select.form-control {
+            width: 100%;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+            #profile-form .form-row input.form-control:focus,
+            #profile-form .form-row select.form-control:focus {
+                border-color: #80bdff;
+                outline: 0;
+                box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+            }
+
+        #profile-form .form-row span.text-danger {
+            color: #dc3545;
+            font-size: 0.875rem;
+        }
+
+    #profile-form button[type="submit"] {
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 0.25rem;
+        transition: background-color 0.15s ease-in-out;
+        cursor: pointer;
+    }
+
+        #profile-form button[type="submit"]:hover,
+        #profile-form button[type="submit"]:focus {
+            background-color: #0056b3;
+        }
+</style>
+
 <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
     <div class="col-md-6">
         <form id="profile-form" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-floating">
-                <input asp-for="Username" class="form-control" disabled />
-                <label asp-for="Username" class="form-label"></label>
+            <div class="form-row">
+                <label for="username">Username</label>
+                <input id="username" asp-for="Username" class="form-control" disabled />
             </div>
-            <div class="form-floating">
-                <input asp-for="Input.PhoneNumber" class="form-control" />
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
+            <div class="form-row">
+                <label for="phoneNumber">Phone Number</label>
+                <input id="phoneNumber" asp-for="Input.PhoneNumber" class="form-control" />
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+            <button id="update-profile-button" type="submit">Save</button>
         </form>
     </div>
 </div>

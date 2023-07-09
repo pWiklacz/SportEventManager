@@ -1,14 +1,43 @@
 ﻿@{
     if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
     {
-        if(parentLayout != null)
-        Layout = (string)parentLayout;
+        if (parentLayout != null)
+            Layout = (string)parentLayout;
     }
     else
     {
         Layout = "/Areas/Identity/Pages/_Layout.cshtml";
     }
 }
+
+<style>
+    h1 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .col-md-3 {
+        flex: 0 0 calc(25% - 15px);
+    }
+
+    .col-md-9 {
+        flex: 0 0 calc(75% - 15px);
+    }
+
+    hr {
+        border-top: 1px solid #eee;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+</style>
 
 <h1>Manage your account</h1>
 
