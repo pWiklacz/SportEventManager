@@ -104,7 +104,7 @@
                                             <span asp-validation-for="@Model.TeamPlayers[i].Number" class="text-danger"></span>
                                         </td>
                                         <td>
-                                            <input asp-for="@Model.Players[i].Pesel" class="form-control" id="pesel-input" />
+                                            <input asp-for="@Model.Players[i].Pesel" class="form-control" id="pesel-input" placeholder="@Model.Players.Count" />
                                             <span asp-validation-for="@Model.Players[i].Pesel" class="text-danger"></span>
                                         </td>
                                           <td style="width:60px;">
@@ -116,7 +116,8 @@
                         </tbody>
                     </table>
                 </div>
-                <input type="hidden" id="hdnLastIndex" value="@Model.Players.Count - 1" />
+                @{int val = Model.Players.Count - 1;}
+                <input type="hidden" id="hdnLastIndex" value="@val"/>
                 <div class="col-12 btn-group p-10 m-0 text-center">
                     <div class="col form-group text-right p-0 pr-2 mb-2">
                         <a asp-action="Index" class="btn btn-secondary">&nbsp;Back&nbsp;</a>

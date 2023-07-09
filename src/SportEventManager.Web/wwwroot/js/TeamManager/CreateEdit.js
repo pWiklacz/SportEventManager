@@ -45,6 +45,8 @@ function addRow(table, rows) {
     for (var i = 0; i < inputsCollection.length; i++) {
         if (i % 5 != 0) {
             inputsCollection[i].value = "";
+        } else {
+            inputsCollection[i].value = 0;
         }
         if (inputsCollection[i].type == "number" && !inputsCollection[i].classList.contains('id-input')) {
             inputsCollection[i].value = 1;
@@ -58,3 +60,4 @@ function subtractRow(table, rows) {
     }
     table.rows[table.rows.length - 1].remove();
 }
+
