@@ -1,6 +1,5 @@
-﻿@using SportEventManager.Web.ViewModels.EventModel;
-@using Microsoft.CodeAnalysis.Scripting
-@model EventViewModel
+﻿@using SportEventManager.Web.ViewModels.MatchModel.Stats;
+@model StatsViewModelFull
 
 
 @{
@@ -8,3 +7,58 @@
     Layout = "~/Views/EventView/_EventViewLayout.cshtml";
 }
 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link rel="stylesheet" type="text/css" href="~/css/EventView/Stats.css" />
+
+<table class="table-teamStats">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Stats.ElementAt(0).TeamName)
+                (@Html.DisplayNameFor(model => model.Stats.ElementAt(0).TeamTag))
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stats.ElementAt(0).Wins)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stats.ElementAt(0).Draws)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stats.ElementAt(0).Losses)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stats.ElementAt(0).Goals)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Stats)
+        {
+                <tr>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.TeamName)
+                    (@Html.DisplayFor(modelItem => item.TeamTag))
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.Wins)
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.Draws)
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.Losses)
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.Goals)
+                       @* <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                
+                Zrobic tu przycisk do eksportu do pliku
+
+                *@ 
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>

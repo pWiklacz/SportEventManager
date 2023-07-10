@@ -1,12 +1,8 @@
 ﻿using System.Data;
-using System.Linq;
-using System.Numerics;
 using System.Security.Claims;
-using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using SportEventManager.Core.TeamAggregate;
 using SportEventManager.Core.TeamAggregate.Specifications;
 using SportEventManager.SharedKernel.Interfaces;

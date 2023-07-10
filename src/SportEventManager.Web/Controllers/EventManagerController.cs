@@ -152,7 +152,7 @@ public class EventManagerController : Controller
   [HttpPost]
   public async Task<IActionResult> Delete(EventViewModel viewModel)
   {
-    EventsByIdWithItemsSpec spec = new EventsByIdWithItemsSpec(viewModel.Id);
+    EventByIdWithItemsSpec spec = new EventByIdWithItemsSpec(viewModel.Id);
     Event? eventToDelete = await _eventRepository.FirstOrDefaultAsync(spec);
 
     if (eventToDelete == null)
