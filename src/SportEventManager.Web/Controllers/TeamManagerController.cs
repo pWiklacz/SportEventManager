@@ -30,8 +30,7 @@ public class TeamManagerController : Controller
 
     if (currentUserId != null)
     {
-      var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersByOwnerIdSpec(currentUserId));
-      teamsWithPlayers = RemoveOldPlayers(teamsWithPlayers);
+      var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsByOwnerIdSpec(currentUserId));
      
       if (teamsWithPlayers == null)
       {
@@ -73,9 +72,7 @@ public class TeamManagerController : Controller
 
     if (currentUserId != null)
     {
-      //think about using without OwnersId here,because it doesn't make sense for unique tags probably
-      var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersAllSpec(currentUserId));
-      //teamsWithPlayers = RemoveOldPlayers(teamsWithPlayers);
+      var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersAllSpec());
 
       if (teamsWithPlayers != null)
       {
@@ -122,6 +119,8 @@ public class TeamManagerController : Controller
           }
           else
           { //show a communicate that the player is already in use
+            await _teamRepository.DeleteAsync(team);
+            await _teamRepository.SaveChangesAsync();
             return RedirectToAction("Create", new { error = ex.Message });
           }
         }
@@ -151,8 +150,6 @@ public class TeamManagerController : Controller
       return NotFound();
     }
 
-    team = RemoveOldPlayersFromTeam(team);
-
     var dto = TeamViewModel.FromTeam(team!);
     dto.BackendError = error;
 
@@ -176,7 +173,7 @@ public class TeamManagerController : Controller
 
     if (currentUserId != null)
     {
-      var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersAllSpec(currentUserId));
+      var teamsWithPlayers = await _teamRepository.ListAsync(new TeamsWithPlayersAllSpec());
       if (teamsWithPlayers != null)
       {
         existingPeselNumbers = GetPeselNumbersFromExistingTeams(teamsWithPlayers)!;
@@ -233,9 +230,9 @@ public class TeamManagerController : Controller
         }
       }
 
-      team.DeleteOldPlayers(viewModel.getPlayersList());//check if ok
+      team.DeleteOldPlayers(viewModel.getPlayersList());
 
-      await _teamRepository.UpdateAsync(team);  //check if ok
+      await _teamRepository.UpdateAsync(team);
 
       for (int i = 0; i < viewModel.TeamPlayers.Count; i++)
       {
@@ -274,8 +271,6 @@ public class TeamManagerController : Controller
     {
       return NotFound();
     }
-
-    team = RemoveOldPlayersFromTeam(team);
 
     team!.Archive();
     await _teamRepository.UpdateAsync(team);
@@ -325,12 +320,21 @@ public class TeamManagerController : Controller
 
   private Player? GetExistingPlayerByPesel(List<Team> existingTeams, string pesel)
   {
-      return (Player?)existingTeams
+      var filteredTeamsList = existingTeams
         .Select(
-          t => t.Players.FirstOrDefault(
+          t => t.Players.Where(
               p => p.Pesel == pesel
-            )
-          );
+            ).ToList()
+          )
+        .ToList();
+    foreach(var playersListFromTeam in filteredTeamsList)
+    {
+      if(playersListFromTeam.Count != 0)
+      {
+        return playersListFromTeam[0];
+      }
+    }
+    return null;
   }
 
   /**
@@ -348,44 +352,5 @@ public class TeamManagerController : Controller
           tpp.TeamPlayer.LeaveOn < DateTime.Now)
       .Select(tpp => tpp.Player.Pesel)
       .ToList();
-  }
-
-  //this should change the list of teams to remove the players which are 
-  //no longer in the team due to TeamPlayer.LeaveOn property filled
-  //i was trying to remove it from here or from migration but none of this works
-  private List<Team>? RemoveOldPlayers(List<Team> existingTeams)
-  {
-    foreach(Team team in existingTeams)
-    {
-      for(int i = 0; i < team.TeamPlayers.Count; i++)
-      {
-        if (team.TeamPlayers.ElementAt(i).LeaveOn != null &&
-          team.TeamPlayers.ElementAt(i).LeaveOn < DateTime.Now)
-        {
-          //some exceptions cause it's broken
-         // team.Players.Remove(team.Players.ElementAt(i));
-          //team.TeamPlayers.Remove(team.TeamPlayers.ElementAt(i));
-        }
-      }
-    }
-    return existingTeams;
-  }
-
-  //this should change the team to remove the players which are 
-  //no longer in the team due to TeamPlayer.LeaveOn property filled
-  //i was trying to remove it from here or from migration but none of this works
-  private Team? RemoveOldPlayersFromTeam(Team team)
-  {
-    for (int i = 0; i < team.TeamPlayers.Count; i++)
-    {
-      if (team.TeamPlayers.ElementAt(i).LeaveOn != null &&
-        team.TeamPlayers.ElementAt(i).LeaveOn < DateTime.Now)
-      {
-        //some exceptions cause it's broken
-        //team.Players.Remove(team.Players.ElementAt(i));
-        //team.TeamPlayers.Remove(team.TeamPlayers.ElementAt(i));
-      }
-    }
-    return team;
   }
 }

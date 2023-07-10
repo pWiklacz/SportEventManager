@@ -7,8 +7,8 @@ public class TeamByIdWithPlayersSpec : Specification<Team>, ISingleResultSpecifi
   {
     Query
         .Where(team => team.Id == teamId)
-        .Include(t => t.TeamPlayers.Where(tp => tp.LeaveOn == null))
-        .Include(team => team.Players)
+        .Include(t => t.TeamPlayers.Where(tp => tp.LeaveOn == default(DateTime) || tp.LeaveOn > DateTime.Now))
+        .Include(team => team.Players.Where(p => !p.IsArchived))
         .Where(t => !t.IsArchived);
   }
 }

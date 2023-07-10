@@ -1,18 +1,15 @@
 
-function checkAllPeselNumbers(event) {
-    try {
-        event.preventDefault();
-    }catch (e) {
-        console.log(e);
-    }
-    var peselInputs = document.querySelectorAll('#pesel-input');
+function checkAllPeselNumbers(element) {
+    var peselInputs = document.getElementsByClassName('is-pesel-input');
     var postedPeselNumbersList = [];
-    peselInputs.forEach(input => {
+
+    for (let input of peselInputs) {
         postedPeselNumbersList.push(input.value);
-    })
+    }
 
     var uniquePeselNumbersSet = [...new Set(postedPeselNumbersList)];
     if (uniquePeselNumbersSet.length !== postedPeselNumbersList.length) {
+        element.value = "";
         alert('You can\'t post two players with the same pesel numbers!');
     }
 }
@@ -52,7 +49,7 @@ function addRow(table, rows) {
         } else {
             inputsCollection[i].value = 0;
         }
-        if (inputsCollection[i].type == "number" && !inputsCollection[i].classList.contains('id-input')) {
+        if (inputsCollection[i].type == "number" && !inputsCollection[i].classList.contains('is-id-input')) {
             inputsCollection[i].value = 1;
         }
     }

@@ -3,11 +3,10 @@
 namespace SportEventManager.Core.TeamAggregate.Specifications;
 public class TeamsWithPlayersAllSpec : Specification<Team>
 {
-  public TeamsWithPlayersAllSpec(string ownerId)
+  public TeamsWithPlayersAllSpec()
   {
     Query
       .Include(t => t.TeamPlayers)
-      .Include(p => p.Players)
-      .Where(team => team.OwnerId == ownerId);
+      .Include(p => p.Players);
   }
 }

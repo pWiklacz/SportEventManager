@@ -44,4 +44,16 @@ public class Player : EntityBase
   {
     this.IsArchived = true;
   }
+
+  public void ReusePlayer(int index)
+  {
+    this.IsArchived = false;
+    foreach(var tp in _teamPlayers)
+    {
+      if(tp.TeamId == index)
+      {
+        tp.LeaveOn = null;
+      }
+    }
+  }
 }
