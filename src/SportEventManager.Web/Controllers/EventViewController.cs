@@ -19,7 +19,7 @@ public class EventViewController : Controller
   [HttpGet]
   public async Task<IActionResult> ShowMatches(int id)
   {
-    var spec = new EventsByIdWithItemsSpec(id);
+    var spec = new EventByIdWithItemsSpec(id);
     Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
 
     if (ev == null) { return NotFound(); }
@@ -32,7 +32,7 @@ public class EventViewController : Controller
   [HttpGet]
   public async Task<IActionResult> Bracket(int id)
   {
-    var spec = new EventsByIdWithItemsSpec(id);
+    var spec = new EventByIdWithItemsSpec(id);
     Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
 
     if (ev == null) { return NotFound(); }
@@ -51,7 +51,7 @@ public class EventViewController : Controller
   [HttpGet]
   public async Task<IActionResult> Standings(int id)
   {
-    var spec = new EventsByIdWithItemsSpec(id);
+    var spec = new EventByIdWithItemsSpec(id);
     Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
 
     if (ev == null) { return NotFound(); }
@@ -67,22 +67,26 @@ public class EventViewController : Controller
   }
 
   //To add playerStats view you just need to add an object FbPlayerFullStatsViewModel
-  //Then a property of this object to FbTeamFullStatsVM and rewrite also its values in FromTeamAndMatches
+  //Then a property of this object to FbTeamFullStatsVM and rewrite also its values
+  //in FromEvent(...).FromTeamAndMatches
   [HttpGet]
   public async Task<IActionResult> Stats(int id)
   {
-    var spec = new EventsByIdWithItemsSpec(id);
+    var spec = new EventByIdWithItemsSpec(id);
     Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
 
     if (ev == null) { return NotFound(); }
 
     var dto = StatsViewModelFull.FromEvent(ev);
+    dto.Stats = dto.Stats.OrderByDescending(s => s.Wins)
+                  .ThenBy(s => s.Losses)
+                  .ThenByDescending(s => s.Goals).ToList();
 
     return View(dto);
   }
 
   [HttpPost]
-  public IActionResult Stats(StatsViewModelFull viewModel)
+  public IActionResult Stats(EventViewModel viewModel)
   {
     return RedirectToAction("Stats", viewModel.Id);
   }

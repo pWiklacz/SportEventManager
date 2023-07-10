@@ -4,26 +4,24 @@
 }
 
     table.table-teamStats th, table.table-teamStats td {
-        padding: 8px;
-        text-align: left;
+        text-align: center;
     }
 
-    table.table-teamStats tr:first-child td:nth-child(1),
-    table.table-teamStats tr:first-child td:nth-child(2),
-    table.table-teamStats tr:first-child td:nth-child(3),
-    table.table-teamStats tr:first-child td:nth-child(4),
-    table.table-teamStats tr:first-child td:nth-child(5) {
+    table.table-teamStats tr:first-child th:nth-child(1),
+    table.table-teamStats tr:first-child th:nth-child(2),
+    table.table-teamStats tr:first-child th:nth-child(3),
+    table.table-teamStats tr:first-child th:nth-child(4),
+    table.table-teamStats tr:first-child th:nth-child(5) {
         width: 10%;
         text-align: center;
         font-weight: bold;
         font-size: 25px;
-        padding-bottom: 40px;
+        padding-bottom: 15px;
     }
 
-    table.table-teamStats tr:first-child {
+    table.table-teamStats thead tr:first-child {
         background-color: #073642;
     }
-
 
     table.table-teamStats tr:nth-of-type(2n + 1) {
         background-color: #073642;
