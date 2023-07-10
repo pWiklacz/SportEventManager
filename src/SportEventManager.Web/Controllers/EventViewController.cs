@@ -4,8 +4,6 @@ using SportEventManager.SharedKernel.Interfaces;
 using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.EventAggregate.Specification;
 using SportEventManager.Web.ViewModels.MatchModel.Stats;
-using OfficeOpenXml;
-using System.IO.Packaging;
 using System.Text;
 
 namespace SportEventManager.Web.Controllers;
