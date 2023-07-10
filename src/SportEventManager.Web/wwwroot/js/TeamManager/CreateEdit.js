@@ -14,11 +14,6 @@ function checkAllPeselNumbers(element) {
     }
 }
 
-//nie dzia³a to - nie da siê zatrzymaæ wejœcia do kontrolera
-//bo wywo³aæ inaczej sam¹ metodê to akurat luz, ale jak z html to nie podajesz eventu do preventDefault()
-//jak sie uda zrobiæ coœ z tym peslem to trzeba to samo zrobiæ z tagiem i numerami na koszulkach
-//('#TeamsForm').addEventListener("submit", checkAllPeselNumbers);
-
 function adjustPlayersRows(btn) {
     var table = document.getElementById('PlayersTable');
     var rows = table.getElementsByTagName('tr');
@@ -31,7 +26,6 @@ function adjustPlayersRows(btn) {
     }
 }
 
-//coœ nie tak z dodawaniem kolejnych typków w sensie numery w tabeli i pesli wartoœæ
 function addRow(table, rows) {
     var rowOutherHtml = rows[rows.length - 1].outerHTML;
     var lastrowIdx = document.getElementById('hdnLastIndex').value;
