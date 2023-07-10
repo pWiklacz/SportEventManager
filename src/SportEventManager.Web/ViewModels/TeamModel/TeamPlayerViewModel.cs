@@ -6,7 +6,7 @@ public class TeamPlayerViewModel
 {
   public int Id { get; set; }
 
-  public int Number { get; set; }
+  public int Number { get; set; } = 1;
 
   public int PlayerId { get; set; }
 

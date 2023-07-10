@@ -44,6 +44,10 @@ public class AppDbContext : DbContext
     modelBuilder.Entity<Stadium>().HasKey(x => new { x.Id });
 
     modelBuilder.Entity<Team>()
+      .HasIndex(t => t.Tag)
+      .IsUnique();
+      
+    modelBuilder.Entity<Team>()
       .HasMany(t => t.Players)
       .WithMany(p => p.Teams)
       .UsingEntity<TeamPlayer>(

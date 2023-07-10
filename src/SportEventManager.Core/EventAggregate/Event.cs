@@ -104,7 +104,7 @@ public class Event : EntityBase, IAggregateRoot
     Guard.Against.Negative(
       newTeam.NumberOfPlayers - MinPlayersQuantityPerTeam,
       null,
-      "Number of players in team " + newTeam.Name + " is too low. Minikmum is " + MinPlayersQuantityPerTeam
+      "Number of players in team " + newTeam.Name + " is too low. Minimum is " + MinPlayersQuantityPerTeam
       );
     _teams.Add(newTeam);
   }
