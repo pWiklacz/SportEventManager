@@ -130,7 +130,7 @@ public class TeamManagerController : Controller
 
       for (int i = 0; i < viewModel.TeamPlayers.Count; i++)
       {
-        team.UpdateTeamPlayer(i, viewModel.TeamPlayers[i].Number); //check if ok
+        team.UpdateTeamPlayer(i, viewModel.TeamPlayers[i].Number);
       }
 
       await _teamRepository.UpdateAsync(team);

@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
-using Microsoft.AspNetCore.Identity;
 using SportEventManager.SharedKernel;
 
 namespace SportEventManager.Core.TeamAggregate;
@@ -55,5 +53,10 @@ public class Player : EntityBase
         tp.LeaveOn = null;
       }
     }
+  }
+
+  public void ReaddPlayer()
+  {
+    this.IsArchived = false;
   }
 }

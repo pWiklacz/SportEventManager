@@ -73,7 +73,7 @@ public class Team : EntityBase, IAggregateRoot
       throw new Exception("The player with pesel: " + newPlayer.Pesel + " is already in use!" +
         " Please inform your player he needs to be removed from his current team first!");
     }
-    newPlayer.ReusePlayer(this.Id);
+    newPlayer.ReaddPlayer();
     _players.Add(newPlayer);
   }
 
@@ -141,6 +141,7 @@ public class Team : EntityBase, IAggregateRoot
     bool peselIsValidatedAlready = false
     )
   {
+    
     if (player != null)
     {
       if (
@@ -151,6 +152,10 @@ public class Team : EntityBase, IAggregateRoot
       {
         throw new Exception("The player with pesel: " + newPesel + " is already in use!" +
           " Please inform your player he needs to be removed from his current team first!");
+      }
+      if (peselIsValidatedAlready)
+      {
+        this.AddPlayer(player, existingPeselNumbers, peselIsValidatedAlready);
       }
       this.UpdatePlayer(player.Id, newName, newSurname, newPesel);
     }
