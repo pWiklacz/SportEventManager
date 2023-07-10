@@ -107,19 +107,19 @@ public class EventViewController : Controller
     var csv = new StringBuilder();
     csv.AppendLine("TeamName; TeamTag; Wins; Draws; Losses; Goals");
 
-    // Dodanie danych do pliku CSV
+    
     foreach (var stat in dto.Stats)
     {
       csv.AppendLine($"{stat.TeamName}; {stat.TeamTag}; {stat.Wins}; {stat.Draws}; {stat.Losses}; {stat.Goals}");
     }
 
-    // Dodanie BOM
+    
     var preamble = Encoding.UTF8.GetPreamble();
     var body = Encoding.UTF8.GetBytes(csv.ToString());
 
     var bytes = preamble.Concat(body).ToArray();
 
-    // Zwrócenie pliku CSV
+    
     return File(bytes, "text/csv", "Stats.csv");
   }
 
