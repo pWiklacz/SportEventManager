@@ -1,5 +1,5 @@
 ﻿@using SportEventManager.Web.ViewModels.EventModel;
-@model EventViewModel
+
 @{
     Layout = "/Views/Shared/_Layout.cshtml";
 }
@@ -24,7 +24,7 @@
                         <a class="nav-link" asp-controller="EventView" asp-action="Bracket" asp-route-id="@currentId">BRACKET</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="EventView" asp-action="Stats" asp-route-id="@currentId">STATS</a>
+                        <a class="nav-link" asp-controller="EventView" asp-action="Stats" asp-route-id="@currentId" method="get">STATS</a>
                     </li>                  
                     @*<li class="nav-item">
                         <a class="nav-link" asp-controller="EventView" asp-action="Standings" asp-route-id="@currentID">STANDINGS</a>

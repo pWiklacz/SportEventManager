@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using SportEventManager.Core.MatchAggregate;
+﻿using SportEventManager.Core.MatchAggregate;
 
 namespace SportEventManager.Web.ViewModels.MatchModel.Stats;
 

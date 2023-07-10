@@ -3,6 +3,7 @@ using SportEventManager.Web.ViewModels.EventModel;
 using SportEventManager.SharedKernel.Interfaces;
 using SportEventManager.Core.EventAggregate;
 using SportEventManager.Core.EventAggregate.Specification;
+using SportEventManager.Web.ViewModels.MatchModel.Stats;
 
 namespace SportEventManager.Web.Controllers;
 
@@ -28,28 +29,6 @@ public class EventViewController : Controller
     return View(viewModel);
   }
 
-  //[HttpPost]
-  //public async Task<IActionResult> ShowMatches(EventViewModel viewModel)
-  //{
-  //  var spec = new EventsByIdWithItemsSpec(viewModel.Id);
-  //  Event? ev = await _eventRepository.FirstOrDefaultAsync(spec);
-
-  //  if (ev == null) { return NotFound(); }
-
-  //  foreach (var match in viewModel.Matches)
-  //  {
-  //    var hTeamStats = TeamStatsFromViewModel(match.HomeTeamStats);
-  //    var gTeamStats = TeamStatsFromViewModel(match.GuestTeamStats);
-  //    var playerStats = PlayersStatsFromViewModel(match.HomeTeamPlayersMatchStats,
-  //      match.GuestTeamPlayersMatchStats);
-  //    ev.UpdateMatchStats(match.Id, hTeamStats, gTeamStats, playerStats);
-  //  }
-
-  //  await _eventRepository.UpdateAsync(ev);
-  //  await _eventRepository.SaveChangesAsync();
-  //  return RedirectToAction("ShowMatches");
-  //}
-
   [HttpGet]
   public async Task<IActionResult> Bracket(int id)
   {
@@ -69,7 +48,6 @@ public class EventViewController : Controller
     return RedirectToAction("Bracket", viewModel.Id);
   }
 
-  //do something with those values
   [HttpGet]
   public async Task<IActionResult> Standings(int id)
   {
@@ -88,7 +66,8 @@ public class EventViewController : Controller
     return RedirectToAction("Standings", viewModel.Id);
   }
 
-  //Do something with those values
+  //To add playerStats view you just need to add an object FbPlayerFullStatsViewModel
+  //Then a property of this object to FbTeamFullStatsVM and rewrite also its values in FromTeamAndMatches
   [HttpGet]
   public async Task<IActionResult> Stats(int id)
   {
@@ -97,12 +76,13 @@ public class EventViewController : Controller
 
     if (ev == null) { return NotFound(); }
 
-    var dto = EventViewModel.FromEvent(ev);
+    var dto = StatsViewModelFull.FromEvent(ev);
+
     return View(dto);
   }
 
   [HttpPost]
-  public IActionResult Stats(EventViewModel viewModel)
+  public IActionResult Stats(StatsViewModelFull viewModel)
   {
     return RedirectToAction("Stats", viewModel.Id);
   }
